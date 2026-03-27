@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <div>
+        <div class="hero-container">
+            <div class="home-title">Discover & Share Delicious Recipes</div>
+            <div class="home-subtitle">by G2</div>
+
+            <div id="filterOverlay" class="filter-overlay">
+                <div class="filter-popup">
+                    <h2>Filter Recipes</h2>
+
+                    <label for="filterCuisine"><strong>Cuisine:</strong></label>
+                    <select id="filterCuisine" class="form-input">
+                        <option value="" <%= cuisine==='' ? 'selected' : '' %>>All</option>
+                        <option value="Italian" <%= cuisine==='Italian' ? 'selected' : '' %>>Italian</option>
+                        <option value="French" <%= cuisine==='French' ? 'selected' : '' %>>French</option>
+                        <option value="Chinese" <%= cuisine==='Chinese' ? 'selected' : '' %>>Chinese</option>
+                        <option value="Japanese" <%= cuisine==='Japanese' ? 'selected' : '' %>>Japanese</option>
+                        <option value="Korean" <%= cuisine==='Korean' ? 'selected' : '' %>>Korean</option>
+                        <option value="Western" <%= cuisine==='Western' ? 'selected' : '' %>>Western</option>
+                        <option value="Asian" <%= cuisine==='Asian' ? 'selected' : '' %>>Asian</option>
+                    </select>
+                    <br><br>
+
+                    <label><strong>Tags (Select all that apply):</strong></label>
+                    <div class="tag-options">
+                        <label><input type="checkbox" value="vegetarian" class="tagOption" <%= tag.includes('vegetarian') ? 'checked' : '' %>> Vegetarian</label><br>
+                        <label><input type="checkbox" value="vegan" class="tagOption" <%= tag.includes('vegan') ? 'checked' : '' %>> Vegan</label><br>
+                        <label><input type="checkbox" value="gluten free" class="tagOption" <%= tag.includes('gluten free') ? 'checked' : '' %>> Gluten Free</label><br>
+                        <label><input type="checkbox" value="appetizer" class="tagOption" <%= tag.includes('appetizer') ? 'checked' : '' %>> Appetizer</label><br>
+                        <label><input type="checkbox" value="main" class="tagOption" <%= tag.includes('main') ? 'checked' : '' %>> Main</label><br>
+                        <label><input type="checkbox" value="dessert" class="tagOption" <%= tag.includes('dessert') ? 'checked' : '' %>> Dessert</label>
+                    </div>
+                    <br>
+
+                    <label for="filterDifficulty"><strong>Difficulty:</strong></label>
+                    <select id="filterDifficulty" class="form-input">
+                        <option value="" <%= difficulty==='' ? 'selected' : '' %>>All</option>
+                        <option value="beginner" <%= difficulty==='beginner' ? 'selected' : '' %>>Beginner</option>
+                        <option value="intermediate" <%= difficulty==='intermediate' ? 'selected' : '' %>>Intermediate</option>
+                        <option value="advanced" <%= difficulty==='advanced' ? 'selected' : '' %>>Advanced</option>
+                    </select>
+                    <br><br>
+
+                    <div class="popup-buttons">
+                        <button type="reset" onclick="resetFilter()" class="btn-solid">Reset</button>
+                        <button type="button" onclick="closeFilter()" class="btn-outline"
+                            style="color: #0D1419; border-color: #0D1419;">Cancel</button>
+                        <button type="button" onclick="applyFilter()" class="btn-solid">Apply</button>
+                    </div>
+                </div>
+            </div>
+
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Search by name..." value="<%= locals.searchQuery || '' %>"
+                    class="search-input-large">
+
+                <div class="search-actions">
+                    <button type="button" name="filter" onclick="openFilter()"
+                        class="btn-outline search-filter-btn">Filter</button>
+                    <button type="submit" class="search-btn-large">Search</button>
+                </div>
+
+                
+                <input type="hidden" name="cuisine" id="selectedCuisine" value="<%= cuisine %>">
+                <input type="hidden" name="difficulty" id="selectedDifficulty" value="<%= difficulty %>">
+                <input type="hidden" name="tags" id="selectedTags" value="<%= tags %>">
+            </form>
+        </div>
+
+        <div class="recipe-grid">
+            <% if (recipes && recipes.length > 0) { %>
+                <% recipes.forEach(function(recipe) { %>
+                    <a href="/recipe/<%= recipe._id %>" class="recipe-card-link">
+                        
+                        
+                        <% if (recipe.image && recipe.image.startsWith('data:image')) { %>
+                            <img src="<%= recipe.image %>" class="recipe-image">
+                        <% } else { %>
+                            <img src="/img/default-recipe.png" class="recipe-image">
+                        <% } %>
+
+                        <div class="recipe-content">
+                            <div class="recipe-title">
+                                <%= recipe.recipe_name %>
+                            </div>
+
+                            <div class="recipe-author">
+                                ⭐ <%= recipe.rating ? recipe.rating.toFixed(1) : 'New!' %> | <%= recipe.cuisine %>
+                            </div>
+
+                            <div class="recipe-tags">
+                                <strong>Tags:</strong>
+                                <%= recipe.tag.join(', ') %>
+                            </div>
+                        </div>
+                    </a>
+                    
+                <% }); %>
+            <% } else { %>
+                <div class="no-results">No recipes found. Try a different search or add a new one!</div>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function resetFilter() {
+            document.getElementById('filterCuisine').value = '';
+            document.getElementById('filterDifficulty').value = '';
+            document.querySelectorAll('.tagOption').forEach(checkbox => checkbox.checked = false);
+        }
+
+        function openFilter() {
+            document.getElementById("filterOverlay").style.display = "flex";
+        }
+
+        function closeFilter() {
+            document.getElementById("filterOverlay").style.display = "none";
+        }
+
+        function applyFilter() {
+            const cuisine = document.getElementById("filterCuisine").value;
+            const difficulty = document.getElementById("filterDifficulty").value;
+
+            const checkedTags = Array.from(document.querySelectorAll(".tagOption:checked"))
+                .map(tag => tag.value);
+
+            document.getElementById("selectedCuisine").value = cuisine;
+            document.getElementById("selectedDifficulty").value = difficulty;
+            document.getElementById("selectedTags").value = checkedTags.join(",");
+
+            closeFilter();
+        }
+
+        window.addEventListener("click", function (event) {
+            const overlay = document.getElementById("filterOverlay");
+            if (event.target === overlay) {
+                closeFilter();
+            }
+        });
+    </script>
+</body>
+</html>

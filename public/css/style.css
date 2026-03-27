@@ -1,0 +1,1851 @@
+/* =========================================
+   Base Styles (Midnight Cafe Vibe)
+   ========================================= */
+body {
+    background-color: #CDC6B6; /* Light gray-beige background */
+    color: #0D1419; /* Deepest navy for highly readable text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6, p {
+    color: #0D1419;
+}
+
+/* =========================================
+   Navigation Bar 
+   ========================================= */
+.navbar {
+    background-color: #253A4A; /* Slate blue */
+    padding: 15px 30px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(13, 20, 25, 0.2); /* Deep shadow */
+}
+
+.navbar-brand {
+    margin: 0;
+    color: #E0A840; /* Golden yellow pop for the logo */
+    font-size: 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.navbar-links a {
+    color: #F7F4E3; /* Cream text on the dark navbar */
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 20px;
+    transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+    color: #E0A840; /* Links turn gold on hover */
+}
+
+/* =========================================
+   Buttons
+   ========================================= */
+/* Solid Buttons (Sign Up, Explore Recipes) */
+.btn-solid { 
+    background-color: #E0A840; /* Golden Yellow */
+    color: #0D1419; /* Deep navy text for high contrast on gold */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.btn-solid:hover {
+    background-color: #0D1419; /* Swaps to deepest navy on hover */
+    color: #E0A840; /* Text swaps to gold */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 20, 25, 0.3);
+}
+
+/* Outline Buttons (Log In) - Now styled for the dark navbar */
+.btn-outline {
+    background-color: transparent;
+    color: #F7F4E3; /* Cream text */
+    border: 2px solid #F7F4E3; /* Cream border */
+    padding: 8px 18px; 
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+    background-color: #F7F4E3;
+    color: #253A4A; /* Text turns slate blue */
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   Hero Section & Layout
+   ========================================= */
+.hero-section {
+    text-align: center;
+    margin: 60px auto;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    color: #253A4A; /* Slightly lighter than main text for subheadings */
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 40px;
+}
+
+/* =========================================
+   Recipe Card Styles
+   ========================================= */
+.recipe-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 0 20px 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto; 
+}
+
+/* Clickable card */
+.recipe-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px; 
+    overflow: hidden;
+    background-color: #F7F4E3; /* Cream background for the card */
+    box-shadow: 0 6px 15px rgba(13, 20, 25, 0.1); /* Subtle dark shadow */
+    width: 300px; 
+}
+
+/* Interactive "lift" effect */
+.recipe-card-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(13, 20, 25, 0.2); 
+}
+
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; 
+    display: block;
+}
+
+.recipe-content {
+    padding: 20px 15px;
+    text-align: center; 
+    background-color: #F7F4E3; /* Matches the cream card background */
+}
+
+.recipe-title {
+    margin: 0 0 8px 0;
+    font-size: 1.25rem;
+    color: #0D1419; /* Deepest navy title */
+    font-weight: bold;
+}
+
+.recipe-author {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #253A4A; /* Slate blue for secondary text */
+}
+
+
+/* Form styles */
+.main-content {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+.register-card {
+    background-color: #F7F4E3;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.register-card h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000; 
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #E0A840; 
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* =========================================
+   Create Recipe Layout & Error Handling
+   ========================================= */
+.create-recipe-main {
+    text-align: center;
+    margin: 60px auto;
+    width: 600px;
+    padding: 0 20px;
+}
+
+.error-container {
+    background-color: #ffe6e6;
+    border: 2px solid red;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: left;
+    width: 100%; /* Adapts to parent width */
+    box-sizing: border-box;
+}
+
+
+.error-list {
+    color: red;
+    font-weight: bold;
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* for succesful changes to user's profile */
+.changes-container {
+  background-color: #e6ffe6;
+  border: 2px solid green;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.changes-list {
+  color: green;
+  font-weight: bold;
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* =========================================
+   Profile Display
+   ========================================= */
+
+.profile-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #CDC6B6;
+}
+
+.profile-field:last-of-type {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.profile-field label {
+    font-weight: bold;
+    color: #253A4A;
+    font-size: 0.9rem;
+}
+
+.profile-field p {
+    margin: 0;
+    color: #0D1419;
+    font-size: 0.95rem;
+}
+
+
+/* =========================================
+   Extended Form Card (Used for Recipe Creation)
+   ========================================= */
+.form-card {
+    text-align: left;
+    background: #F7F4E3;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(13, 20, 25, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Base input field styling */
+.form-input, .tall-input, .ing-amount, .ing-name-full, .ing-name-partial {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #CDC6B6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Specific input widths */
+.form-input {
+    width: 100%;
+}
+
+.tall-input {
+    width: 100%;
+    height: 120px;
+}
+
+.file-input-bg {
+    background-color: #ffffff;
+}
+
+.checkbox-label {
+    display: inline;
+    font-weight: normal;
+}
+
+/* =========================================
+   Dynamic Ingredients Container
+   ========================================= */
+.ingredients-container {
+    padding: 0;
+    margin: 0;
+}
+
+.ingredient-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    align-items: center;
+    width: 100%;
+}
+
+.ing-amount {
+    flex: 0 0 170px; /* Fixed width of 170px */
+}
+
+.ing-name-full {
+    flex: 1; /* Takes up remaining space */
+}
+
+.ing-name-partial {
+    flex: 1; /* Takes up remaining space minus the button */
+}
+
+.remove-btn {
+    flex: 0 0 50px; /* Fixed width of 50px */
+    background: #FF4D4D;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.remove-btn:hover {
+    background: #cc0000;
+}
+
+.add-btn {
+    margin-top: 10px;
+    width: 100%;
+    border-color: #253A4A;
+    color: #253A4A;
+    background-color: transparent;
+    border: 2px solid #253A4A;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    background-color: #253A4A;
+    color: #F7F4E3;
+}
+
+/* Utility Class for Full Width Form Submit Button */
+.full-width-btn {
+    width: 100%;
+    margin-top: 20px;
+    display: block;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* =========================================
+   Home Hero & Search Layout
+   ========================================= */
+.hero-container {
+    text-align: center;
+    margin: 60px auto 40px auto;
+    width: 100%;
+    max-width: 700px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.home-title {
+    color: #0D1419;
+    margin-bottom: 5px;
+    font-size: 2.25rem;
+    font-weight: bold;
+}
+
+.home-subtitle {
+    color: #253A4A;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-input-large {
+    padding: 15px 20px;
+    width: 100%; 
+    max-width: 500px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 2px solid #253A4A;
+    background-color: #F7F4E3;
+    color: #0D1419;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(13, 20, 25, 0.05);
+}
+
+.search-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.search-btn-large {
+    background-color: #E0A840;
+    color: #0D1419;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(13, 20, 25, 0.1);
+    transition: background-color 0.2s;
+}
+
+.search-btn-large:hover {
+    background-color: #d19a35;
+}
+
+/* Specific fix for the filter button next to search */
+.search-filter-btn {
+    color: #253A4A;
+    border-color: #253A4A;
+}
+
+.search-filter-btn:hover {
+    color: #F7F4E3;
+    background-color: #253A4A;
+}
+
+/* =========================================
+   Recipe Index Grid Adjustments
+   ========================================= */
+.recipe-tags {
+    margin: 8px 0 0 0;
+    font-size: 0.8rem; 
+    color: #253A4A;
+}
+
+.no-results {
+    text-align: center;
+    color: #0D1419;
+    width: 100%;
+    font-size: 1.2rem; 
+    margin-top: 40px;
+}
+
+/* =========================================
+   Filter Popup Overlay
+   ========================================= */
+.filter-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.filter-popup {
+    background: #F7F4E3;
+    padding: 25px;
+    width: 380px;
+    max-width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    color: #0D1419;
+    text-align: left; /* Fixes centering bleed from hero */
+}
+
+.filter-popup h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.tag-options {
+    margin-top: 10px;
+    line-height: 1.8;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* =========================================
+   Recipe Detail Page
+   ========================================= */
+.recipe-detail-main {
+    width: 100%;
+    max-width: 1000px; 
+    margin: 40px auto;
+    padding: 0 20px 40px 20px;
+    box-sizing: border-box;
+}
+
+.recipe-container {
+    background-color: #F7F4E3;
+    border-radius: 16px;
+    overflow: visible;
+    box-shadow: 0 8px 25px rgba(13,20,25,0.15);
+}
+
+.image-wrapper {
+    width: 100%;
+    height: 450px;
+    margin: 0;
+    background-color: #0D1419;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0; 
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+}
+
+.content-wrapper {
+    padding: 35px 40px;
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    gap: 15px;
+}
+
+.rating-badge {
+    background: #E0A840;
+    color: #0D1419;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.2rem; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(13,20,25,0.1);
+}
+
+.rating-form-wrapper {
+    margin-top: 5px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.rating-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: auto;
+}
+
+.rating-form label {
+    vertical-align: middle;
+    margin-bottom: 0;      
+}
+
+.rating-select {
+    width: auto;
+    display: inline-block;
+    height: 38px;
+    padding: 5px 8px;
+    box-sizing: border-box;
+    margin-top: 0;        
+    vertical-align: middle; 
+}
+.rating-btn {
+    padding: 8px 15px;
+    height: 38px;
+    box-sizing: border-box;
+    transform: none !important;
+    vertical-align: middle;
+}
+
+.meta-info {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    color: #253A4A;
+    font-size: 1rem;       
+    margin-bottom: 15px;   
+}
+
+.tags-container {
+    margin-bottom: 25px;
+}
+
+.tag-badge {
+    display: inline-block;
+    background: #253A4A;
+    color: #F7F4E3;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem; 
+    margin-right: 8px;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.recipe-divider {
+    border: none;
+    border-top: 1px solid #CDC6B6;
+    margin: 20px 0;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 50px;
+}
+
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr; /* Stacks sidebar on mobile */
+    }
+}
+
+.ingredients-sidebar {
+    background: #FFF;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #CDC6B6;
+    height: fit-content;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+}
+
+.section-heading {
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 10px;
+}
+
+.ingredient-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.instructions-container {
+    color: #0D1419;
+    line-height: 1.8;
+    font-size: 1.1rem; 
+    white-space: pre-wrap;
+}
+
+.back-link-container {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 2px solid #253A4A;
+    color: #253A4A;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    background-color: #253A4A;
+    color: #F7F4E3;
+}
+
+.capitalize-text {
+    text-transform: capitalize;
+}
+
+.ingredient-list li {
+    padding: 12px 0;
+    border-bottom: 1px dashed #CDC6B6;
+    font-size: 1.05rem; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* This forces the text to align perfectly in the middle */
+}
+
+.ingredient-list .empty-list-item {
+    justify-content: flex-start;
+}
+
+/* Renamed from .ing-amount to prevent inheriting form styles */
+.recipe-ing-amount {
+    color: #253A4A;
+    text-align: right;
+    font-weight: bold;
+}
+
+/* =========================================
+   Dedicated Search Page Layout
+   ========================================= */
+.search-page-container {
+    text-align: center;
+    margin: 40px auto;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.search-page-title {
+    color: #0D1419;
+    margin-bottom: 20px;
+    font-size: 1.5rem; 
+    font-weight: bold;
+}
+
+.search-bar-inline {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap; /* Allows the button to drop down cleanly on small mobile screens */
+}
+
+.search-input-inline {
+    padding: 10px;
+    width: 100%;
+    max-width: 360px;
+    border-radius: 6px;
+    border: 1px solid #253A4A;
+    background-color: #F7F4E3;
+    color: #0D1419;
+    box-sizing: border-box;
+}
+
+.search-btn-inline {
+    background-color: #E0A840;
+    color: #0D1419;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-btn-inline:hover {
+    background-color: #d19a35;
+}
+
+/* Fixes spacing for the logged-in username */
+.nav-user-badge {
+    margin-left: 20px;
+    cursor: default;
+}
+
+/* Removes the "clicky" hover effect since the username isn't a clickable link */
+.nav-user-badge:hover {
+    transform: none;
+    box-shadow: none;
+    background-color: #E0A840; 
+    color: #0D1419; 
+}
+
+/* User Profile Button */
+.profile-btn {
+    background-color: #E0A840; 
+    color: #0D1419; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none; /* Keeps it clean if you use it on an <a> tag */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* This creates a smooth fade between the colors instead of a harsh snap */
+    transition: background-color 0.2s ease-in-out; 
+}
+
+/* The state when the user's mouse is over the button */
+.profile-btn:hover {
+    background-color: #ffffff; /* A slightly darker, richer gold */
+}
+
+/* Specific fix for the filter button next to search */
+.search-filter-btn {
+    background-color: #253A4A; /* Solid slate blue instead of transparent */
+    color: #F7F4E3; /* Cream text */
+    border: 2px solid #253A4A;
+}
+
+.search-filter-btn:hover {
+    background-color: #0D1419; /* Swaps to deepest navy on hover */
+    color: #E0A840; /* Text swaps to gold */
+    border-color: #0D1419;
+}
+
+/* =========================================
+   Global Error Page Layout
+   ========================================= */
+.error-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.error-card {
+    background: #F7F4E3;
+    padding: 50px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(13, 20, 25, 0.15);
+    width: 100%;
+    max-width: 500px;
+}
+
+.error-code {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #E0A840; /* Golden Yellow */
+    margin-bottom: 10px;
+    line-height: 1;
+    text-shadow: 2px 2px 0px #253A4A; /* Adds a slight slate blue shadow for pop */
+}
+
+.error-message {
+    font-size: 1.25rem;
+    color: #253A4A;
+    margin-bottom: 35px;
+    font-weight: bold;
+}
+
+.return-home-btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+/* =========================================
+   Popup Form Alignment Fix
+   ========================================= */
+.filter-popup label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.filter-popup select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #253A4A;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.tag-options label {
+    display: block;
+    font-weight: normal;
+}
+
+/* spacing fix */
+.filter-popup br {
+    display: none;
+}
+
+.filter-popup .input-group {
+    margin-bottom: 15px;
+}
+
+/* =========================================
+   User Dropdown Styles
+   ========================================= */
+
+/* 1. The Container */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 20px;
+    width: fit-content; 
+}
+
+/* 2. The Menu (Hidden by default) */
+.dropdown-content {
+    display: none; 
+    position: absolute;
+    right: 0;              
+    left: auto;            
+    background-color: #F7F4E3; 
+    min-width: 100%;       
+    width: fit-content;    
+    box-shadow: 0 8px 16px rgba(13, 20, 25, 0.3); 
+    border-radius: 8px;
+    z-index: 10000; 
+    border: 1px solid #CDC6B6; 
+    top: 100%;
+    padding-top: 0px; 
+}
+
+.dropdown-content a:hover {
+    background-color: #253A4A; 
+    color: #E0A840;
+}
+
+.dropdown-content a:first-child:hover {
+    border-radius: 8px 8px 0 0;   /* rounds top two corners for first item */
+}
+
+.dropdown-content a:last-child:hover {
+    border-radius: 0 0 8px 8px;   /* rounds bottom two corners for last item */
+}
+
+/* 2b. The "Invisible Bridge" Buffer */
+.dropdown-content::before {
+    content: "";
+    position: absolute;
+    /* This pushes the 'hit area' UP by 15px to connect to the button */
+    top: -15px; 
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: transparent; /* Must be transparent! */
+    display: block;
+}
+
+/* 3. Show menu when hovering over the container */
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 4. Individual Links */
+.dropdown-content a {
+    color: #0D1419; 
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-align: left;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+    margin-left: 0;
+}
+
+
+
+/* 5. Hover state for links */
+.dropdown-content a:hover {
+    background-color: #253A4A; 
+    color: #E0A840; 
+}
+
+/* 6. A Divider line for the Logout */
+.dropdown-divider {
+    height: 1px;
+    background-color: #CDC6B6;
+    margin: 4px 0;
+}
+
+/* 7. Arrow styling */
+.arrow {
+    font-size: 0.7rem;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Specific overrides/additions for the forum layout to keep it clean */
+        .forum-main {
+            width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .forum-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .forum-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        /* The Submission Box */
+        .post-box {
+            background: #FFF;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #CDC6B6;
+            height: fit-content;
+            box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+        }
+
+        .post-box-title {
+            margin-top: 0;
+            color: #0D1419;
+            border-bottom: 2px solid #E0A840;
+            padding-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 30px 10px;
+            background-color: #F7F4E3;
+            border-radius: 8px;
+            border: 1px dashed #253A4A;
+        }
+
+        .login-prompt p {
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #253A4A;
+        }
+
+        /* The Discussion Feed */
+        .discussion-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .discussion-card {
+            background-color: #F7F4E3;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(13, 20, 25, 0.1);
+        }
+
+        .discussion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .discussion-title {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #0D1419;
+            font-weight: bold;
+        }
+
+        .discussion-meta {
+            font-size: 0.9rem;
+            color: #253A4A;
+            margin-top: 5px;
+        }
+
+        .discussion-tag {
+            background-color: #253A4A;
+            color: #F7F4E3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .discussion-content {
+            color: #0D1419;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+
+        /* Form elements specific to the forum side-panel */
+        .forum-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #CDC6B6;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        .forum-textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #CDC6B6;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        /* Unique Edit Forum (ef-) Styles */
+        .ef-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 60px auto;
+            background: #F7F4E3;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(13,20,25,0.1);
+            box-sizing: border-box;
+        }
+
+        .ef-title {
+            margin-top: 0;
+            color: #0D1419;
+            border-bottom: 2px solid #E0A840;
+            padding-bottom: 10px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .ef-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #CDC6B6;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        .ef-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #CDC6B6;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .ef-action-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .ef-btn-cancel {
+            flex: 1;
+            background-color: transparent;
+            color: #253A4A;
+            border: 2px solid #253A4A;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .ef-btn-cancel:hover {
+            background-color: #253A4A;
+            color: #F7F4E3;
+        }
+
+        .ef-btn-save {
+            flex: 2;
+        }
+
+        /* =========================================
+   Forum & Replies Layout
+   ========================================= */
+.forum-label {
+    font-weight: bold;
+}
+
+.discussion-actions {
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 15px;
+}
+
+.discussion-actions form {
+    margin: 0;
+}
+
+.btn-edit-post {
+    color: #253A4A; 
+    border-color: #253A4A; 
+    padding: 4px 12px; 
+    font-size: 0.8rem;
+}
+
+.btn-delete-post {
+    padding: 4px 12px; 
+    font-size: 0.8rem;
+}
+
+/* Replies Section */
+.replies-section {
+    margin-top: 25px; 
+    border-top: 1px solid #CDC6B6; 
+    padding-top: 15px;
+}
+
+.replies-header {
+    margin-bottom: 15px; 
+    color: #253A4A; 
+    font-weight: bold; 
+    font-size: 1.1rem;
+}
+
+.reply-card {
+    background: #FFF; 
+    padding: 12px 15px; 
+    border-radius: 8px; 
+    margin-bottom: 10px;
+}
+
+.reply-author {
+    color: #0D1419;
+}
+
+.reply-date {
+    display: inline-block; 
+    color: #253A4A; 
+    font-size: 0.85rem; 
+    margin-left: 5px;
+}
+
+.reply-content-text {
+    margin-top: 8px; 
+    color: #0D1419; 
+    font-size: 0.95rem; 
+    line-height: 1.4;
+}
+
+.reply-form {
+    margin-top: 15px; 
+    display: flex; 
+    gap: 10px;
+}
+
+.reply-input {
+    margin: 0; 
+    flex: 1;
+}
+
+.btn-submit-reply {
+    padding: 10px 20px; 
+    font-size: 0.95rem; 
+    height: 100%;
+}
+
+.reply-login-prompt {
+    font-size: 0.9rem; 
+    color: #253A4A; 
+    margin-top: 15px; 
+    font-weight: bold;
+}
+
+.recipe-comments-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 35px;
+    margin-top: 50px;
+    align-items: start;
+}
+
+.comment-form-card,
+.comment-list-card {
+    background: #F7F4E3;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(13,20,25,0.12);
+    padding: 30px;
+}
+
+.recipe-comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-user-display {
+    color: #253A4A;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.recipe-comment-textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 16px;
+    border: 1px dashed #253A4A;
+    border-radius: 12px;
+    background: #EFEBDD;
+    color: #0D1419;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.recipe-comment-submit-btn {
+    align-self: flex-start;
+}
+
+.comment-login-box {
+    border: 1px dashed #253A4A;
+    border-radius: 12px;
+    padding: 28px 20px;
+    text-align: center;
+    background: #EFEBDD;
+}
+
+.comment-login-text {
+    color: #253A4A;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.comment-login-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.comment-login-btn,
+.comment-signup-btn {
+    min-width: 110px;
+    text-align: center;
+}
+
+.no-comments-text {
+    color: #253A4A;
+    font-size: 1rem;
+}
+
+.recipe-comment-item {
+    border-top: 1px solid #CDC6B6;
+    padding: 18px 0;
+}
+
+.recipe-comment-item:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.recipe-comment-username {
+    font-weight: bold;
+    color: #253A4A;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+}
+
+.recipe-comment-body {
+    color: #0D1419;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+    .recipe-comments-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comment-success {
+    color: #2e7d32;
+    background: #e6f4ea;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.comment-error {
+    color: #c62828;
+    background: #fdecea;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* =========================================
+   Comment Header (username + date row)
+   ========================================= */
+.recipe-comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.recipe-comment-meta {
+    font-size: 0.85rem;
+    color: #253A4A;
+    opacity: 0.8;
+}
+
+.comment-edited-tag {
+    font-size: 0.8rem;
+    color: #253A4A;
+    opacity: 0.65;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+/* =========================================
+   Comment Action Buttons (Edit / Delete)
+   ========================================= */
+.recipe-comment-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn-comment-edit,
+.btn-comment-delete {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-comment-edit {
+    background-color: transparent;
+    color: #253A4A;
+    border: 2px solid #253A4A;
+}
+
+.btn-comment-edit:hover {
+    background-color: #253A4A;
+    color: #F7F4E3;
+}
+
+.btn-comment-delete {
+    background-color: transparent;
+    color: #c62828;
+    border: 2px solid #c62828;
+}
+
+.btn-comment-delete:hover {
+    background-color: #c62828;
+    color: #F7F4E3;
+}
+
+.overlay-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(13, 20, 25, 0.55);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.overlay-visible {
+    display: flex;
+}
+
+.overlay-box {
+    background: #F7F4E3;
+    border-radius: 12px;
+    padding: 35px 30px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 25px rgba(13, 20, 25, 0.25);
+}
+
+.overlay-box .btn-outline {
+    color: #253A4A;
+    border-color: #253A4A;
+}
+
+.overlay-box .btn-outline:hover {
+    background-color: #253A4A;
+    color: #F7F4E3;
+}
+
+.overlay-title {
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.overlay-body-text {
+    color: #253A4A;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.overlay-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.overlay-actions form {
+    margin: 0;
+}
+
+
+.title-owner-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.recipe-owner-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.recipe-created-by {
+    margin: 0;
+    color: #253A4A;
+    font-size: 0.95rem;
+}
+.center-page {
+    min-height: calc(100vh - 80px); /* adjust if navbar height different */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* =========================================
+   Shopping list (buttons and display)
+   ========================================= */
+
+.shop-personal-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed #CDC6B6;
+}
+
+.shop-personal-item:last-child {
+    border-bottom: none;
+}
+
+.shop-personal-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.shop-item-name {
+    font-weight: bold;
+    color: #0D1419;
+    font-size: 0.95rem;
+}
+
+.shop-item-amount {
+    font-size: 0.85rem;
+    color: #253A4A;
+}
+
+.shop-ing-check-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px dashed #CDC6B6;
+}
+
+.shop-ing-check-row:last-child {
+    border-bottom: none;
+}
+
+.shop-ing-label {
+    flex: 1;
+    color: #0D1419;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.struck {
+    text-decoration: line-through;
+    opacity: 0.45;
+}
+
+.grocery-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #E0A840;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.grocery-remove-btn {
+    background: transparent;
+    border: none;
+    color: #c62828;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.grocery-remove-btn:hover {
+    background: #fdecea;
+}
+
+.grocery-empty {
+    text-align: center;
+    color: #253A4A;
+    font-weight: bold;
+    padding: 30px 10px;
+    border: 1px dashed #253A4A;
+    border-radius: 8px;
+    background: #F7F4E3;
+}
+
+.shop-recipe-card {
+    cursor: default;
+}
+
+.shop-ingredients-list {
+    margin-top: 10px;
+    border-top: 1px solid #CDC6B6;
+    padding-top: 8px;
+    text-align: left;
+}
+
+.shop-last-updated {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    color: #253A4A;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.shop-clear-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.btn-danger {
+    color: #c62828;
+    border-color: #c62828;
+}
+
+.btn-danger:hover {
+    background-color: #c62828;
+    color: #F7F4E3;
+}
+
+.shop-clear-wrapper form {
+    margin: 0;
+}
+
+/* =========================================
+   Shopping List Page
+   ========================================= */
+.shop-post-box-top {
+    margin-bottom: 20px;
+}
+
+.shop-post-box-form {
+    margin-bottom: 40px;
+}
+
+.shop-section-title {
+    margin-top: 0;
+}
+
+.shop-empty-recipes {
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    text-align: center;
+    color: #253A4A;
+    font-weight: bold;
+    padding: 30px 10px;
+    border: 1px dashed #253A4A;
+    border-radius: 8px;
+    background: #F7F4E3;
+}
+
+.shop-recipe-grid {
+    padding-bottom: 60px;
+}
+
+.shop-recipe-progress {
+    margin-bottom: 10px;
+}
+
+.shop-remove-recipe-form {
+    margin: 0 0 12px 0;
+}
+
+.shop-remove-recipe-btn {
+    width: 100%;
+}
+
+.shop-toggle-form {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.shop-personal-item-form {
+    margin: 0;
+}
+
+.optional-label {
+    font-weight: normal;
+    font-size: 0.85rem;
+}
+
+.shop-post-box-top {
+    margin-bottom: 20px;
+}
+
+.shop-personal-item-form {
+    margin: 0;
+}
+
+.shop-link {
+    color: #E0A840;
+}
+.delete-recipe-name {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #253A4A;
+}
+
+.delete-recipe-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}

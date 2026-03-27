@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Community Forum - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <main class="forum-main">
+        <div class="forum-header">
+            <h1 class="home-title">Community Discussions</h1>
+            <p class="home-subtitle">Ask questions, share tips, and talk about food.</p>
+        </div>
+
+        <% if (locals.errors && errors.length > 0) { %>
+            <div class="error-container">
+                <ul class="error-list">
+                    <% errors.forEach(function(error) { %>
+                        <li><%= error %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        <% } %>
+
+        <div class="forum-grid">
+            
+            <div class="post-box">
+                <h2 class="post-box-title">Start a Discussion</h2>
+                
+                <% if (locals.user) { %>
+                    <form action="/forum/create" method="POST">
+                        <label class="forum-label">Title</label>
+                        <input type="text" name="title" required class="forum-input" placeholder="What's your question?">
+                        
+                        <label class="forum-label">Category</label>
+                        <select name="tag" required class="forum-input">
+                            <option value="" disabled selected>Select a topic...</option>
+                            <option value="Baking">Baking</option>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Substitutions">Substitutions</option>
+                            <option value="Technique">Technique</option>
+                            <option value="General Q&A">General Q&A</option>
+                        </select>
+                        
+                        <label class="forum-label">Details</label>
+                        <textarea name="content" required class="forum-textarea" placeholder="Explain your question or tip here..."></textarea>
+                        
+                        <button type="submit" class="btn-solid full-width-btn">Post Discussion</button>
+                    </form>
+                <% } else { %>
+                    <div class="login-prompt">
+                        <p>You must be logged in to post a new question or tip.</p>
+                        <a href="/login" class="btn-outline">Log In</a>
+                        <a href="/register" class="btn-solid">Sign Up</a>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="discussion-feed">
+                
+                <% if (discussions && discussions.length > 0) { %>
+                    <% discussions.forEach(function(post) { %>
+                        <div class="discussion-card">
+                            <div class="discussion-header">
+                                <div>
+                                    <h3 class="discussion-title"><%= post.title %></h3>
+                                    <div class="discussion-meta">
+                                        Posted by <strong><%= post.username %></strong> on <%= new Date(post.createdAt).toLocaleDateString() %>
+                                    </div>
+                                </div>
+                                <div class="discussion-tag"><%= post.tag %></div>
+                            </div>
+                            
+                            <div class="discussion-content"><%= post.content %></div>
+                            
+                            <% if (locals.user && locals.user.display_name === post.username) { %>
+                                <div class="discussion-actions">
+                                    <a href="/forum/<%= post._id %>/edit" class="btn-outline btn-edit-post">Edit</a>
+                                    <form action="/forum/<%= post._id %>/delete" method="POST">
+                                        <button type="submit" class="remove-btn btn-delete-post">Delete</button>
+                                    </form>
+                                </div>
+                            <% } %>
+
+                            <div class="replies-section">
+                                
+                                <div class="replies-header">
+                                    Replies (<%= post.replies ? post.replies.length : 0 %>)
+                                </div>
+                                
+                                <% if (post.replies && post.replies.length > 0) { %>
+                                    <% post.replies.forEach(function(reply) { %>
+                                        <div class="reply-card">
+                                            <div>
+                                                <strong class="reply-author"><%= reply.username %></strong> 
+                                                <div class="reply-date">
+                                                    - <%= new Date(reply.createdAt).toLocaleDateString() %>
+                                                </div>
+                                            </div>
+                                            <div class="reply-content-text">
+                                                <%= reply.content %>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                <% } %>
+
+                                <% if (locals.user) { %>
+                                    <form action="/forum/<%= post._id %>/reply" method="POST" class="reply-form">
+                                        <input type="text" name="reply_content" required placeholder="Write a reply..." class="forum-input reply-input">
+                                        <button type="submit" class="btn-solid btn-submit-reply">Reply</button>
+                                    </form>
+                                <% } else { %>
+                                    <div class="reply-login-prompt">
+                                        Log in to reply to this discussion.
+                                    </div>
+                                <% } %>
+
+                            </div>
+                            </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="no-results">No discussions yet. Be the first to start one!</div>
+                <% } %>
+
+            </div>
+            
+        </div>
+    </main>
+</body>
+</html>

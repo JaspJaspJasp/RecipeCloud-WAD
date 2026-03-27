@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <%
+        const personalItems = userShop ? userShop.personalitems : [];
+        const savedRecipes  = userShop ? userShop.recipes : [];
+    %>
+
+    <!-- PAGE HEADER -->
+    <div class="hero-container">
+        <div class="home-title">🛒 Shopping List</div>
+        <div class="home-subtitle">Welcome, <%= user.display_name %>!</div>
+        <% if (userShop && userShop.updatedAt) { %>
+            <div class="home-subtitle shop-last-updated">
+                Last updated: <%= new Date(userShop.updatedAt).toLocaleString('en-SG', { dateStyle: 'medium', timeStyle: 'short' }) %>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="forum-main">
+
+        <!-- CLEAR ALL BUTTON (top right) -->
+        <div class="shop-clear-wrapper">
+            <form action="/shopping-list/clear" method="POST">
+                <button type="submit" class="btn-outline btn-danger">
+                    🗑 Clear All
+                </button>
+            </form>
+        </div>
+
+        <!-- SECTION 1: PERSONAL ITEMS LIST -->
+        <div class="post-box shop-post-box-top">
+            <h3 class="post-box-title">📝 My Personal Items</h3>
+
+            <% if (personalItems.length > 0) { %>
+                <% personalItems.forEach(function(item, index) { %>
+                    <div class="shop-personal-item">
+                        <div class="shop-personal-item-info">
+                            <span class="shop-item-name"><%= item.name %></span>
+                            <% if (item.amount) { %>
+                                <span class="shop-item-amount"><%= item.amount %></span>
+                            <% } %>
+                        </div>
+                        <form action="/shopping-list/remove-item" method="POST" class="shop-personal-item-form">
+                            <input type="hidden" name="index" value="<%= index %>">
+                            <button type="submit" class="grocery-remove-btn" title="Remove item">✕</button>
+                        </form>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="grocery-empty">
+                    No personal items yet — add one below!
+                </div>
+            <% } %>
+        </div>
+
+        <!-- SECTION 2: ADD PERSONAL ITEM FORM -->
+        <div class="post-box shop-post-box-form">
+            <h3 class="post-box-title">+ Add Personal Item</h3>
+            <form action="/shopping-list/add-item" method="POST">
+                <label class="forum-label">Item Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    class="forum-input"
+                    placeholder="e.g. Olive Oil"
+                    required
+                >
+                <label class="forum-label">
+                    Amount
+                    <span class="optional-label">(optional)</span>
+                </label>
+                <input
+                    type="text"
+                    name="amount"
+                    class="forum-input"
+                    placeholder="e.g. 2 bottles"
+                >
+                <button type="submit" class="btn-solid full-width-btn">+ Add Item</button>
+            </form>
+        </div>
+
+        <!-- SECTION 3: SAVED RECIPE INGREDIENTS -->
+        <h2 class="section-title shop-section-title">🍽 Saved Recipe Ingredients</h2>
+
+        <% if (savedRecipes.length === 0) { %>
+            <div class="shop-empty-recipes">
+                No recipes saved yet — go to your
+                <a href="/saved-collections" class="shop-link">Saved Collections</a>
+                and click <strong>"+ Add to Shopping List"</strong>!
+            </div>
+        <% } else { %>
+            <div class="recipe-grid shop-recipe-grid">
+                <% savedRecipes.forEach(function(savedRecipe) { %>
+                    <div class="recipe-card-link shop-recipe-card">
+                        <div class="recipe-content">
+                            <div class="recipe-title"><%= savedRecipe.recipeName %></div>
+                            <div class="recipe-author shop-recipe-progress">
+                                <%= savedRecipe.ingredients.filter(i => i.isBought).length %>
+                                / <%= savedRecipe.ingredients.length %> ingredients bought
+                            </div>
+
+                            <!-- Remove recipe button -->
+                            <form action="/shopping-list/remove-recipe" method="POST" class="shop-remove-recipe-form">
+                                <input type="hidden" name="recipeId" value="<%= savedRecipe.recipeId %>">
+                                <button type="submit" class="btn-outline btn-delete-post shop-remove-recipe-btn">
+                                    Remove Recipe
+                                </button>
+                            </form>
+
+                            <!-- Ingredient checklist -->
+                            <div class="shop-ingredients-list">
+                                <% savedRecipe.ingredients.forEach(function(ing, ingIndex) { %>
+                                    <div class="shop-ing-check-row">
+                                        <form action="/shopping-list/toggle-ingredient" method="POST" class="shop-toggle-form">
+                                            <input type="hidden" name="recipeId" value="<%= savedRecipe.recipeId %>">
+                                            <input type="hidden" name="ingIndex" value="<%= ingIndex %>">
+                                            <input
+                                                type="checkbox"
+                                                class="grocery-checkbox"
+                                                <%= ing.isBought ? 'checked' : '' %>
+                                                onchange="this.form.submit()"
+                                            >
+                                            <span class="shop-ing-label <%= ing.isBought ? 'struck' : '' %>">
+                                                <%= ing.name %>
+                                            </span>
+                                        </form>
+                                        <span class="recipe-ing-amount"><%= ing.amount %></span>
+                                    </div>
+                                <% }); %>
+                            </div>
+
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+
+    </div><!-- end forum-main -->
+
+</body>
+</html>

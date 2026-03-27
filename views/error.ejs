@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error <%= locals.statusCode || '500' %> - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="error-page-container">
+            <div class="error-card">
+                <div class="error-code"><%= locals.statusCode || 'Oops!' %></div>
+                
+                <div class="error-message">
+                    <%= locals.message || 'Something went wrong on our end.' %>
+                </div>
+                
+                <a href="/" class="btn-solid return-home-btn">Return to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

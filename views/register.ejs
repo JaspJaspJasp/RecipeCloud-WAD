@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- The navbar is now dynamically injected here -->
+    <%- include('navbar') %>
+
+    <div class="main-content">
+        <div class="register-card">
+            <h2>Register</h2>
+            
+            <% if (errors && errors.length > 0) { %>
+                <div class="error-container">
+                    <ul class="error-list">
+                        <% errors.forEach(function(error) { %>
+                            <li><%= error.msg %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <form method="post" action="/register">
+                <div class="form-group">
+                    <label for="display_name">Display Name</label>
+                    <input type="text" id="display_name" name="display_name" value="<%= !display_name ? '' : display_name %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userName">Username</label>
+                    <input type="text" id="userName" name="userName" value="<%= !userName ? '' : userName %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled <%= gender === "" ? "selected" : "" %>>Select an option</option>
+                        <option value="Male" <%= gender === "Male" ? "selected" : "" %>>Male</option>
+                        <option value="Female" <%= gender === "Female" ? "selected" : "" %>>Female</option>
+                        <option value="PNTS" <%= gender === "PNTS" ? "selected" : "" %>>Prefer not to say</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="emailAddress">Email Address</label>
+                    <input type="email" id="emailAddress" name="emailAddress" value="<%= !emailAddress ? '' : emailAddress %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+
+                <button type="submit" class="submit-btn full-width-btn">Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

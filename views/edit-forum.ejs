@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Discussion - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <main class="ef-container">
+        <h1 class="ef-title">Edit Discussion</h1>
+
+        <% if (locals.errors && errors.length > 0) { %>
+            <div class="error-container">
+                <ul class="error-list">
+                    <% errors.forEach(function(error) { %>
+                        <li><%= error %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        <% } %>
+
+        <form action="/forum/<%= post._id %>/update" method="POST">
+            
+            <label class="forum-label">Title</label>
+            <input type="text" name="title" required class="ef-input" value="<%= post.title %>">
+            
+            <label class="forum-label">Category</label>
+            <select name="tag" required class="ef-input">
+                <option value="Baking" <%= post.tag === 'Baking' ? 'selected' : '' %>>Baking</option>
+                <option value="Equipment" <%= post.tag === 'Equipment' ? 'selected' : '' %>>Equipment</option>
+                <option value="Substitutions" <%= post.tag === 'Substitutions' ? 'selected' : '' %>>Substitutions</option>
+                <option value="Technique" <%= post.tag === 'Technique' ? 'selected' : '' %>>Technique</option>
+                <option value="General Q&A" <%= post.tag === 'General Q&A' ? 'selected' : '' %>>General Q&A</option>
+            </select>
+            
+            <label class="forum-label">Details</label>
+            <textarea name="content" required class="ef-textarea"><%= post.content %></textarea>
+            
+            <div class="ef-action-group">
+                <a href="/forum" class="ef-btn-cancel">Cancel</a>
+                <button type="submit" class="btn-solid ef-btn-save">Save Changes</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

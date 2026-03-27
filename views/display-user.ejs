@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Profile - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <div class="main-content">
+        <div class="register-card">
+            <h2>My Profile</h2>
+
+            <div class="profile-field">
+                <label>Display Name</label>
+                <p><%= user.display_name %></p>
+            </div>
+
+            <div class="profile-field">
+                <label>Username</label>
+                <p><%= user.userName %></p>
+            </div>
+
+            <div class="profile-field">
+                <label>Email Address</label>
+                <p><%= user.emailAddress %></p>
+            </div>
+
+            <div class="profile-field">
+                <label>Gender</label>
+                <p><%= user.gender %></p>
+            </div>
+
+            <a href="/edit-user/<%= user.id %>" class="btn-solid full-width-btn" style="text-align:center;">
+                Edit Profile
+            </a>
+        </div>
+    </div>
+</body>
+</html>

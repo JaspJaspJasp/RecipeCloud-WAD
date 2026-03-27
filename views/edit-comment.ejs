@@ -1,0 +1,7 @@
+<form action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>/edit" method="POST">
+    <textarea name="comment" class="recipe-comment-textarea"><%= comment.comment %></textarea>
+    <div class="overlay-actions">
+        <button type="button" class="btn-outline" id="editCancelBtn">Cancel</button>
+        <button type="submit" class="btn-solid">Save Changes</button>
+    </div>
+</form>

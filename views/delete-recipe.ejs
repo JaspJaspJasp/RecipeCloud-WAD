@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Recipe</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+<body>
+    <div class="error-page-container">
+        <div class="error-card">
+            <h2>Are you sure you want to delete this recipe?</h2>
+            <p class="delete-recipe-name"><strong><%= recipe.recipe_name %></strong></p>
+
+            <div class="delete-recipe-actions">
+                <form action="/recipe/<%= recipe._id %>/delete" method="POST">
+                    <button type="submit" class="btn-solid">Yes</button>
+                </form>
+
+                <a href="/recipe/<%= recipe._id %>" class="btn-solid">Cancel</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <div class="main-content">
+        <div class="register-card">
+            <h2>Edit User Profile</h2>
+
+            <% if (errors && errors.length > 0) { %>
+                <div class="error-container">
+                    <ul class="error-list">
+                        <% errors.forEach(function(error) { %>
+                            <li><%= error.msg %></li>
+                            <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+            
+            <% if (changes && changes.length === 0) { %>
+                <p>Make your changes here</p>
+            <% } %>
+
+            <% if (changes && changes.length > 0) { %>
+                <div class="changes-container">
+                    <ul class="changes-list">
+                        <% changes.forEach(function(change) { %>
+                            <li> <%= change %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+            
+            <form action="/edit-user/<%= user._id %>" method="POST">
+                
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" name="display_name" value="<%= user.display_name %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="userName" value="<%= user.userName %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="emailAddress" value="<%= user.emailAddress %>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="Male" <%= user.gender === "Male" ? "selected" : "" %>>Male</option>
+                        <option value="Female" <%= user.gender === "Female" ? "selected" : "" %>>Female</option>
+                        <option value="PNTS" <%= user.gender === "PNTS" ? "selected" : "" %>>Prefer not to say</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn full-width-btn">Update Profile</button>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>
