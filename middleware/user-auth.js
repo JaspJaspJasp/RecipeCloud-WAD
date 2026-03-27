@@ -1,5 +1,5 @@
 exports.isLoggedIn = (req, res, next) => {
-
+    console.log('test');
     if (!req.session.user) {
         console.log("User not logged in, redirecting to /login");
         return res.render('login', {
