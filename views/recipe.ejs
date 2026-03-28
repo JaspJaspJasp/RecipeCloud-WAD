@@ -40,8 +40,8 @@
                     </div>
 
                     <div class="rating-badge">
-                        ⭐ <%= (typeof recipe.rating === 'number' ? recipe.rating.toFixed(1) : 'New!') %> / 5
-                        (<%= recipe.rating_count || 0 %> ratings)
+                        ⭐ <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
+                        (<%= ratingCount || 0 %> ratings)
                     </div>
                 </div>
 
@@ -139,9 +139,9 @@
                         <h3 class="section-heading">Comments</h3>
 
                         <% if (user) { %>
-                            <% if (status === 'success') { %>
+                            <% if (status && status === 'success') { %>
                                 <p class="comment-success">Comment added successfully</p>
-                            <% } else if (status === 'error') { %>
+                            <% } else if (status && status === 'error') { %>
                                 <p class="comment-error">Failed to add comment</p>
                             <% } %>
                             <form action="/recipe/<%= recipe._id %>/comment" method="POST" class="recipe-comment-form">

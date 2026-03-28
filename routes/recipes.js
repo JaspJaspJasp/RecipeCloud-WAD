@@ -3,6 +3,7 @@ const router = express.Router();
 
 const recipeController = require('../controllers/recipe-controller');
 const commentController = require('../controllers/comment-controller');
+const ratingsController = require('../controllers/ratings-controller');
 const authentication = require('../middleware/user-auth');
 
 //load home page (R)
@@ -15,10 +16,20 @@ router.get('/create', recipeController.getCreate);
 router.post('/create', recipeController.postCreate);
 
 //loading recipe when clicked (R)
-router.get('/recipe/:id', recipeController.recipeFindbyID);
+router.get('/recipe/:id', ratingsController.readRatings);
 
-//posting the rating into database when in recipe (U)
-router.post('/recipe/:id/rate', recipeController.rateRecipe);
+
+//rating operations (C/U/D)
+router.post('/recipe/:id/rate', ratingsController.createRating);
+
+//delete user's rating (D)
+router.post('/recipe/:id/delete-rating', ratingsController.deleteRating);
+
+
+
+
+
+
 
 //posting the comment into database when in recipe (C)
 router.post('/recipe/:id/comment', commentController.createComments);
@@ -31,6 +42,8 @@ router.post('/recipe/:id/comment/:commentId/edit', commentController.editComment
 
 //posting the deleted comment into the database (D)
 router.post('/recipe/:id/comment/:commentId/delete', commentController.deleteComment);
+
+
 //rendering the edit recipe form (R)
 router.get('/recipe/:id/update', recipeController.renderEditRecipeForm);
 //updating the edit recipe form (U)
