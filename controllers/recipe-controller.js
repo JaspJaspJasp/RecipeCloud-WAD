@@ -209,6 +209,7 @@ exports.recipeFindbyID = async (req, res) => {
     try {
         const recipe = await Recipe.findRecipeById(recipeId);
         const comments = await CommentModel.retrieveByRecipeId(recipeId);
+        const Rating = require('../models/ratings-model');
         
         if (!recipe) {
             return res.render('error', {
@@ -216,27 +217,40 @@ exports.recipeFindbyID = async (req, res) => {
             });
         }
 
-        let userRating = null; 
+        // Fetch all ratings from separate collection
+        const allRatings = await Rating.retrieveByRecipeId(recipeId);
 
-        // This is the block that was crashing! 
-        // We now safely isolate everything inside it.
-        if (req.session.user && recipe.ratings) {
-            const sessionUserId = String(req.session.user.id);
-            
-            for (let r of recipe.ratings) {
-                if (String(r.userId) === sessionUserId) {
-                    userRating = r.value;
-                    break; // Stops looking once we find their rating
-                }
+        // Calculate aggregates from Rating documents
+        let totalScore = 0;
+        for (let r of allRatings) {
+            totalScore += r.ratingValue;
+        }
+
+        const ratingCount = allRatings.length;
+        const ratingAverage = ratingCount === 0 ? 0 : totalScore / ratingCount;
+
+        // Find current user's rating if logged in
+        let userRating = null;
+        if (req.session.user) {
+            const userRatingDoc = await Rating.findUserRating(
+                String(req.session.user.id), 
+                recipeId
+            );
+            if (userRatingDoc) {
+                userRating = userRatingDoc.ratingValue;
             }
         }
         
         return res.render('recipe', { 
             recipe: recipe, 
             user: req.session.user, 
-            userRating: userRating, 
-            comments: comments, 
-            status: status 
+            userRating: userRating,
+            ratingAverage: ratingAverage,
+            ratingCount: ratingCount,
+            totalRatingScore: totalScore,
+            allRatings: allRatings,
+            comments: comments,
+            status: status
         });
 
     } catch (err) {
@@ -246,14 +260,13 @@ exports.recipeFindbyID = async (req, res) => {
         });
     }
 };
-
-//rating recipe inside recipe
+// rating functionality 
 exports.rateRecipe = async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     }
 
-    const recipeId = String(req.params.id);
+    const recipeId = req.param.recipeId;
     const userId = String(req.session.user.id);
     const sessionUserId = String(req.session.user.id);
     const userRating = Number(req.body.rating);
@@ -319,6 +332,8 @@ exports.rateRecipe = async (req, res) => {
     }
 
     }; 
+
+
 
 exports.renderEditRecipeForm = async (req, res) => {
     try {
