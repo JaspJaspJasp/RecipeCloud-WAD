@@ -48,7 +48,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 //Routes
 const recipes = require('./routes/recipes'); 
 const register = require('./routes/register');

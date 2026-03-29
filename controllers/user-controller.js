@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const UserModel = require("../models/user-model"); 
-const session = require('express-session');
 
 exports.registerGet = async (req, res) => {
     res.render("register", {
@@ -23,6 +22,7 @@ exports.registerPost = async (req, res) => {
 
     let errors = [];
     
+    if (display_name.length > 15) {errors.push({msg: "Display Name must be less than 16 characters long."})}
     if (password !== confirm_password) {errors.push({msg: "Passwords do not match."});}
     if (password.length < 8) {errors.push({msg: "Password must be at least 8 characters long."});}
 
