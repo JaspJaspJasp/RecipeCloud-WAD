@@ -1,30 +1,28 @@
 const mongoose = require('mongoose');
+const Recipe = require('./recipe-model');
 
 const favouriteSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true
+        required: true,
+        unqiue: true
     },
-    recipeId: {
+    userName: {
         type: String,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    recipeName: {
-        type: String,
-        required: true
-    },
-    tags: [String],
-    notes: {
-        type: String,
-        default: ""
-    },
-    ingredients: {
-        type: Array, default: [] 
-    }
+    savedRecipes:[{
+
+        recipeId: {
+            type:String,
+            required: true
+        },
+
+        dateSaved: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 });
 
 favouriteSchema.index({ user:1, recipe:1}, {unique: true});
@@ -40,12 +38,18 @@ exports.findFavouritesByUser = function(userID) {
     return Favourite.find({userID: userID});
 };
 
-exports.updateFavourite = function(id, updateData) {
-    return Favourite.updateOne ({_id:id},updateData);
+exports.addRecipeToList = function(userId, recipeId) {
+    return Favourite.updateOne({
+        userId: userId,
+        $push: {savedRecipes: {recipeId: recipeId}}
+    });
 };
 
-exports.deleteFavourite = function(id) {
-    return Favourite.deleteOne({_id:id});
+exports.deleteRecipeFromList = function(userId, recipeId) {
+    return Favourite.updateOne(
+        { userId: userId },
+        { $pull: { savedRecipes: { recipeId: recipeId } } }
+    );
 };
 
 exports.findOneFavourite = function(query) {
