@@ -3,6 +3,7 @@ const router = express.Router();
 
 const recipeController = require('../controllers/recipe-controller');
 const commentController = require('../controllers/comment-controller');
+const ratingsController = require('../controllers/ratings-controller');
 const authentication = require('../middleware/user-auth');
 
 //load home page (R)
@@ -15,7 +16,19 @@ router.get('/create', authentication.isLoggedIn, recipeController.getCreate);
 router.post('/create', authentication.isLoggedIn, recipeController.postCreate);
 
 //loading recipe when clicked (R)
-router.get('/recipe/:id', recipeController.recipeFindbyID);
+router.get('/recipe/:id', ratingsController.readRatings);
+
+
+//rating operations (C/U/D)
+router.post('/recipe/:id/rate', ratingsController.createRating);
+
+//delete user's rating (D)
+router.post('/recipe/:id/delete-rating', ratingsController.deleteRating);
+
+
+
+
+
 
 //posting the rating into database when in recipe (U)
 router.post('/recipe/:id/rate', authentication.isLoggedIn, recipeController.rateRecipe);
