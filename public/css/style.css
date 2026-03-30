@@ -858,18 +858,17 @@ h1, h2, h3, h4, h5, h6, p {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    text-decoration: none; /* Keeps it clean if you use it on an <a> tag */
+    text-decoration: none; 
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
-    /* This creates a smooth fade between the colors instead of a harsh snap */
+    min-width: 170px; 
     transition: background-color 0.2s ease-in-out; 
 }
 
 /* The state when the user's mouse is over the button */
 .profile-btn:hover {
-    background-color: #ffffff; /* A slightly darker, richer gold */
+    background-color: #ffffff;
 }
 
 /* Specific fix for the filter button next to search */
@@ -975,8 +974,8 @@ h1, h2, h3, h4, h5, h6, p {
     right: 0;              
     left: auto;            
     background-color: #F7F4E3; 
-    min-width: 100%;       
-    width: fit-content;    
+    width: 100%; 
+    box-sizing: border-box; 
     box-shadow: 0 8px 16px rgba(13, 20, 25, 0.3); 
     border-radius: 8px;
     z-index: 10000; 
@@ -1024,13 +1023,11 @@ h1, h2, h3, h4, h5, h6, p {
     display: block;
     font-size: 0.95rem;
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     transition: background-color 0.2s ease;
-    white-space: nowrap;
+    white-space: nowrap; 
     margin-left: 0;
 }
-
-
 
 /* 5. Hover state for links */
 .dropdown-content a:hover {
