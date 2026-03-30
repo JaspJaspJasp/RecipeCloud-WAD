@@ -20,18 +20,20 @@ router.get('/recipe/:id', ratingsController.readRatings);
 
 
 //rating operations (C/U/D)
-router.post('/recipe/:id/rate', ratingsController.createRating);
+router.post('/recipe/:id/rate', authentication.isLoggedIn, ratingsController.createRating);
 
 //delete user's rating (D)
-router.post('/recipe/:id/delete-rating', ratingsController.deleteRating);
-
-
-
-
-
+router.post('/recipe/:id/delete-rating', authentication.isLoggedIn, ratingsController.deleteRating);
 
 //posting the rating into database when in recipe (U)
-router.post('/recipe/:id/rate', authentication.isLoggedIn, recipeController.rateRecipe);
+router.post('/recipe/:id/rate', authentication.isLoggedIn, ratingsController.createRating);
+
+
+
+
+
+
+
 
 //posting the comment into database when in recipe (C)
 router.post('/recipe/:id/comment', authentication.isLoggedIn, commentController.createComments);

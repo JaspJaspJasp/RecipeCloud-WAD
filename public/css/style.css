@@ -1535,6 +1535,79 @@ h1, h2, h3, h4, h5, h6, p {
     color: #F7F4E3;
 }
 
+/* =========================================
+   Ratings Section Styling
+   ========================================= */
+.ratings-section {
+    background: #F7F4E3;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(13,20,25,0.12);
+    padding: 30px;
+    margin-bottom: 35px;
+}
+
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.rating-item {
+    border-bottom: 1px solid #CDC6B6;
+    padding: 18px 0;
+}
+
+.rating-item:last-of-type {
+    border-bottom: none;
+}
+
+.rating-item:first-of-type {
+    padding-top: 0;
+}
+
+.rating-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.rating-item-user {
+    color: #253A4A;
+    font-size: 1.05rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.rating-item-stars {
+    color: #E0A840;
+    font-size: 1rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.rating-item-timestamp {
+    font-size: 0.85rem;
+    color: #253A4A;
+    opacity: 0.8;
+}
+
+.rating-edited-tag {
+    font-size: 0.8rem;
+    color: #253A4A;
+    opacity: 0.65;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+.no-ratings-text {
+    color: #253A4A;
+    font-size: 1rem;
+    font-style: italic;
+}
+
 .overlay-backdrop {
     display: none;
     position: fixed;
