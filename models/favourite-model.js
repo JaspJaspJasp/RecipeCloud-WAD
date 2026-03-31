@@ -5,7 +5,7 @@ const favouriteSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unqiue: true
+        unique: true
     },
     userName: {
         type: String,
@@ -17,44 +17,42 @@ const favouriteSchema = new mongoose.Schema({
             type:String,
             required: true
         },
-
+// one document per user, many recipe inside the array savedRecipes, each recipe has its own recipeId and dateSaved
         dateSaved: {
             type: Date,
             default: Date.now
         }
-    }]
+    }],
+    tags: [String],
+
+    notes: {
+        type: String,
+        default: ""
+    },
+
+    ingredients: {
+        type: Array, 
+        default: []
+    }
 });
 
-favouriteSchema.index({ user:1, recipe:1}, {unique: true});
+favouriteSchema.index({ userId:1, 'savedRecipes.recipeId':1}, {unique: true});
 
-module.exports = mongoose.model('Favourite', favouriteSchema, 'favourites');
-const Favourite = mongoose.model('Favourite', favouriteSchema);
+const Favourite = mongoose.model('Favourite', favouriteSchema, 'favourites');
 
-exports.displayFavourite = function(userId) {
-    const favouriteObj = Favourite.find({userId: userId});
-    let recipeArray = [];
-    favouriteObj.savedRecipes.forEach(recipe => {
-        const recipeObj = Recipe.findRecipeById(recipe.recipeId);
-        recipeArray.push(recipeObj);
-    })      
-    return (recipeArray, favouriteObj);
-};
+exports.findFavouriteByUserId = function(userId){
+    return Favourite.findOne({userId: userId});
+}
 
-
-// Previous code below
 exports.createFavourite = function(favData) {
     return Favourite.create(favData);
 };
 
-exports.findFavouritesByUser = function(userId) {
-    return Favourite.find({userId: userId});
-};
-
 exports.addRecipeToList = function(userId, recipeId) {
-    return Favourite.updateOne({
-        userId: userId,
-        $push: {savedRecipes: {recipeId: recipeId}}
-    });
+    return Favourite.updateOne(
+        { userId: userId },
+        { $push: {savedRecipes: {recipeId: recipeId}} }
+    );
 };
 
 exports.deleteRecipeFromList = function(userId, recipeId) {
@@ -62,7 +60,15 @@ exports.deleteRecipeFromList = function(userId, recipeId) {
         { userId: userId },
         { $pull: { savedRecipes: { recipeId: recipeId } } }
     );
-};
-exports.findOneFavourite = function(query) {
-    return Favourite.findOne(query);
+
+exports.updateFavourite = function(userId, updateData) {
+    return Favourite.findOneAndUpdate(
+        { userId: userId },
+        { $set: {
+            notes: updateData.notes || "",
+            tags: updateData.tags ? updateData.tags.split(',').map(tag => tag.trim()) : [],
+            ingredients: updateData.ingredients ? updateData.ingredients.split(',').map(ingredient => ingredient.trim()) : []
+        }},
+        { new: true }
+    );
 };
