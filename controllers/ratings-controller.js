@@ -32,8 +32,14 @@ exports.createRating = async (req, res) => {
         // console.log(existingRating);
 
         if (existingRating) {
+
+            const updateData = {
+                ratingValue : ratingValue,
+                updatedAt: new Date(),
+                isEdited: true
+            };
             // UPDATE existing rating
-            await Rating.updateRating(existingRating._id, ratingValue);
+            await Rating.updateRating(existingRating._id, updateData);
        
         } else {
             // CREATE new rating
@@ -144,6 +150,12 @@ exports.updateRating = async (req, res) => {
             return res.render("error", { message: "Rating not found" });
         }
 
+        const updateData = {
+            ratingValue: ratingValue,
+            updatedAt: new Date(),
+            isEdited: true
+        };
+
         await Rating.updateRating(userRating._id, ratingValue);
         await recalculateRecipeRatings(recipeId);
 
@@ -203,12 +215,14 @@ async function recalculateRecipeRatings(recipeId) {
         console.log(count)
         const average = count === 0 ? 0 : totalScore / count;
 
-        // Update Recipe document with aggregates
-        await Recipe.updateRecipe(recipeId, {
+        const recipeUpdateData = {
             ratingAverage: average,
             ratingCount: count,
             totalRatingScore: totalScore
-        });
+        };
+
+        // Update Recipe document with aggregates
+        await Recipe.updateRecipe(recipeId, recipeUpdateData);
     } catch (error) {
         console.error("Error recalculating ratings:", error);
     }

@@ -14,20 +14,21 @@ exports.createFavourite = async (req, res) => {
         const userFavourite = await Favourite.findFavouriteByUserId(userId);
         // this will return a favourite document with all the attributes as described in the favourite model
         if (!userFavourite) {
-            await Favourite.createFavourite({
+
+            const newFavData = {
                 userId: userId, 
                 userName: userName, 
                 savedRecipes: [{
                     recipeId: recipeId,
                     dateSaved: new Date()
                 }]
-            })
+            }
+            await Favourite.createFavourite({newFavData});
         } else {
             // is user already has a favourite document we want to add onto the savedRecipe array, 
             // we will use the $push operator to add a new recipe to the savedRecipes array
             await Favourite.addRecipeToList(userId, recipeId);
         }
-
         res.redirect(`/recipe/${recipeId}`);
     } catch (error) {
         console.error(error);
@@ -50,9 +51,7 @@ exports.readFavourite = async (req, res) => {
             return res.render('favourites', { favourite: null });
         }
 
-        res.render('favourites', {
-            favourite: userFavourite
-        });
+        res.render('favourites', { favourite: userFavourite });
     } catch (error) {
         console.error(error);
         res.render("error", {message: "Couldn't fetch your favourite collection. Please try again."});
@@ -67,13 +66,20 @@ exports.updateFavourite = async (req, res) => {
     }
     try {
         const userId = String(req.session.user.id);
-        const { notes, tags, ingredients } = req.body;
+        
+        const notesText = (req.body.notes || "").trim();
+        const tagsArray = req.body.tags ? req.body.tags.split(',').map(tag => tag.trim()) : [];
+        const ingredientsArray = req.body.ingredients ? req.body.ingredients.split(',').map(ingredient => ingredient.trim()) : [];
 
-        await Favourite.updateFavourite(userId, {
-            notes,
-            tags,
-            ingredients
-        });
+        const updateData = {
+            $set: {
+                notes: notesText,
+                tags: tagsArray,
+                ingredients: ingredientsArray
+            }
+        };
+
+        await Favourite.updateFavourite(userId, updateData);
         
         res.redirect('/favourites');
     } catch (error) {
@@ -83,6 +89,10 @@ exports.updateFavourite = async (req, res) => {
 };
 // deletes a favourite (D)
 exports.deleteFavourite = async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+    
     try {
         const userId = String(req.session.user.id);
         const recipeId = String(req.params.id);

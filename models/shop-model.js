@@ -53,8 +53,8 @@ exports.findUserById = function(userid) {
     return Shop.findOne({userid:userid})
 }
 
-exports.addItem = function(newItem) {
-    return Shop.create(newItem);
+exports.addItem = function(itemdata) {
+    return Shop.create(itemdata);
 }
 
 exports.editItemById = function(userid, updatedList, options = {}) {
