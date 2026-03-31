@@ -5,9 +5,11 @@ exports.createFavourite = async (req, res) => {
         return res.redirect("/login");
     }
 
-    const userId = String(req.session.user.id);
-    const userName = req.session.user.userName; 
+    const userId = String(req.session.user._id || req.session.user.id);
+    const userName = req.session.user.userName || req.session.user.username; 
     const recipeId = String(req.body.recipeId);
+
+    console.log(`Attempting to save: User ${userId}, Recipe ${recipeId}`);
 
     try {
         // checks if user has a favaourite document if not creates one
@@ -28,10 +30,10 @@ exports.createFavourite = async (req, res) => {
             await Favourite.addRecipeToList(userId, recipeId);
         }
 
-        res.redirect(`/recipe/${recipeId}`);
+        res.redirect('/favourites'); 
     } catch (error) {
-        console.error(error);
-        res.render("error", {message: "Couldn't add to favourite collection. Please try again."});
+        console.error("CREATE ERROR:", error);
+        res.render("error", {message: "Couldn't add to favourites."});
     }
 
 };
