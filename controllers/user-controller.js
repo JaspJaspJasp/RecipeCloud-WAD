@@ -47,6 +47,7 @@ exports.registerPost = async (req, res) => {
     }
         
         const hashedPassword = await bcrypt.hash(password, 10);
+
         const newUser = {
             display_name,
             userName, 
@@ -56,21 +57,17 @@ exports.registerPost = async (req, res) => {
         };
 
         await UserModel.createUser(newUser);
-        res.redirect('/login');
+        return res.redirect('/login');
 
     } catch (error) {
-        console.error("Error in checking for existing user: ", error);
-        res.render('error', { 
+        console.error("Error in registerPost:", error);
+        return res.render('error', { 
             message: "We couldn't process your registration at this time. Please try again later." 
         });
     }
-}
+};
 
 exports.displayUser = async (req, res) => {
-
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
 
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
@@ -80,16 +77,20 @@ exports.displayUser = async (req, res) => {
     }
 
     try {
-
         const user = await UserModel.findUserById(req.params.id);
+
+        if (!user) {
+            return res.render('error', { message: "User not found." });
+        }
+
         res.render('display-user', { user });
 
     } catch (err){
 
-        console.error(err);
-        res.render('error', { message: "Invalid User ID or Database Issue" });
+        console.error("Error in displayUser:", err);
+        return res.render('error', { message: "Invalid User ID or Database Issue" });
     }
-}
+};
 
 // getting user's data and rendering the edit-user page via the get route
 exports.editUserGet = async (req, res) => {
