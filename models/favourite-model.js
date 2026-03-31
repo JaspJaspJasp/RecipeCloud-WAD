@@ -12,9 +12,8 @@ const favouriteSchema = new mongoose.Schema({
         required: true
     },
     savedRecipes:[{
-
         recipeId: {
-            type:String,
+            type: String,
             required: true
         },
 // one document per user, many recipe inside the array savedRecipes, each recipe has its own recipeId and dateSaved
@@ -24,12 +23,10 @@ const favouriteSchema = new mongoose.Schema({
         }
     }],
     tags: [String],
-
     notes: {
         type: String,
         default: ""
     },
-
     ingredients: {
         type: Array, 
         default: []
@@ -40,9 +37,9 @@ favouriteSchema.index({ userId:1, 'savedRecipes.recipeId':1}, {unique: true});
 
 const Favourite = mongoose.model('Favourite', favouriteSchema, 'favourites');
 
-exports.findFavouriteByUserId = function(userId){
+exports.findFavouriteByUserId = function(userId) {
     return Favourite.findOne({userId: userId});
-}
+};
 
 exports.createFavourite = function(favData) {
     return Favourite.create(favData);
@@ -51,7 +48,7 @@ exports.createFavourite = function(favData) {
 exports.addRecipeToList = function(userId, recipeId) {
     return Favourite.updateOne(
         { userId: userId },
-        { $push: {savedRecipes: {recipeId: recipeId}} }
+        { $push: { savedRecipes: { recipeId: recipeId } } }
     );
 };
 
@@ -63,13 +60,5 @@ exports.deleteRecipeFromList = function(userId, recipeId) {
 };
 
 exports.updateFavourite = function(userId, updateData) {
-    return Favourite.findOneAndUpdate(
-        { userId: userId },
-        { $set: {
-            notes: updateData.notes || "",
-            tags: updateData.tags ? updateData.tags.split(',').map(tag => tag.trim()) : [],
-            ingredients: updateData.ingredients ? updateData.ingredients.split(',').map(ingredient => ingredient.trim()) : []
-        }},
-        { new: true }
-    );
+    return Favourite.updateOne({ userId: userId }, updateData);
 };

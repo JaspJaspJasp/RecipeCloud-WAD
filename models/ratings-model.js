@@ -62,15 +62,8 @@ exports.createRating = function(ratingData) {
 };
 
 // Update an existing rating
-exports.updateRating = function(ratingId, newValue) {
-    return Ratings.updateOne(
-        { _id: ratingId },
-        {
-            ratingValue: newValue,
-            updatedAt: new Date(),
-            isEdited: true
-        }
-    );
+exports.updateRating = function(ratingId, updateData) {
+    return Ratings.updateOne({ _id: ratingId }, updateData);
 };
 
 // Delete a rating

@@ -189,10 +189,6 @@ exports.postCreate = async (req, res) => {
     } 
 
     
-
-
-
-
 //Rendering recipe image when clicked on
 exports.recipeFindbyID = async (req, res) => {
     const status = (req.query.status ?? "").trim();

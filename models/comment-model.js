@@ -41,15 +41,8 @@ exports.retrieveByRecipeId = function(recipeId) {
     return Comment.find({ recipeId: recipeId });
 };
 
-exports.editComment = function(id, newCommentText) {
-    return Comment.updateOne(
-        { _id: id },
-        {
-            comment: newCommentText,
-            createdAt: new Date(),
-            isEdited: true
-        }
-    );
+exports.editComment = function(id, updateData) {
+    return Comment.updateOne({ _id: id }, updateData);
 };
 
 exports.deleteComment = function(id) {
