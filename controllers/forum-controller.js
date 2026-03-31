@@ -5,17 +5,18 @@ const ForumModel = require("../models/forum-model");
 exports.showForum = async (req, res) => {
     try {
         const discussions = await ForumModel.findAllPosts();
-        res.render('forum', { 
+        return res.render('forum', { 
             discussions: discussions,
             user: req.session.user || null 
         });
     } catch (err) {
         console.error(err);
-        res.render('error', { 
+        return res.render('error', { 
             message: "We couldn't load the community forum. Please try again later."
         });
     }
 };
+
 
 //Posting a new forum
 exports.postForum = async (req, res) => {
@@ -58,13 +59,13 @@ exports.postForum = async (req, res) => {
     //Will occur when error
     try {
         const discussions = await ForumModel.findAllPosts();
-        res.render("forum", { 
+        return res.render("forum", { 
             discussions: discussions,
             user: req.session.user,
             errors: errors 
         });
     } catch (err) {
-        res.render('error', { message: "An unexpected error occurred." });
+        return res.render('error', { message: "An unexpected error occurred." });
     }
 };
 
@@ -85,7 +86,7 @@ exports.getEditForum = async (req, res) => {
             return res.render('error', { message: "You are not authorized to edit this post." });
         }
 
-        res.render('edit-forum', { 
+        return res.render('edit-forum', { 
             post: post, 
             user: req.session.user,
             errors: [] 
@@ -93,7 +94,7 @@ exports.getEditForum = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Something went wrong loading the edit page." });
+        return res.render('error', { message: "Something went wrong loading the edit page." });
     }
 };
 
@@ -131,7 +132,7 @@ exports.updateForum = async (req, res) => {
             return res.redirect("/forum");
         }
 
-        res.render('edit-forum', {
+        return res.render('edit-forum', {
             post: { _id: postId, title, tag, content },
             user: req.session.user,
             errors: errors
@@ -139,7 +140,7 @@ exports.updateForum = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Failed to update the post." });
+        return res.render('error', { message: "Failed to update the post." });
     }
 };
 
@@ -162,11 +163,11 @@ exports.deleteForum = async (req, res) => {
         }
 
         await ForumModel.deletePostById(postId);
-        res.redirect("/forum");
+        return res.redirect("/forum");
 
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Failed to delete the post." });
+        return res.render('error', { message: "Failed to delete the post." });
     }
 };
 
@@ -202,6 +203,6 @@ exports.postReply = async (req, res) => {
         }
     }
     
-    res.redirect("/forum");
+    return res.redirect("/forum");
 };
 

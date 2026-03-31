@@ -4,14 +4,11 @@ const CommentModel = require("../models/comment-model");
 
 // CREATE a new rating or UPDATE an existing one
 exports.createRating = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
 
     const recipeId = String(req.params.id);
     const userId = String(req.session.user.id);
-    const username = req.session.user.userName;
     const ratingValue = Number(req.body.rating);
+    const username = req.session.user.userName;
 
     try {
         // Validate rating value
@@ -41,6 +38,7 @@ exports.createRating = async (req, res) => {
             // UPDATE existing rating
             await Rating.updateRating(existingRating._id, updateData);
        
+
         } else {
             // CREATE new rating
             // create using the function that was declared 
@@ -56,11 +54,11 @@ exports.createRating = async (req, res) => {
         // Recalculate aggregates for this recipe
         await recalculateRecipeRatings(recipeId);
 
-        res.redirect(`/recipe/${recipeId}`);
+        return res.redirect(`/recipe/${recipeId}`);
 
     } catch (error) {
         console.error(error);
-        res.render("error", { message: "Couldn't submit your rating. Please try again." });
+        return res.render("error", { message: "Couldn't submit your rating. Please try again." });
     }
 };
 
@@ -111,7 +109,7 @@ exports.readRatings = async (req, res) => {
         }
 
         // Render recipe view with rating data
-        res.render("recipe", {
+        return res.render("recipe", {
             recipe: recipe,
             user: req.session.user,
             userRating: userRating,
@@ -125,7 +123,7 @@ exports.readRatings = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.render("error", { message: "Couldn't load ratings. Please try again." });
+        return res.render("error", { message: "Couldn't load ratings. Please try again." });
     }
 };
 
@@ -159,11 +157,11 @@ exports.updateRating = async (req, res) => {
         await Rating.updateRating(userRating._id, ratingValue);
         await recalculateRecipeRatings(recipeId);
 
-        res.redirect(`/recipe/${recipeId}`);
+        return res.redirect(`/recipe/${recipeId}`);
 
     } catch (error) {
         console.error(error);
-        res.render("error", { message: "Couldn't update your rating. Please try again." });
+        return res.render("error", { message: "Couldn't update your rating. Please try again." });
     }
 };
 
@@ -190,11 +188,11 @@ exports.deleteRating = async (req, res) => {
         // Recalculate aggregates
         await recalculateRecipeRatings(recipeId);
 
-        res.redirect(`/recipe/${recipeId}`);
+        return res.redirect(`/recipe/${recipeId}`);
 
     } catch (error) {
         console.error(error);
-        res.render("error", { message: "Couldn't delete your rating. Please try again." });
+        return res.render("error", { message: "Couldn't delete your rating. Please try again." });
     }
 };
 

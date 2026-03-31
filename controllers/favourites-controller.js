@@ -29,10 +29,10 @@ exports.createFavourite = async (req, res) => {
             // we will use the $push operator to add a new recipe to the savedRecipes array
             await Favourite.addRecipeToList(userId, recipeId);
         }
-        res.redirect(`/recipe/${recipeId}`);
+        return res.redirect(`/recipe/${recipeId}`);
     } catch (error) {
         console.error(error);
-        res.render("error", {message: "Couldn't add to favourite collection. Please try again."});
+        return res.render("error", {message: "Couldn't add to favourite collection. Please try again."});
     }
 
 };
@@ -51,10 +51,10 @@ exports.readFavourite = async (req, res) => {
             return res.render('favourites', { favourite: null });
         }
 
-        res.render('favourites', { favourite: userFavourite });
+        return res.render('favourites', { favourite: userFavourite });
     } catch (error) {
         console.error(error);
-        res.render("error", {message: "Couldn't fetch your favourite collection. Please try again."});
+        return res.render("error", {message: "Couldn't fetch your favourite collection. Please try again."});
     }
 };
 
@@ -81,10 +81,10 @@ exports.updateFavourite = async (req, res) => {
 
         await Favourite.updateFavourite(userId, updateData);
         
-        res.redirect('/favourites');
+        return res.redirect('/favourites');
     } catch (error) {
         console.error(error);
-        res.render("error", {message: "Couldn't update your favourite collection. Please try again."});
+        return res.render("error", {message: "Couldn't update your favourite collection. Please try again."});
     }
 };
 // deletes a favourite (D)
@@ -92,15 +92,15 @@ exports.deleteFavourite = async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     }
-    
+
     try {
         const userId = String(req.session.user.id);
         const recipeId = String(req.params.id);
 
         await Favourite.deleteRecipeFromList(userId, recipeId);
-        res.redirect('/favourites');
+        return res.redirect('/favourites');
     } catch (error) {
         console.error(error);
-        res.render("error", {message: "Couldn't remove from favourite collection. Please try again."});
+        return res.render("error", {message: "Couldn't remove from favourite collection. Please try again."});
     }
 };

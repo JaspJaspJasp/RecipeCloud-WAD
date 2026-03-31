@@ -48,10 +48,10 @@ exports.saveRecipeToList = async (req, res) => {
             await userShop.save();
         }
 
-        res.redirect('/shopping-list');
+        return res.redirect('/shopping-list');
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Could not save recipe to shopping list." });
+        return res.render('error', { message: "Could not save recipe to shopping list." });
     }
 }
 
@@ -74,12 +74,12 @@ exports.showShopList = async (req, res) => {
             });
         }
 
-        res.render("shop", {
+        return res.render("shop", {
             userShop: userShop,
         });
     } catch (err) {
         console.error(err);
-        res.render('error', { 
+        return res.render('error', { 
             message: "We couldn't load the shopping list. Please try again later."
         });
     }
@@ -97,10 +97,10 @@ exports.removeRecipeFromList = async (req, res) => {
             $set: { recipes: userShop.recipes, updatedAt: Date.now() }
         });
 
-        res.redirect('/shopping-list');
+        return res.redirect('/shopping-list');
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Could not remove recipe from shopping list." });
+        return res.render('error', { message: "Could not remove recipe from shopping list." });
     }
 }
 
@@ -124,10 +124,10 @@ exports.addPersonalItem = async (req, res) => {
             await userShop.save();
         }
 
-        res.redirect('/shopping-list');
+        return res.redirect('/shopping-list');
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Could not add item to shopping list." });
+        return res.render('error', { message: "Could not add item to shopping list." });
     }
 }
 
@@ -148,20 +148,20 @@ exports.removePersonalItem = async (req, res) => {
         //without .save() changes are only saved in js memory
         await userShop.save();
 
-        res.redirect('/shopping-list');
+        return res.redirect('/shopping-list');
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Could not remove item from shopping list." });
+        return res.render('error', { message: "Could not remove item from shopping list." });
     }
 }
 
 exports.clearShoppingList = async (req, res) => {
     try {
         await ShopModel.deleteItemById(req.session.user.id);
-        res.redirect('/shopping-list');
+        return res.redirect('/shopping-list');
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Could not clear shopping list." });
+        return res.render('error', { message: "Could not clear shopping list." });
     }
 }
 
@@ -180,9 +180,9 @@ exports.toggleIngredient = async (req, res) => {
         userShop.updatedAt = Date.now();
         await userShop.save();
 
-        res.redirect('/shopping-list');
+        return res.redirect('/shopping-list');
     } catch (err) {
         console.error(err);
-        res.render('error', { message: "Could not update ingredient." });
+        return res.render('error', { message: "Could not update ingredient." });
     }
 }

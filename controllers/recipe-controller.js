@@ -32,7 +32,7 @@ exports.HomePage = async (req, res) => {
 
         const recipes = await Recipe.searchRecipes(query);
 
-        res.render('index', { 
+        return res.render('index', { 
             recipes,
             searchQuery: recipe_name,
             cuisine,
@@ -43,7 +43,7 @@ exports.HomePage = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.render('error', { 
+        return res.render('error', { 
             message: "We couldn't load the recipes. Please refresh or try again later."
         });
     }
@@ -51,7 +51,7 @@ exports.HomePage = async (req, res) => {
 
 //Initial Create GET route with no inputs
 exports.getCreate = (req, res) => {
-    res.render("create", { 
+    return res.render("create", { 
         recipe_name: "", 
         cuisine: "", 
         tag: [], 
@@ -277,7 +277,7 @@ exports.renderEditRecipeForm = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${req.params.id}`);
     }
 };
 
@@ -370,11 +370,11 @@ exports.updateRecipe = async (req, res) => {
 
         await Recipe.updateRecipe(req.params.id, updateData);
 
-        res.redirect('/');
+        return res.redirect('/');
 
     } catch (err) {
         console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${req.params.id}`);
     }
 };
 exports.renderDeleteRecipeForm = async (req, res) => {
@@ -386,14 +386,14 @@ exports.renderDeleteRecipeForm = async (req, res) => {
                 message: "Recipe not found."
             });
         }
-        res.render('delete-recipe', {
+        return res.render('delete-recipe', {
             recipe: recipe,
             user: req.session.user
         });
 
     } catch (err) {
         console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${req.params.id}`);
     }
 };
 
@@ -409,11 +409,11 @@ exports.deleteRecipe = async (req, res) => {
         let success = await Recipe.deleteRecipe(req.params.id);
         console.log(success,'Recipe deletion SUCCESS');
 
-        res.redirect('/');
+        return res.redirect('/');
 
     } catch (err) {
         console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${req.params.id}`);
     }
 };
 

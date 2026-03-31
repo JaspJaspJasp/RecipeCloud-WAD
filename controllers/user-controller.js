@@ -3,7 +3,7 @@ const UserModel = require("../models/user-model");
 
 
 exports.registerGet = async (req, res) => {
-    res.render("register", {
+    return res.render("register", {
         errors: [],
         display_name: "",
         userName: "",
@@ -83,7 +83,7 @@ exports.displayUser = async (req, res) => {
             return res.render('error', { message: "User not found." });
         }
 
-        res.render('display-user', { user });
+        return res.render('display-user', { user });
 
     } catch (err){
 
@@ -95,9 +95,6 @@ exports.displayUser = async (req, res) => {
 // getting user's data and rendering the edit-user page via the get route
 exports.editUserGet = async (req, res) => {
 
-    if (!req.session.user) {
-            return res.redirect('/login');
-    }
 
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
@@ -111,9 +108,7 @@ exports.editUserGet = async (req, res) => {
         const user = await UserModel.findUserById(req.params.id);
         
         if (!user) {
-            return res.render('error' , {
-                message: "We couldn't find this user profile."
-            });
+            return res.render('error', { message: "We couldn't find this user profile." });
         }
 
         return res.render('edit-user', {
@@ -124,33 +119,26 @@ exports.editUserGet = async (req, res) => {
 
     } catch (err) {
 
-        console.error(err);
-        res.render('error', {
-            message: "Invalid User ID or Database Issue"
-        });
+        console.error("Error in editUserGet:", err);
+        return res.render('error', { message: "Invalid User ID or Database Issue" });
     }
-}
+};
 
 
 exports.editUserPost = async (req, res) => {
 
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-
-
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
-
-    if (sessionUserId !== targetUserId) {
-        return res.render('error', { message: "You are not authorised to edit this profile." });
-    }
 
     const userID = req.params.id;
     const display_name = (req.body.display_name ?? "").trim();
     const userName = (req.body.userName ?? "").trim();
     const gender = (req.body.gender ?? "").trim();
     const emailAddress = (req.body.emailAddress ?? "").trim();
+
+    if (sessionUserId !== targetUserId) {
+        return res.render('error', { message: "You are not authorised to edit this profile." });
+    }
 
     let errors = [];
     let changes = [];
@@ -159,7 +147,10 @@ exports.editUserPost = async (req, res) => {
     
         const currentUser = await UserModel.findUserById(targetUserId);
 
-        
+        if (!currentUser) {
+             return res.render('error', { message: "User not found." });
+        }
+
         const existingEmail = await UserModel.findUserByEmail(emailAddress);
         const existingUsername = await UserModel.findUserByUsername(userName);
 
@@ -210,17 +201,15 @@ exports.editUserPost = async (req, res) => {
         });
 
     } catch(error) {
-        console.error("Real system ERROR:", error);
-        res.render("error", {
-            message: "Failed to update profile."
-        });
+        console.error("Error in editUserPost:", error);
+        return res.render("error", { message: "Failed to update profile." });
     }
-}
+};
 
 
 
 exports.showLogin = async (req, res) => {
-    res.render("login", { 
+    return res.render("login", { 
         userName: "",  
         error:"" 
     });
@@ -262,7 +251,7 @@ exports.checkLogin = async (req, res) => {
 
     } catch (error) {
         console.error("Login Error: ", error);
-        res.render("login", { 
+        return res.render("login", { 
             userName: "",
             error: "Internal server error. Please try again later."
         });
@@ -278,7 +267,7 @@ exports.logout = (req, res) => {
                 message: "There was a problem logging you out."
             });
         }
-        res.redirect("/");
+        return res.redirect("/");
     });
 }
 
