@@ -196,10 +196,6 @@ exports.postCreate = async (req, res) => {
         }
     } 
 
-    
-
-
-
 
 //Rendering recipe image when clicked on
 exports.recipeFindbyID = async (req, res) => {
@@ -260,79 +256,6 @@ exports.recipeFindbyID = async (req, res) => {
         });
     }
 };
-// rating functionality 
-exports.rateRecipe = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
-
-    const recipeId = req.param.recipeId;
-    const userId = String(req.session.user.id);
-    const sessionUserId = String(req.session.user.id);
-    const userRating = Number(req.body.rating);
-
-    try {
-
-        const recipe = await Recipe.findRecipeById(recipeId);
-
-        if (!recipe) {
-            return res.render("error", { 
-                message: "Recipe not found"
-             });
-        }
-       
-        if (!Array.isArray(recipe.ratings)) {
-            recipe.ratings = [];
-        }
-
-        let existingRating = null;
-
-        // for loop that loops through the ratings object to find if userId is there
-        for (let r of recipe.ratings) {
-            if (String(r.userId) === sessionUserId) {
-                existingRating = r;
-                break;
-                }
-            }
-        
-
-        // update or add
-        if (existingRating) {
-            existingRating.value = userRating;
-        } else {
-        recipe.ratings.push({
-            userId: sessionUserId,
-            value: userRating
-        });
-        }
-
-        // calculate total
-        let total = 0;
-
-        for (let r of recipe.ratings) {
-        total += r.value;
-        }
-
-        let count = recipe.ratings.length;
-
-        const updateData = {
-            ratings: recipe.ratings,
-            rating_count: count,
-            total_rating_score: total,
-            rating: count === 0 ? 0 : total / count
-        };
-
-        await Recipe.updateRecipe(recipeId, updateData);
-
-        res.redirect(`/recipe/${recipeId}`);
-        } catch (err) {
-        console.error(err)
-        // if database did not managed to properly collect rating data 
-        res.render('error', { message : "Your rating couldn't be submitted. Please try again."});
-    }
-
-    }; 
-
 
 
 exports.renderEditRecipeForm = async (req, res) => {
