@@ -49,8 +49,7 @@ exports.findPostById = function(id) {
 }
 
 exports.createPost = function(dataObject) {
-    const newRecord = new Forum(dataObject);
-    return newRecord.create();
+    return Forum.create(dataObject);
 }
 
 exports.updatePostById = function(id, updatedData) {
