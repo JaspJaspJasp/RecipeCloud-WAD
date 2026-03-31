@@ -60,6 +60,7 @@ exports.deleteRecipeFromList = function(userId, recipeId) {
         { userId: userId },
         { $pull: { savedRecipes: { recipeId: recipeId } } }
     );
+};
 
 exports.updateFavourite = function(userId, updateData) {
     return Favourite.findOneAndUpdate(
