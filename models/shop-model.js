@@ -62,7 +62,7 @@ exports.editItemById = function(userid, updatedList, options = {}) {
 }
 
 exports.deleteItemById = function(userid) {
-    return Shop.deleteOne({userid:userid});   
+    return Shop.deleteOne({ userid:userid });   
 }
 
 
