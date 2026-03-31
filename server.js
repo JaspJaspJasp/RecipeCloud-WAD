@@ -55,6 +55,7 @@ const login = require('./routes/login');
 const shoplist = require("./routes/shop");
 const forum = require("./routes/forum");
 const favouriteRoutes = require('./routes/favourites');
+const admin = require('./routes/admin');
 
 //Routings
 app.use("/", recipes); 
@@ -62,7 +63,8 @@ app.use("/", register);
 app.use("/", login); 
 app.use("/", shoplist);
 app.use("/", forum);
-app.use('/', favouriteRoutes);
+app.use("/", favouriteRoutes);
+app.use("/", admin);
 
 
 

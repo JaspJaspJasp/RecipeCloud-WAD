@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
         required: [true, 'A user must have a password']
     },
     role: {
-        type: String
+        type: String, 
+        default: "user"
     }
 });
 
@@ -43,6 +44,10 @@ exports.findUserById = function(id) {
     return User.findOne({ _id: id });
 };
 
+exports.retrieveAllUsers = function() {
+    return User.find();
+}
+
 exports.updateUserById = function(id, updateData) {
     return User.updateOne({ _id: id }, updateData);
 };
@@ -54,3 +59,7 @@ exports.createUser = function(userData) {
 exports.deleteUser = function(id) {
     return User.deleteOne({ _id: id });
 };
+
+exports.countUsers = function() {
+    return User.countDocuments();
+}

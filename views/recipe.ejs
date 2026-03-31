@@ -28,7 +28,7 @@
                         <div class="title-row">
                             <h1 class="recipe-detail-title"><%= recipe.recipe_name %></h1>
 
-                            <% if (user && String(user.id) === String(recipe.userId)) { %>
+                            <% if (user && (String(user.id) === String(recipe.userId) || user.role === "admin")) { %>
                                 <div class="recipe-owner-actions">
                                     <a href="/recipe/<%= recipe._id %>/update" class="btn-solid">Update</a>
                                     <a href="/recipe/<%= recipe._id %>/delete" class="btn-solid">Delete</a>

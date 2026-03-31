@@ -51,11 +51,6 @@ exports.HomePage = async (req, res) => {
 
 //Initial Create GET route with no inputs
 exports.getCreate = (req, res) => {
-
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-
     res.render("create", { 
         recipe_name: "", 
         cuisine: "", 
@@ -75,10 +70,7 @@ exports.getCreate = (req, res) => {
 
 //POST create route to database
 exports.postCreate = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    
+   
     const recipe_name = (req.body.recipe_name ?? "").trim();
     const cuisine = (req.body.cuisine ?? "").trim();
     const serving = (req.body.serving ?? "").trim();
@@ -246,12 +238,12 @@ exports.recipeFindbyID = async (req, res) => {
 
 exports.renderEditRecipeForm = async (req, res) => {
     try {
-        if (!req.session.user) {
-            return res.redirect('/login');
-        }
-
         const recipe = await Recipe.findRecipeById(req.params.id);
-
+        if (req.session.user._id !== recipe.userId && req.session.user.role !== "admin") {
+            return res.render('error', {
+                message: "No permissions to edit recipe."
+            });
+        }
         if (!recipe) {
             return res.render('error', {
                 message: "Recipe not found."
@@ -295,10 +287,6 @@ exports.renderEditRecipeForm = async (req, res) => {
 
 exports.updateRecipe = async (req, res) => {
     try {
-        if (!req.session.user) {
-            return res.redirect('/login');
-        }
-
         const recipe = await Recipe.findRecipeById(req.params.id);
 
         if (!recipe) {
@@ -395,10 +383,6 @@ exports.updateRecipe = async (req, res) => {
 };
 exports.renderDeleteRecipeForm = async (req, res) => {
     try {
-        if (!req.session.user) {
-            return res.redirect('/login');
-        }
-
         const recipe = await Recipe.findRecipeById(req.params.id);
 
         if (!recipe) {
@@ -419,10 +403,6 @@ exports.renderDeleteRecipeForm = async (req, res) => {
 
 exports.deleteRecipe = async (req, res) => {
     try {
-        if (!req.session.user) {
-            return res.redirect('/login');
-        }
-
         const recipe = await Recipe.findRecipeById(req.params.id);
 
         if (!recipe) {

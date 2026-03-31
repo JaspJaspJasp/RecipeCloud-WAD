@@ -82,3 +82,7 @@ exports.deleteRating = function(ratingId) {
 exports.retrieveAll = function() {
     return Ratings.find();
 };
+
+exports.findLatest = function() {
+    return Ratings.findOne().sort({ createdAt: -1 });
+}

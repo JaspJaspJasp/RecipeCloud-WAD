@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Users - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <div class="admin-dashboard-main">
+        
+        <div class="admin-header admin-header-row">
+            <div>
+                <h1 class="admin-title no-margin">User Management</h1>
+                <p class="admin-subtitle">View and update user roles across the platform.</p>
+            </div>
+            <a href="/admin/dashboard" class="btn-outline search-filter-btn">&larr; Back to Dashboard</a>
+        </div>
+
+        <div class="dashboard-panel mt-20">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Display Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Current Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (users && users.length > 0) { %>
+                        <% users.forEach(u => { %>
+                            <tr>
+                                <td><strong><%= u.display_name %></strong></td>
+                                <td>@<%= u.userName %></td>
+                                <td><%= u.emailAddress %></td>
+                                <td>
+                                    <span class="activity-type <%= u.role === 'admin' ? 'role-admin' : '' %>">
+                                        <%= u.role || 'user' %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="admin-user-actions">
+                                        <a href="/edit-user/<%= u._id %>" class="btn-outline search-filter-btn btn-small">Edit Profile</a>
+                                        
+                                        <% if (user && String(user.id) === String(u._id)) { %>
+                                            <select disabled class="admin-select-small" style="opacity: 0.6; cursor: not-allowed; background-color: #CDC6B6;">
+                                                <option>Admin</option>
+                                            </select>
+                                        <% } else { %>
+                                            <form action="/admin/users/<%= u._id %>/role" method="POST" class="role-update-form">
+                                                <select name="newRole" class="admin-select-small" onchange="this.form.submit()">
+                                                    <option value="user" <%= (!u.role || u.role === 'user') ? 'selected' : '' %>>User</option>
+                                                    <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                                                </select>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="empty-state admin-table-empty">No users found.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1919,3 +1919,272 @@ h1, h2, h3, h4, h5, h6, p {
     margin-top: 25px;
     flex-wrap: wrap;
 }
+
+
+/* =========================================
+   Admin Dashboard & Management Styles
+   ========================================= */
+
+/* Main Layout */
+.admin-dashboard-main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.admin-header-row {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-end;
+    text-align: left;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.admin-title {
+    font-size: 2.25rem;
+    color: #0D1419;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.admin-title.no-margin {
+    margin-bottom: 0;
+}
+
+.admin-subtitle {
+    color: #253A4A;
+    font-size: 1rem;
+    margin-top: 0;
+}
+
+/* Dashboard Metric Cards */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.dashboard-col {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-metric-card {
+    background-color: #F7F4E3;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+    border: 1px solid #CDC6B6;
+    height: 160px;
+    box-sizing: border-box;
+}
+
+.admin-metric-card h2 {
+    margin: 0 0 15px 0;
+    color: #0D1419;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.admin-metric-card .metric-number {
+    margin: 0;
+    color: #253A4A;
+    font-size: 3.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.admin-action-link {
+    background-color: #E0A840; 
+    color: #0D1419;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(13, 20, 25, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-action-link:hover {
+    background-color: #d19a35;
+}
+
+/* Dashboard Panels & Activity Feed */
+.dashboard-panel {
+    background-color: #F7F4E3;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 40px;
+    border: 1px solid #CDC6B6;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+    
+    /* CRITICAL FIX: Forces horizontal scrolling if the table gets too wide, 
+       preventing the background header cutout issue */
+    overflow-x: auto; 
+}
+
+.dashboard-panel.mt-20 {
+    margin-top: 20px;
+}
+
+.dashboard-panel h3 {
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    background-color: #EFEBDD;
+    border: 1px dashed #CDC6B6;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.activity-content {
+    color: #0D1419;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.activity-type {
+    font-weight: bold;
+    color: #E0A840;
+    background-color: #253A4A;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.activity-type.role-admin {
+    background-color: #c62828;
+    color: #FFF;
+}
+
+.activity-meta {
+    font-size: 0.85rem;
+    color: #253A4A;
+    opacity: 0.8;
+}
+
+.empty-state {
+    color: #253A4A;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Admin Tables */
+.admin-table {
+    width: 100%;
+    min-width: 900px; /* CRITICAL FIX: Prevents the "Actions" column from squishing */
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 15px;
+    background-color: #EFEBDD;
+    color: #253A4A;
+    font-weight: bold;
+}
+
+/* Targets only the outer corners of the header to prevent gaps */
+.admin-table th:first-child { border-radius: 8px 0 0 0; }
+.admin-table th:last-child { border-radius: 0 8px 0 0; }
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px dashed #CDC6B6;
+    color: #0D1419;
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table-empty {
+    text-align: center;
+    padding: 30px !important;
+}
+
+/* User Management Forms & Actions */
+.admin-user-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    white-space: nowrap; /* Prevents the buttons from stacking vertically */
+}
+
+.admin-user-actions a {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.role-update-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0; 
+}
+
+.admin-select-small {
+    padding: 8px 10px; /* Matched padding to align with the buttons perfectly */
+    border: 1px solid #253A4A;
+    border-radius: 4px;
+    background-color: #F7F4E3;
+    color: #0D1419;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 34px; /* Fixed height to match buttons */
+}
+
+.btn-small {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    height: 34px; /* Fixed height to match dropdown */
+    box-sizing: border-box;
+}

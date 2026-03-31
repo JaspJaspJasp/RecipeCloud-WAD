@@ -60,4 +60,10 @@ exports.deletePostById = function(id) {
     return Forum.deleteOne({ _id: id });
 }
 
+exports.countPosts = function() {
+    return Forum.countDocuments();
+}
 
+exports.findLatest = function() {
+    return Forum.findOne().sort({ createdAt: -1 });
+}

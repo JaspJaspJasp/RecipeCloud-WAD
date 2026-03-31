@@ -59,3 +59,7 @@ exports.updateRecipe = function(id, updateData) {
 exports.deleteRecipe = function(id) {
     return Recipe.deleteOne({ _id: id });
 };
+
+exports.countRecipes = function() {
+    return Recipe.countDocuments();
+}

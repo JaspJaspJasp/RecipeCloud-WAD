@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const UserModel = require("../models/user-model"); 
 
+
 exports.registerGet = async (req, res) => {
     res.render("register", {
         errors: [],
@@ -251,7 +252,8 @@ exports.checkLogin = async (req, res) => {
         req.session.user = {
             id: String(user._id),
             userName: user.userName,
-            display_name: user.display_name
+            display_name: user.display_name,
+            role: user.role
         };
 
         console.log(`Login successful for: ${user.userName}`);
@@ -278,4 +280,5 @@ exports.logout = (req, res) => {
         res.redirect("/");
     });
 }
+
 

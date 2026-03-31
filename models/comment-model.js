@@ -55,3 +55,7 @@ exports.editComment = function(id, newCommentText) {
 exports.deleteComment = function(id) {
     return Comment.deleteOne({ _id: id });
 };
+
+exports.findLatest = function() {
+    return Comment.findOne().sort({ createdAt: -1 });
+}
