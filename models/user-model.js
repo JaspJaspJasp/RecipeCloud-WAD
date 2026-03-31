@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
     hashedPassword: {
         type: String,
         required: [true, 'A user must have a password']
+    },
+    role: {
+        type: String
     }
 });
 
@@ -46,4 +49,8 @@ exports.updateUserById = function(id, updateData) {
 
 exports.createUser = function(userData) {
     return User.create(userData);
+};
+
+exports.deleteUser = function(id) {
+    return User.deleteOne({ _id: id });
 };
