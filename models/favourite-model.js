@@ -4,7 +4,7 @@ const favouriteSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unqiue: true
+        unique: true
     },
     userName: {
         type: String,
@@ -15,15 +15,12 @@ const favouriteSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-
         dateSaved: {
             type: Date,
             default: Date.now
         }
     }]
 });
-
-favouriteSchema.index({ userId: 1 }, { unique: true });
 
 const Favourite = mongoose.model('Favourite', favouriteSchema);
 
