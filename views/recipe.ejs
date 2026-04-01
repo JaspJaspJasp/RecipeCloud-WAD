@@ -74,18 +74,47 @@
                 <% } %>
 
                 <% if (user) { %>
-        <div class="rating-form-wrapper" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
-            <h3 class="section-heading" style="font-size: 1.1rem; margin-bottom: 10px;">💾 Save to My Collection</h3>
-            <form action="/favourites/add" method="POST" class="rating-form" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                <input type="hidden" name="recipeId" value="<%= String(recipe._id) %>">
-                <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
-                
-                <button type="submit" class="btn-solid" style="background-color: #e91e63; border-color: #e91e63;">
-                    ❤️ Add to Saved Collections
-                </button>
-            </form>
-        </div>
-    <% } %>
+                    <div class="rating-form-wrapper" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
+                        <h3 class="section-heading" style="font-size: 1.1rem; margin-bottom: 10px;">💾 Save to My Collection</h3>
+                        
+                        <% if (favStatus === 'success') { %>
+                            <div class="comment-success" style="margin-bottom: 15px;">⭐ Successfully added to your collection!</div>
+                        <% } else if (favStatus === 'exists') { %>
+                            <div class="comment-error" style="margin-bottom: 15px;">ℹ️ This recipe is already in your collection.</div>
+                        <% } %>
+
+                        <% if (isFavourited) { %>
+                            
+                            <div style="background-color: #EFEBDD; border: 1px solid #CDC6B6; border-radius: 8px; padding: 15px; text-align: center;">
+                                <p style="margin: 0; color: #253A4A; font-weight: bold;">
+                                    ⭐ This recipe is in your <a href="/favourites" style="color: #E0A840;">Saved Collection</a>.
+                                </p>
+                            </div>
+
+                        <% } else { %>
+                            
+                            <form action="/favourites/add" method="POST" class="rating-form" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                                <input type="hidden" name="recipeId" value="<%= recipe._id %>">
+                                <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
+                                
+                                <div style="width: 100%;">
+                                    <label><strong>Tags:</strong> (e.g. Spicy, Dessert, Easy)</label>
+                                    <input type="text" name="tags" class="form-input" placeholder="Enter tags separated by commas" style="width: 100%; margin-top: 5px;">
+                                </div>
+
+                                <div style="width: 100%;">
+                                    <label><strong>Personal Notes:</strong></label>
+                                    <textarea name="notes" class="recipe-comment-textarea" placeholder="Why do you love this recipe?" style="min-height: 60px; margin-top: 5px;"></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn-solid" style="background-color: #e91e63; border-color: #e91e63; color: white;">
+                                    ❤️ Add to Favourites
+                                </button>
+                            </form>
+
+                        <% } %>
+                    </div>
+                <% } %>
 
                 <div class="meta-info">
                     <label><strong>🍽️ Cuisine:</strong> <%= recipe.cuisine %></label>
