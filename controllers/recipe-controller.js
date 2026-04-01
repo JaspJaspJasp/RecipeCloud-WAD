@@ -27,7 +27,10 @@ exports.HomePage = async (req, res) => {
             query.difficulty_level = difficulty;
         }
 
-        
+        // Filter by tags - only show recipes that have at least one matching tag
+        if (tagsArray.length > 0) {
+            query.tag = { $in: tagsArray };
+        }
 
         const recipes = await Recipe.searchRecipes(query);
 

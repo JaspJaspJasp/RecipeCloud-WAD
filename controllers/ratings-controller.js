@@ -30,7 +30,6 @@ exports.createRating = async (req, res) => {
         // Check if user already rated this recipe
         // created new fn to find user's rating 
         const existingRating = await Rating.findUserRating(userId, recipeId);
-        // console.log(existingRating);
 
         if (existingRating) {
 
@@ -102,7 +101,6 @@ exports.readRatings = async (req, res) => {
             const userRatingDoc = await Rating.findUserRating(sessionUserId, recipeId);
             if (userRatingDoc) {
                 userRating = userRatingDoc.ratingValue;
-                // console.log(userRatingDoc)
             }
         }
 
@@ -112,7 +110,9 @@ exports.readRatings = async (req, res) => {
             const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
             if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
                 isFavourited = true;
+            
             }
+        
         }
 
         // Render recipe view with rating data
