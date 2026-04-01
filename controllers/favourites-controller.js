@@ -4,7 +4,9 @@ const Favourite = require('../models/favourite-model');
 const Recipe = mongoose.model('Recipe');
 
 exports.createFavourite = async (req, res) => {
-    if (!req.session.user) return res.redirect("/login");
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
 
     const userId = String(req.session.user._id || req.session.user.id);
     const recipeId = String(req.body.recipeId);

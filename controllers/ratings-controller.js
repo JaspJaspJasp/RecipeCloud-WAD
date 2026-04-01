@@ -37,7 +37,6 @@ exports.createRating = async (req, res) => {
             };
             // UPDATE existing rating
             await Rating.updateRating(existingRating._id, updateData);
-       
 
         } else {
             // CREATE new rating
