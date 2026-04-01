@@ -240,6 +240,7 @@ exports.toggleIngredient = async (req, res) => {
 
     const recipeId = String(req.body.recipeId ?? "").trim();
     const rawIndex = String(req.body.ingIndex ?? "").trim();
+    //the `10` means **base 10** (normal numbers), if rawIndex == "" change it to -1
     const ingIndex = rawIndex !== "" ? parseInt(rawIndex, 10) : -1;
 
     try {
