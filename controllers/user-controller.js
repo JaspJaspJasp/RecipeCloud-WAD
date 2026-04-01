@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 const UserModel = require("../models/user-model"); 
-const session = require('express-session');
+
 
 exports.registerGet = async (req, res) => {
-    res.render("register", {
+    return res.render("register", {
         errors: [],
         display_name: "",
         userName: "",
@@ -23,6 +23,7 @@ exports.registerPost = async (req, res) => {
 
     let errors = [];
     
+    if (display_name.length > 15) {errors.push({msg: "Display Name must be less than 16 characters long."})}
     if (password !== confirm_password) {errors.push({msg: "Passwords do not match."});}
     if (password.length < 8) {errors.push({msg: "Password must be at least 8 characters long."});}
 
@@ -46,6 +47,7 @@ exports.registerPost = async (req, res) => {
     }
         
         const hashedPassword = await bcrypt.hash(password, 10);
+
         const newUser = {
             display_name,
             userName, 
@@ -55,21 +57,17 @@ exports.registerPost = async (req, res) => {
         };
 
         await UserModel.createUser(newUser);
-        res.redirect('/login');
+        return res.redirect('/login');
 
     } catch (error) {
-        console.error("Error in checking for existing user: ", error);
-        res.render('error', { 
+        console.error("Error in registerPost:", error);
+        return res.render('error', { 
             message: "We couldn't process your registration at this time. Please try again later." 
         });
     }
-}
+};
 
 exports.displayUser = async (req, res) => {
-
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
 
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
@@ -79,28 +77,30 @@ exports.displayUser = async (req, res) => {
     }
 
     try {
-
         const user = await UserModel.findUserById(req.params.id);
-        res.render('display-user', { user });
+
+        if (!user) {
+            return res.render('error', { message: "User not found." });
+        }
+
+        return res.render('display-user', { user });
 
     } catch (err){
 
-        console.error(err);
-        res.render('error', { message: "Invalid User ID or Database Issue" });
+        console.error("Error in displayUser:", err);
+        return res.render('error', { message: "Invalid User ID or Database Issue" });
     }
-}
+};
 
 // getting user's data and rendering the edit-user page via the get route
 exports.editUserGet = async (req, res) => {
 
-    if (!req.session.user) {
-            return res.redirect('/login');
-    }
 
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
+    const sessionUserRole = String(req.session.user.role);
 
-    if (sessionUserId !== targetUserId) {
+    if (sessionUserId !== targetUserId && sessionUserRole !== "admin") {
         return res.render('error', { message: "You are not authorised to view this profile." });
     }
 
@@ -109,9 +109,7 @@ exports.editUserGet = async (req, res) => {
         const user = await UserModel.findUserById(req.params.id);
         
         if (!user) {
-            return res.render('error' , {
-                message: "We couldn't find this user profile."
-            });
+            return res.render('error', { message: "We couldn't find this user profile." });
         }
 
         return res.render('edit-user', {
@@ -122,33 +120,27 @@ exports.editUserGet = async (req, res) => {
 
     } catch (err) {
 
-        console.error(err);
-        res.render('error', {
-            message: "Invalid User ID or Database Issue"
-        });
+        console.error("Error in editUserGet:", err);
+        return res.render('error', { message: "Invalid User ID or Database Issue" });
     }
-}
+};
 
 
 exports.editUserPost = async (req, res) => {
 
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-
-
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
-
-    if (sessionUserId !== targetUserId) {
-        return res.render('error', { message: "You are not authorised to edit this profile." });
-    }
+    const sessionUserRole = String(req.session.user.role);
 
     const userID = req.params.id;
     const display_name = (req.body.display_name ?? "").trim();
     const userName = (req.body.userName ?? "").trim();
     const gender = (req.body.gender ?? "").trim();
     const emailAddress = (req.body.emailAddress ?? "").trim();
+
+    if (sessionUserId !== targetUserId && sessionUserRole !== "admin") {
+        return res.render('error', { message: "You are not authorised to edit this profile." });
+    }
 
     let errors = [];
     let changes = [];
@@ -157,7 +149,10 @@ exports.editUserPost = async (req, res) => {
     
         const currentUser = await UserModel.findUserById(targetUserId);
 
-        
+        if (!currentUser) {
+             return res.render('error', { message: "User not found." });
+        }
+
         const existingEmail = await UserModel.findUserByEmail(emailAddress);
         const existingUsername = await UserModel.findUserByUsername(userName);
 
@@ -208,17 +203,15 @@ exports.editUserPost = async (req, res) => {
         });
 
     } catch(error) {
-        console.error("Real system ERROR:", error);
-        res.render("error", {
-            message: "Failed to update profile."
-        });
+        console.error("Error in editUserPost:", error);
+        return res.render("error", { message: "Failed to update profile." });
     }
-}
+};
 
 
 
 exports.showLogin = async (req, res) => {
-    res.render("login", { 
+    return res.render("login", { 
         userName: "",  
         error:"" 
     });
@@ -251,7 +244,8 @@ exports.checkLogin = async (req, res) => {
         req.session.user = {
             id: String(user._id),
             userName: user.userName,
-            display_name: user.display_name
+            display_name: user.display_name,
+            role: user.role
         };
 
         console.log(`Login successful for: ${user.userName}`);
@@ -259,7 +253,7 @@ exports.checkLogin = async (req, res) => {
 
     } catch (error) {
         console.error("Login Error: ", error);
-        res.render("login", { 
+        return res.render("login", { 
             userName: "",
             error: "Internal server error. Please try again later."
         });
@@ -275,7 +269,8 @@ exports.logout = (req, res) => {
                 message: "There was a problem logging you out."
             });
         }
-        res.redirect("/");
+        return res.redirect("/");
     });
 }
+
 

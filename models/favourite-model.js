@@ -3,51 +3,49 @@ const mongoose = require('mongoose');
 const favouriteSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    recipeId: {
+    userName: {
         type: String,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    recipeName: {
-        type: String,
-        required: true
-    },
-    tags: [String],
-    notes: {
-        type: String,
-        default: ""
-    },
-    ingredients: {
-        type: Array, default: [] 
-    }
+    savedRecipes:[{
+        recipeId: {
+            type: String,
+            required: true
+        },
+        dateSaved: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 });
 
-favouriteSchema.index({ user:1, recipe:1}, {unique: true});
-
-module.exports = mongoose.model('Favourite', favouriteSchema, 'favourites');
 const Favourite = mongoose.model('Favourite', favouriteSchema);
 
 exports.createFavourite = function(favData) {
     return Favourite.create(favData);
 };
 
-exports.findFavouritesByUser = function(userID) {
-    return Favourite.find({userID: userID});
+exports.findFavouriteByUserId = function(userId) {
+    return Favourite.findOne({userId: userId});
 };
 
-exports.updateFavourite = function(id, updateData) {
-    return Favourite.updateOne ({_id:id},updateData);
+exports.addRecipeToList = function(userId, recipeId) {
+    return Favourite.updateOne(
+        { userId: userId },
+        { $push: { savedRecipes: { recipeId: recipeId, dateSaved: new Date() } } }
+    );
 };
 
-exports.deleteFavourite = function(id) {
-    return Favourite.deleteOne({_id:id});
+exports.deleteRecipeFromList = function(userId, recipeId) {
+    return Favourite.updateOne(
+        { userId: userId },
+        { $pull: { savedRecipes: { recipeId: recipeId } } }
+    );
 };
 
-exports.findOneFavourite = function(query) {
-    return Favourite.findOne(query);
+exports.updateFavourite = function(userId, updateData) {
+    return Favourite.updateOne({ userId: userId }, updateData);
 };

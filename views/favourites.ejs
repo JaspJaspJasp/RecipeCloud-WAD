@@ -1,39 +1,82 @@
-<h1>My Saved Recipes</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Collection - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
 
-<% favourites.forEach(fav => { %>
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-        <h3><%= fav.recipeName %></h3>
-        <p><strong>Tags:</strong> <%= fav.tags.join(', ') %></p>
-        
-        <form action="/favourites/update/<%= fav._id %>" method="POST">
-            <label>Edit Notes:</label><br>
-            <textarea name="notes" style="width: 100%;"><%= fav.notes %></textarea><br>
-            <label>Tags (comma separated):</label><br>
-            <input type="text" name="tags" value="<%= fav.tags.join(',') %>" style="width: 100%;"><br>
-            <button type="submit" style="margin-top: 5px;">Update Notes/Tags</button>
-        </form>
-
-        <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
-            <form action="/shopping-list/save-recipe" method="POST">
-                <input type="hidden" name="recipeId" value="<%= fav.recipeId %>">
-                <input type="hidden" name="recipeName" value="<%= fav.recipeName %>">
+<body>
+    <div class="recipe-detail-main">
+        <div class="recipe-container">
+            <div class="content-wrapper">
                 
-                <input type="hidden" name="ingredients" value="<%= JSON.stringify(fav.ingredients || []) %>">
-                
-                <button type="submit" class="btn-solid" style="background-color: #4CAF50; color: rgb(145, 90, 90); border: none; padding: 5px 10px; cursor: pointer;">
-                    🛒 Add to Shopping List
-                </button>
-            </form>
+                <div class="header-wrapper" style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px;">
+                    <h1 class="recipe-detail-title" style="margin: 0;">Saved Collection</h1>
+                    <p class="recipe-created-by" style="margin: 0;">Recipes you've bookmarked to cook later</p>
+                </div>
+                <div class="recipe-divider"></div>
 
-            <form action="/favourites/delete/<%= fav._id %>" method="POST">
-                <button type="submit" style="color: red; background: none; border: 1px solid red; padding: 5px 10px; cursor: pointer;">
-                    Remove
-                </button>
-            </form>
-        </div>
-        
-        <div style="margin-top: 10px;">
-            <a href="/recipe/<%= fav.recipeId %>">View Original Recipe</a>
+                <% if (!recipes || recipes.length === 0) { %>
+                    <div class="comment-login-box">
+                        <p class="no-comments-text">Your collection is empty.</p>
+                    </div>
+                <% } else { %>
+                    <div class="grid-layout" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
+                        <% recipes.forEach((recipe) => { %>
+                            <div class="recipe-card" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #eee;">
+                                
+                                <div class="image-wrapper" style="height: 200px; overflow: hidden;">
+                                    <img src="<%= recipe.image && recipe.image.startsWith('data:image') ? recipe.image : '/img/default-recipe.png' %>" 
+                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+
+                                <div style="padding: 20px;">
+                                    <h3 style="margin: 0 0 10px 0; font-size: 1.4rem;"><%= recipe.recipe_name %></h3>
+                                    
+                                    <h4 class="section-heading" style="font-size: 0.9rem; margin-top: 15px; border-bottom: 2px solid #E0A840; padding-bottom: 5px;">Ingredients:</h4>
+                                    <ul style="padding-left: 20px; font-size: 0.85rem; color: #555; max-height: 100px; overflow-y: auto;">
+                                        <% recipe.ingredients.forEach(ing => { %>
+                                            <li><%= ing.name %> (<%= ing.amount %>)</li>
+                                        <% }) %>
+                                    </ul>
+
+                                    <div class="recipe-divider" style="margin: 15px 0;"></div>
+
+                                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                                        <form action="/shopping-list/save-recipe" method="POST" style="margin: 0;">
+                                            <input type="hidden" name="recipeId" value="<%= recipe._id %>">
+                                            <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
+                                            <input type="hidden" name="ingredients" value='<%= JSON.stringify(recipe.ingredients) %>'>
+                                            
+                                            <button type="submit" class="btn-solid-shopping">🛒 Add to Shopping List</button>
+                                        </form>
+
+                                        <div style="display: flex; gap: 10px;">
+                                            <div style="flex: 1;">
+                                                <a href="/recipe/<%= recipe._id %>" class="btn-fav-outline">
+                                                    View Info
+                                                </a>
+                                            </div>
+                                            
+                                            <form action="/favourites/delete/<%= recipe._id %>" method="POST" style="flex: 1; margin: 0;">
+                                                <button type="submit" class="btn-fav-delete">
+                                                    Remove
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+
+                <div class="back-link-container" style="margin-top: 40px;">
+                    <a href="/" class="back-link">&larr; Back to Home</a>
+                </div>
+            </div>
         </div>
     </div>
-<% }) %>
+</body>
+</html>

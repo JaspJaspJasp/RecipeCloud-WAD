@@ -8,8 +8,7 @@
 
 <body>
     
-    
-        <div class="recipe-detail-main">
+    <div class="recipe-detail-main">
         <div class="recipe-container">
 
             <div class="image-wrapper">
@@ -17,95 +16,96 @@
                     <img src="<%= recipe.image %>" >
                 <% } else { %>
                     <img src="/img/default-recipe.png" >
-                <% } %>
+                <% } %> 
             </div>
 
-        
             <div class="content-wrapper">
                 
-                <div class="header-wrapper">
-                    <div class="title-owner-wrapper">
-                        <div class="title-row">
-                            <h1 class="recipe-detail-title"><%= recipe.recipe_name %></h1>
+                <% if (typeof favStatus !== 'undefined') { %>
+                    <% if (favStatus === 'success') { %>
+                        <div class="comment-success action-alert" style="margin-bottom: 25px;">⭐ Successfully added to your collection!</div>
+                    <% } else if (favStatus === 'exists') { %>
+                        <div class="comment-error action-alert" style="margin-bottom: 25px;">ℹ️ This recipe is already in your collection.</div>
+                    <% } %>
+                <% } %>
 
-                            <% if (user && String(user.id) === String(recipe.userId)) { %>
-                                <div class="recipe-owner-actions">
-                                    <a href="/recipe/<%= recipe._id %>/update" class="btn-solid">Update</a>
-                                    <a href="/recipe/<%= recipe._id %>/delete" class="btn-solid">Delete</a>
-                                </div>
+                <div class="recipe-header-modern">
+                    
+                    <div class="recipe-header-main">
+                        <h1 class="recipe-detail-title" style="margin: 0;"><%= recipe.recipe_name %></h1>
+                        <p class="recipe-created-by" style="margin: 0;">Created by <strong><%= recipe.username %></strong></p>
+                        
+                        <div class="header-actions-left">
+                            <% if (user) { %>
+                                <% if (typeof isFavourited !== 'undefined' && isFavourited) { %>
+                                    <div class="btn-saved-header">⭐ In <a href="/favourites">Saved</a></div>
+                                <% } else { %>
+                                    <form action="/favourites/add" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="recipeId" value="<%= recipe._id %>">
+                                        <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
+                                        <button type="submit" class="btn-favourite-header">❤️ Save Recipe</button>
+                                    </form>
+                                <% } %>
+                            <% } %>
+
+                            <div class="tags-container" style="margin: 0;">
+                                <% recipe.tag.forEach(function(t) { %>
+                                    <label class="tag-badge" style="margin: 0;"><%= t %></label>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-header-side">
+                        
+                        <div class="rating-group-top">
+                            <div class="rating-badge">
+                                <span>⭐</span>
+                                <span class="rating-average">
+                                    <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
+                                </span>
+                                <span class="rating-count-bold">
+                                    (<%= ratingCount || 0 %>)
+                                </span>
+                                <button type="button" 
+                                        onclick="openRatingsOverlay()" 
+                                        class="rating-view-btn-centered">
+                                    View All
+                                </button>
+                            </div>
+
+                            <% if (user) { %>
+                                <form action="/recipe/<%= recipe._id %>/rate" method="POST" class="rating-form-inline">
+                                    <select name="rating" class="rating-select-small">
+                                        <option value="1" <%= userRating == 1 ? 'selected' : '' %>>1 ⭐</option>
+                                        <option value="2" <%= userRating == 2 ? 'selected' : '' %>>2 ⭐</option>
+                                        <option value="3" <%= userRating == 3 ? 'selected' : '' %>>3 ⭐</option>
+                                        <option value="4" <%= userRating == 4 ? 'selected' : '' %>>4 ⭐</option>
+                                        <option value="5" <%= userRating == 5 ? 'selected' : '' %>>5 ⭐</option>
+                                    </select>
+                                    <button type="submit" class="btn-solid rating-btn-small"><%= userRating ? "Update" : "Rate" %></button>
+                                </form>
                             <% } %>
                         </div>
 
-                        <p class="recipe-created-by">Created by <%= recipe.username %></p>
-                    </div>
-
-                    <div class="rating-badge">
-                        ⭐ <%= (typeof recipe.rating === 'number' ? recipe.rating.toFixed(1) : 'New!') %> / 5
-                        (<%= recipe.rating_count || 0 %> ratings)
+                        <% if (user && (String(user.id) === String(recipe.userId) || user.role === "admin")) { %>
+                            <div class="recipe-owner-links" style="display: flex; gap: 10px; justify-content: flex-end; width: 100%;">
+                                <a href="/recipe/<%= recipe._id %>/update" class="btn-outline-small">✏️ Edit Recipe</a>
+                                <a href="/recipe/<%= recipe._id %>/delete" class="btn-outline-small text-danger">🗑️ Delete</a>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
 
-                <% if (user) { %>
-                    <div class="rating-form-wrapper">
-                        <form action="/recipe/<%= recipe._id %>/rate" method="POST" class="rating-form">
-                            <label>
-                                <% if (userRating !== null) { %>
-                                    <strong>Your rating:</strong>
-                                <% } else { %>
-                                    <strong>Rate this recipe:</strong>
-                                <% } %>
-                            </label>
-                            <select name="rating" class="form-input rating-select">
-                                <option value="1" <%= userRating == 1 ? 'selected' : '' %>>1 ⭐</option>
-                                <option value="2" <%= userRating == 2 ? 'selected' : '' %>>2 ⭐</option>
-                                <option value="3" <%= userRating == 3 ? 'selected' : '' %>>3 ⭐</option>
-                                <option value="4" <%= userRating == 4 ? 'selected' : '' %>>4 ⭐</option>
-                                <option value="5" <%= userRating == 5 ? 'selected' : '' %>>5 ⭐</option>
-                            </select>
-                            <button type="submit" class="btn-solid rating-btn">
-                                <%= userRating ? "Update Rating" : "Submit Rating" %>
-                            </button>
-                        </form>
-                    </div>
-                <% } else { %>
-                    <p style="color: gray; margin: 8px 0;">Please login to rate this recipe</p>
+                <% if (!user) { %>
+                    <p class="login-prompt-text" style="margin-bottom: 25px;">Please <a href="/login" style="color: #E0A840;">log in</a> to rate and save this recipe.</p>
                 <% } %>
 
-                <% if (user) { %>
-        <div class="rating-form-wrapper" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
-            <h3 class="section-heading" style="font-size: 1.1rem; margin-bottom: 10px;">💾 Save to My Collection</h3>
-            <form action="/favorites/add" method="POST" class="rating-form" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                <input type="hidden" name="recipeId" value="<%= recipe._id %>">
-                <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
-                
-                <div style="width: 100%;">
-                    <label><strong>Tags:</strong> (e.g. Spicy, Dessert, Easy)</label>
-                    <input type="text" name="tags" class="form-input" placeholder="Enter tags separated by commas" style="width: 100%; margin-top: 5px;">
-                </div>
-
-                <div style="width: 100%;">
-                    <label><strong>Personal Notes:</strong></label>
-                    <textarea name="notes" class="recipe-comment-textarea" placeholder="Why do you love this recipe?" style="min-height: 60px; margin-top: 5px;"></textarea>
-                </div>
-                
-                <button type="submit" class="btn-solid" style="background-color: #e91e63; border-color: #e91e63;">
-                    ❤️ Add to Favorites
-                </button>
-            </form>
-        </div>
-    <% } %>
-
-                <div class="meta-info">
-                    <label><strong>🍽️ Cuisine:</strong> <%= recipe.cuisine %></label>
-                    <label><strong>⏱️ Time:</strong> <%= recipe.approx_cooking_time %></label>
-                    <label><strong>📊 Difficulty:</strong> <label class="capitalize-text"><%= recipe.difficulty_level %></label></label>
-                    <label><strong>👥 Servings:</strong> <%= recipe.serving %></label> 
-                </div>
-
-                <div class="tags-container">
-                    <% recipe.tag.forEach(function(t) { %>
-                        <label class="tag-badge"><%= t %></label>
-                    <% }); %>
+                <div class="recipe-quick-stats">
+                    <div class="stat-item"><strong>🍽️ Cuisine</strong><%= recipe.cuisine %></div>
+                    <div class="stat-item"><strong>⏱️ Time</strong><%= recipe.approx_cooking_time %></div>
+                    <div class="stat-item"><strong>📊 Difficulty</strong><span class="capitalize-text"><%= recipe.difficulty_level %></span></div>
+                    <div class="stat-item"><strong>👥 Servings</strong><%= recipe.serving %></div>
                 </div>
 
                 <div class="recipe-divider"></div>
@@ -139,9 +139,9 @@
                         <h3 class="section-heading">Comments</h3>
 
                         <% if (user) { %>
-                            <% if (status === 'success') { %>
+                            <% if (status && status === 'success') { %>
                                 <p class="comment-success">Comment added successfully</p>
-                            <% } else if (status === 'error') { %>
+                            <% } else if (status && status === 'error') { %>
                                 <p class="comment-error">Failed to add comment</p>
                             <% } %>
                             <form action="/recipe/<%= recipe._id %>/comment" method="POST" class="recipe-comment-form">
@@ -185,7 +185,7 @@
                                 <div class="recipe-comment-header">
                                     <div class="recipe-comment-username"><%= c.username %></div>
                                     <div class="recipe-comment-meta">
-                                        <%= c.createdAt.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                        <%= c.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', year: 'numeric' }) %>
                                         <% if (c.isEdited) { %>
                                             <div class="comment-edited-tag">(edited)</div>
                                         <% } %>
@@ -216,7 +216,6 @@
             </div>
         </div>
     </div>
-    <!-- DELETE OVERLAY -->
     <div class="overlay-backdrop" id="deleteOverlay">
         <div class="overlay-box">
             <h3 class="overlay-title">Delete Comment</h3>
@@ -230,7 +229,6 @@
         </div>
     </div>
 
-    <!-- EDIT OVERLAY -->
     <div class="overlay-backdrop" id="editOverlay">
         <div class="overlay-box">
             <h3 class="overlay-title">Edit Comment</h3>
@@ -244,6 +242,41 @@
                     <button type="submit" class="btn-solid">Save Changes</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div class="overlay-backdrop" id="ratingsOverlay">
+        <div class="overlay-box" style="max-width: 600px; max-height: 70vh; overflow-y: auto;">
+            <h3 class="overlay-title">Recipe Ratings</h3>
+            <div id="ratingsOverlayContent">
+                <% if (allRatings.length === 0) { %>
+                    <p class="no-ratings-text">No ratings yet.</p>
+                <% } else { %>
+                    <div class="ratings-list">
+                        <% allRatings.forEach(rating => { %>
+                            <div class="rating-item">
+                                <div class="rating-item-header">
+                                    <div class="rating-item-user"><strong><%= rating.username %></strong></div>
+                                    <div class="rating-item-stars">
+                                        <% for (let i = 0; i < rating.ratingValue; i++) { %>⭐<% } %> <%= rating.ratingValue %>/5
+                                    </div>
+                                </div>
+                                <div class="rating-item-timestamp">
+                                    <%= rating.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+                                    <% if (rating.updatedAt && rating.updatedAt.getTime() !== rating.createdAt.getTime()) { %>
+                                        <% if (rating.isEdited) { %>
+                                            <span class="rating-edited-tag">(updated)</span>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </div>
+            <div class="overlay-actions">
+                <button type="button" class="btn-outline" onclick="closeRatingsOverlay()">Close</button>
+            </div>
         </div>
     </div>
 
@@ -282,6 +315,22 @@
         if (editOverlay) {
             editOverlay.addEventListener('click', function(e) {
                 if (e.target === this) closeEditOverlay();
+            });
+        }
+
+        // RATINGS
+        function openRatingsOverlay() {
+            document.getElementById('ratingsOverlay').classList.add('overlay-visible');
+        }
+
+        function closeRatingsOverlay() {
+            document.getElementById('ratingsOverlay').classList.remove('overlay-visible');
+        }
+        // Close ratings overlay on backdrop click
+        const ratingsOverlay = document.getElementById('ratingsOverlay');
+        if (ratingsOverlay) {
+            ratingsOverlay.addEventListener('click', function(e) {
+                if (e.target === this) closeRatingsOverlay();
             });
         }
     </script>

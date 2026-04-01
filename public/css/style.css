@@ -611,16 +611,47 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .rating-badge {
-    background: #E0A840;
-    color: #0D1419;
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 1.2rem; 
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(13,20,25,0.1);
+    gap: 12px;
+    background-color: #E0A840;
+    color: #0D1419;
+    padding: 8px 8px 8px 18px; 
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.rating-average {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.rating-count-bold {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+/* Polished View All button */
+.rating-view-btn-centered {
+    background-color: #0D1419;
+    color: #F7F4E3;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-view-btn-centered:hover {
+    background-color: #253A4A;
+    transform: translateY(-1px);
 }
 
 .rating-form-wrapper {
@@ -781,6 +812,372 @@ h1, h2, h3, h4, h5, h6, p {
     font-weight: bold;
 }
 
+/* Small Outline Buttons (For Edit/Delete) */
+.btn-outline-small {
+    background-color: transparent;
+    color: #253A4A;
+    border: 1px solid #253A4A;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.btn-outline-small:hover {
+    background-color: #253A4A;
+    color: #F7F4E3;
+}
+
+.btn-outline-small.text-danger {
+    color: #c62828 !important;
+    border-color: #c62828 !important;
+}
+
+.btn-outline-small.text-danger:hover {
+    background-color: #c62828 !important;
+    color: #F7F4E3 !important;
+}
+
+/* The Gray Container for the Action Bar */
+.recipe-action-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    background-color: #EFEBDD; /* Darker cream box */
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: 1px solid #CDC6B6;
+    margin: 20px 0;
+}
+
+.action-panel-divider {
+    width: 1px;
+    height: 38px;
+    background-color: #CDC6B6;
+}
+
+/* The "Already Saved" Button State */
+.btn-saved {
+    background-color: transparent;
+    color: #E0A840;
+    border: 2px solid #E0A840;
+    padding: 0 15px;
+    height: 38px; /* Matches the rating dropdown/button height */
+    box-sizing: border-box;
+    border-radius: 6px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: default;
+}
+
+.btn-saved a {
+    color: #E0A840;
+    margin-left: 5px;
+}
+
+.btn-saved a:hover {
+    color: #d19a35;
+}
+
+
+/* =========================================
+   Compact Header Actions (Inline Ratings & Favourites)
+   ========================================= */
+.header-actions-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+
+.rating-group-top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* Ensure the inline form doesn't have extra margins */
+.rating-form-inline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+.rating-select-small {
+    height: 36px;
+    padding: 0 8px;
+    border: 1px solid #253A4A;
+    border-radius: 6px;
+    background-color: #F7F4E3;
+    color: #0D1419;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.rating-btn-small {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 0.9rem;
+    border-radius: 6px;
+}
+
+/* Favourites button styled as a highlighted "tag" */
+.btn-fav-outline {
+    background-color: transparent;
+    color: #0D1419;
+    border: 2px solid #0D1419;
+    padding: 0 10px;
+    height: 44px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.btn-fav-outline:hover {
+    background-color: #0D1419;
+    color: #F7F4E3;
+}
+
+.btn-fav-delete {
+    background-color: transparent;
+    color: #c62828;
+    border: 2px solid #c62828;
+    padding: 0 10px;
+    height: 44px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.btn-fav-delete:hover {
+    background-color: #c62828;
+    color: #F7F4E3;
+}
+
+.btn-favourite-header {
+    background-color: #e91e63;
+    color: #fff;
+    border: none;
+    height: 32px;
+    padding: 0 16px;
+    border-radius: 20px; /* Pill shape to match tags */
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background-color 0.2s;
+}
+
+.btn-favourite-header:hover {
+    background-color: #c2185b;
+}
+
+.btn-saved-header {
+    background-color: transparent;
+    color: #E0A840;
+    border: 2px solid #E0A840;
+    height: 32px;
+    padding: 0 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    cursor: default;
+    box-sizing: border-box;
+}
+
+.btn-saved-header a {
+    color: #E0A840;
+    margin-left: 4px;
+    text-decoration: none;
+}
+
+.btn-saved-header a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   Recipe Detail User Actions (Rating & Favourites)
+   ========================================= */
+.user-actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.login-prompt-text {
+    color: #253A4A;
+    margin: 8px 0;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.favourites-wrapper {
+    margin-top: 15px; 
+    border-top: 1px dashed #CDC6B6; 
+    padding-top: 15px;
+}
+
+.favourites-heading {
+    font-size: 1.1rem; 
+    margin-bottom: 10px;
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: none; /* Overrides default section-heading bottom border */
+}
+
+.favourite-saved-badge {
+    background-color: #EFEBDD; 
+    border: 1px solid #CDC6B6; 
+    border-radius: 8px; 
+    padding: 15px; 
+    text-align: center;
+}
+
+.favourite-saved-text {
+    margin: 0; 
+    color: #253A4A; 
+    font-weight: bold;
+}
+
+.favourite-saved-link {
+    color: #E0A840;
+    text-decoration: underline;
+}
+
+.favourite-saved-link:hover {
+    color: #d19a35;
+}
+
+.btn-favourite {
+    background-color: #e65b89; 
+    border-color: #e91e63; 
+    color: white;
+}
+
+.btn-favourite:hover {
+    background-color: #c72264;
+    border-color: #c2185b;
+    color: white;
+}
+
+/* =========================================
+   Modern Recipe Header Re-design
+   ========================================= */
+.recipe-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.recipe-header-main {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.recipe-header-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+/* Subtle Admin Links instead of giant buttons */
+.recipe-owner-links {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+}
+
+.recipe-owner-links a {
+    color: #253A4A;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.recipe-owner-links a:hover {
+    color: #E0A840;
+    text-decoration: underline;
+}
+
+.text-danger {
+    color: #c62828 !important;
+}
+
+.text-danger:hover {
+    color: #d32f2f !important;
+}
+
+/* Quick Stats Bar */
+.recipe-quick-stats {
+    display: flex;
+    justify-content: space-between;
+    background: #EFEBDD;
+    padding: 20px 30px;
+    border-radius: 12px;
+    border: 1px solid #CDC6B6;
+    margin-bottom: 25px;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.stat-item {
+    color: #0D1419;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.stat-item strong {
+    color: #253A4A;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+    opacity: 0.9;
+}
+
 /* =========================================
    Dedicated Search Page Layout
    ========================================= */
@@ -858,18 +1255,17 @@ h1, h2, h3, h4, h5, h6, p {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    text-decoration: none; /* Keeps it clean if you use it on an <a> tag */
+    text-decoration: none; 
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
-    /* This creates a smooth fade between the colors instead of a harsh snap */
+    min-width: 170px; 
     transition: background-color 0.2s ease-in-out; 
 }
 
 /* The state when the user's mouse is over the button */
 .profile-btn:hover {
-    background-color: #ffffff; /* A slightly darker, richer gold */
+    background-color: #ffffff;
 }
 
 /* Specific fix for the filter button next to search */
@@ -975,8 +1371,8 @@ h1, h2, h3, h4, h5, h6, p {
     right: 0;              
     left: auto;            
     background-color: #F7F4E3; 
-    min-width: 100%;       
-    width: fit-content;    
+    width: 100%; 
+    box-sizing: border-box; 
     box-shadow: 0 8px 16px rgba(13, 20, 25, 0.3); 
     border-radius: 8px;
     z-index: 10000; 
@@ -1024,13 +1420,11 @@ h1, h2, h3, h4, h5, h6, p {
     display: block;
     font-size: 0.95rem;
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     transition: background-color 0.2s ease;
-    white-space: nowrap;
+    white-space: nowrap; 
     margin-left: 0;
 }
-
-
 
 /* 5. Hover state for links */
 .dropdown-content a:hover {
@@ -1053,205 +1447,205 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /* Specific overrides/additions for the forum layout to keep it clean */
-        .forum-main {
-            width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
+.forum-main {
+    width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
 
-        .forum-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+.forum-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
 
-        .forum-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-        }
+.forum-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+}
 
-        /* The Submission Box */
-        .post-box {
-            background: #FFF;
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #CDC6B6;
-            height: fit-content;
-            box-shadow: 0 4px 10px rgba(13,20,25,0.05);
-        }
+/* The Submission Box */
+.post-box {
+    background: #FFF;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #CDC6B6;
+    height: fit-content;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+}
 
-        .post-box-title {
-            margin-top: 0;
-            color: #0D1419;
-            border-bottom: 2px solid #E0A840;
-            padding-bottom: 10px;
-            font-size: 1.5rem;
-        }
+.post-box-title {
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+}
 
-        .login-prompt {
-            text-align: center;
-            padding: 30px 10px;
-            background-color: #F7F4E3;
-            border-radius: 8px;
-            border: 1px dashed #253A4A;
-        }
+.login-prompt {
+    text-align: center;
+    padding: 30px 10px;
+    background-color: #F7F4E3;
+    border-radius: 8px;
+    border: 1px dashed #253A4A;
+}
 
-        .login-prompt p {
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #253A4A;
-        }
+.login-prompt p {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #253A4A;
+}
 
-        /* The Discussion Feed */
-        .discussion-feed {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+/* The Discussion Feed */
+.discussion-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-        .discussion-card {
-            background-color: #F7F4E3;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 8px rgba(13, 20, 25, 0.1);
-        }
+.discussion-card {
+    background-color: #F7F4E3;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 8px rgba(13, 20, 25, 0.1);
+}
 
-        .discussion-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
+.discussion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
 
-        .discussion-title {
-            margin: 0;
-            font-size: 1.5rem;
-            color: #0D1419;
-            font-weight: bold;
-        }
+.discussion-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #0D1419;
+    font-weight: bold;
+}
 
-        .discussion-meta {
-            font-size: 0.9rem;
-            color: #253A4A;
-            margin-top: 5px;
-        }
+.discussion-meta {
+    font-size: 0.9rem;
+    color: #253A4A;
+    margin-top: 5px;
+}
 
-        .discussion-tag {
-            background-color: #253A4A;
-            color: #F7F4E3;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+.discussion-tag {
+    background-color: #253A4A;
+    color: #F7F4E3;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
 
-        .discussion-content {
-            color: #0D1419;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            white-space: pre-wrap;
-        }
+.discussion-content {
+    color: #0D1419;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+}
 
-        /* Form elements specific to the forum side-panel */
-        .forum-input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #CDC6B6;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        
-        .forum-textarea {
-            width: 100%;
-            height: 150px;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #CDC6B6;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-            resize: vertical;
-        }
+/* Form elements specific to the forum side-panel */
+.forum-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #CDC6B6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
 
-        /* Unique Edit Forum (ef-) Styles */
-        .ef-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 60px auto;
-            background: #F7F4E3;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(13,20,25,0.1);
-            box-sizing: border-box;
-        }
+.forum-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #CDC6B6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+}
 
-        .ef-title {
-            margin-top: 0;
-            color: #0D1419;
-            border-bottom: 2px solid #E0A840;
-            padding-bottom: 10px;
-            font-size: 1.8rem;
-            text-align: center;
-        }
+/* Unique Edit Forum (ef-) Styles */
+.ef-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 60px auto;
+    background: #F7F4E3;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.1);
+    box-sizing: border-box;
+}
 
-        .ef-input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #CDC6B6;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        
-        .ef-textarea {
-            width: 100%;
-            height: 200px;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #CDC6B6;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-            resize: vertical;
-        }
+.ef-title {
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 10px;
+    font-size: 1.8rem;
+    text-align: center;
+}
 
-        .ef-action-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
+.ef-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #CDC6B6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
 
-        .ef-btn-cancel {
-            flex: 1;
-            background-color: transparent;
-            color: #253A4A;
-            border: 2px solid #253A4A;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
+.ef-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #CDC6B6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+}
 
-        .ef-btn-cancel:hover {
-            background-color: #253A4A;
-            color: #F7F4E3;
-        }
+.ef-action-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
 
-        .ef-btn-save {
-            flex: 2;
-        }
+.ef-btn-cancel {
+    flex: 1;
+    background-color: transparent;
+    color: #253A4A;
+    border: 2px solid #253A4A;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
 
-        /* =========================================
+.ef-btn-cancel:hover {
+    background-color: #253A4A;
+    color: #F7F4E3;
+}
+
+.ef-btn-save {
+    flex: 2;
+}
+
+/* =========================================
    Forum & Replies Layout
    ========================================= */
 .forum-label {
@@ -1538,6 +1932,79 @@ h1, h2, h3, h4, h5, h6, p {
     color: #F7F4E3;
 }
 
+/* =========================================
+   Ratings Section Styling
+   ========================================= */
+.ratings-section {
+    background: #F7F4E3;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(13,20,25,0.12);
+    padding: 30px;
+    margin-bottom: 35px;
+}
+
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.rating-item {
+    border-bottom: 1px solid #CDC6B6;
+    padding: 18px 0;
+}
+
+.rating-item:last-of-type {
+    border-bottom: none;
+}
+
+.rating-item:first-of-type {
+    padding-top: 0;
+}
+
+.rating-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.rating-item-user {
+    color: #253A4A;
+    font-size: 1.05rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.rating-item-stars {
+    color: #E0A840;
+    font-size: 1rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.rating-item-timestamp {
+    font-size: 0.85rem;
+    color: #253A4A;
+    opacity: 0.8;
+}
+
+.rating-edited-tag {
+    font-size: 0.8rem;
+    color: #253A4A;
+    opacity: 0.65;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+.no-ratings-text {
+    color: #253A4A;
+    font-size: 1rem;
+    font-style: italic;
+}
+
 .overlay-backdrop {
     display: none;
     position: fixed;
@@ -1622,13 +2089,66 @@ h1, h2, h3, h4, h5, h6, p {
     align-items: center;
 }
 
+
 .recipe-created-by {
     margin: 0;
     color: #253A4A;
-    font-size: 0.95rem;
+    font-size: 1rem; 
+    font-style: italic;
+    opacity: 0.9;
 }
+
+.btn-solid-shopping {
+    background-color: #E0A840; 
+    color: #0D1419; 
+    border: 2px solid #0D1419; 
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-shadow: 0 3px 6px rgba(13, 20, 25, 0.15);
+}
+
+.btn-solid-shopping:hover {
+    background-color: #0D1419; 
+    color: #E0A840; 
+    border-color: #E0A840;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(13, 20, 25, 0.25);
+}
+
+.btn-shop-remove {
+    background-color: #fdecea; 
+    color: #c62828; 
+    border: 1px solid #c62828;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn-shop-remove:hover {
+    background-color: #c62828;
+    color: #F7F4E3;
+}
+
 .center-page {
-    min-height: calc(100vh - 80px); /* adjust if navbar height different */
+    min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1848,4 +2368,273 @@ h1, h2, h3, h4, h5, h6, p {
     gap: 15px;
     margin-top: 25px;
     flex-wrap: wrap;
+}
+
+
+/* =========================================
+   Admin Dashboard & Management Styles
+   ========================================= */
+
+/* Main Layout */
+.admin-dashboard-main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.admin-header-row {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-end;
+    text-align: left;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.admin-title {
+    font-size: 2.25rem;
+    color: #0D1419;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.admin-title.no-margin {
+    margin-bottom: 0;
+}
+
+.admin-subtitle {
+    color: #253A4A;
+    font-size: 1rem;
+    margin-top: 0;
+}
+
+/* Dashboard Metric Cards */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.dashboard-col {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-metric-card {
+    background-color: #F7F4E3;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+    border: 1px solid #CDC6B6;
+    height: 160px;
+    box-sizing: border-box;
+}
+
+.admin-metric-card h2 {
+    margin: 0 0 15px 0;
+    color: #0D1419;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.admin-metric-card .metric-number {
+    margin: 0;
+    color: #253A4A;
+    font-size: 3.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.admin-action-link {
+    background-color: #E0A840; 
+    color: #0D1419;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(13, 20, 25, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-action-link:hover {
+    background-color: #d19a35;
+}
+
+/* Dashboard Panels & Activity Feed */
+.dashboard-panel {
+    background-color: #F7F4E3;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 40px;
+    border: 1px solid #CDC6B6;
+    box-shadow: 0 4px 10px rgba(13,20,25,0.05);
+    
+    /* CRITICAL FIX: Forces horizontal scrolling if the table gets too wide, 
+       preventing the background header cutout issue */
+    overflow-x: auto; 
+}
+
+.dashboard-panel.mt-20 {
+    margin-top: 20px;
+}
+
+.dashboard-panel h3 {
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: 2px solid #E0A840;
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    background-color: #EFEBDD;
+    border: 1px dashed #CDC6B6;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.activity-content {
+    color: #0D1419;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.activity-type {
+    font-weight: bold;
+    color: #E0A840;
+    background-color: #253A4A;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.activity-type.role-admin {
+    background-color: #c62828;
+    color: #FFF;
+}
+
+.activity-meta {
+    font-size: 0.85rem;
+    color: #253A4A;
+    opacity: 0.8;
+}
+
+.empty-state {
+    color: #253A4A;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Admin Tables */
+.admin-table {
+    width: 100%;
+    min-width: 900px; /* CRITICAL FIX: Prevents the "Actions" column from squishing */
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 15px;
+    background-color: #EFEBDD;
+    color: #253A4A;
+    font-weight: bold;
+}
+
+/* Targets only the outer corners of the header to prevent gaps */
+.admin-table th:first-child { border-radius: 8px 0 0 0; }
+.admin-table th:last-child { border-radius: 0 8px 0 0; }
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px dashed #CDC6B6;
+    color: #0D1419;
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table-empty {
+    text-align: center;
+    padding: 30px !important;
+}
+
+/* User Management Forms & Actions */
+.admin-user-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    white-space: nowrap; /* Prevents the buttons from stacking vertically */
+}
+
+.admin-user-actions a {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.role-update-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0; 
+}
+
+.admin-select-small {
+    padding: 8px 10px; /* Matched padding to align with the buttons perfectly */
+    border: 1px solid #253A4A;
+    border-radius: 4px;
+    background-color: #F7F4E3;
+    color: #0D1419;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 34px; /* Fixed height to match buttons */
+}
+
+.btn-small {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    height: 34px; /* Fixed height to match dropdown */
+    box-sizing: border-box;
 }

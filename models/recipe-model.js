@@ -12,24 +12,6 @@ const recipeSchema = new mongoose.Schema({
         name: String,
         amount: String
     }],
-    rating: {
-        type: Number,
-        default : 0
-    },
-    rating_count: {
-        type: Number,
-        default: 0
-    },
-    total_rating_score: {
-        type: Number,
-        default: 0
-    },
-    ratings: [
-        {
-            userId: String, 
-            value: Number
-        }
-    ],
     image: {
         type: String,
         default: '' 
@@ -41,7 +23,11 @@ const recipeSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true
-    }
+    },
+
+    ratingAverage: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0},
+    totalRatingScore: { type: Number, default: 0}
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema, 'recipes');
@@ -73,3 +59,7 @@ exports.updateRecipe = function(id, updateData) {
 exports.deleteRecipe = function(id) {
     return Recipe.deleteOne({ _id: id });
 };
+
+exports.countRecipes = function() {
+    return Recipe.countDocuments();
+}

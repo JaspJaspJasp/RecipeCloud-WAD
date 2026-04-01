@@ -4,17 +4,20 @@ const Recipe = require('../models/recipe-model');
 
 
 exports.createComments = async (req, res) => {
+    if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
+    const recipeId = String(req.params.id);
+
     try {
          // Make sure only logged-in users can post comments
         // If not logged in, redirect them to the login page
-        if (!req.session.user) {
-            return res.redirect('/login');
-        }
+        
         // Get recipe ID from the route parameter
         // Example route: POST /recipe/:id/comment
 
-        const recipeId = req.params.id;
-        const comment = req.body.comment.trim();
+        const comment = (req.body.comment ?? "").trim();
         const userId = String(req.session.user.id);
         const username = req.session.user.userName;
 
@@ -31,46 +34,76 @@ exports.createComments = async (req, res) => {
 
         await Comment.createComments(newCommentData);
 
-        res.redirect(`/recipe/${recipeId}?status=success`);
+        return res.redirect(`/recipe/${recipeId}?status=success`);
 
     } catch (error) {
         console.error(error);
-        res.redirect(`/recipe/${req.params.id}?status=error`);
+        return res.redirect(`/recipe/${req.params.id}?status=error`);
     }
 };
 
 exports.renderEditForm = async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
     try {
-        const commentId = req.param.commentId;
-        const recipeId = req.param.recipeId;
+        const commentId = String(req.params.commentId);
+        const recipeId = String(req.params.recipeId);
         const comment = await Comment.findOne({_id: commentId});
         const recipe = await Recipe.findOne({_id: recipeId});
-        res.render('edit-comment', { comment, recipe });
+
+        if (!comment || !recipe ) {
+            return res.redirect(`/recipe/${recipeId}`);
+        }
+
+        return res.render('edit-comment', { comment, recipe });
     }
     catch (err) {
         console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${req.params.id}`);
     }
 };
 
 exports.editComment = async (req, res) => {
+    // Standardizing session and params as per your project rules
+    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
+    const recipeId = String(req.params.id);
+    const commentId = String(req.params.commentId);
+    const commentText = (req.body.comment ?? "").trim();
+
+    if (!sessionUserId) {
+        return res.redirect('/login');
+    }
+
     try {
-        const commentId = req.params.commentId;
-        const comment = req.body.comment.trim();
-        await Comment.editComment(commentId, comment);
-        res.redirect(`/recipe/${req.params.id}`);
+        const updateData = {
+            $set: {
+                comment: commentText,
+                createdAt: new Date(), 
+                isEdited: true
+            }
+        };
+        
+        await Comment.editComment(commentId, updateData);
+        return res.redirect(`/recipe/${recipeId}`);
     } catch (err) {
-        console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        console.error("Error in Edit Comment: ", err);
+        return res.render('error', { message: "Failed to save comment changes." });
     }
 };
 
 exports.deleteComment = async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    const recipeId = String(req.params.id);
+
     try {
         await Comment.deleteComment(req.params.commentId);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${recipeId}`);
     } catch (err) {
         console.error(err);
-        res.redirect(`/recipe/${req.params.id}`);
+        return res.redirect(`/recipe/${recipeId}`);
     }
 };

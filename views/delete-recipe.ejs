@@ -16,8 +16,9 @@
                 <form action="/recipe/<%= recipe._id %>/delete" method="POST">
                     <button type="submit" class="btn-solid">Yes</button>
                 </form>
-
-                <a href="/recipe/<%= recipe._id %>" class="btn-solid">Cancel</a>
+                <form action="/recipe/<%= recipe._id %>" method="POST">
+                    <button type="submit" class="btn-solid">Cancel</button>
+                </form>
             </div>
         </div>
     </div>

@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     hashedPassword: {
         type: String,
         required: [true, 'A user must have a password']
+    },
+    role: {
+        type: String, 
+        default: "user"
     }
 });
 
@@ -40,6 +44,10 @@ exports.findUserById = function(id) {
     return User.findOne({ _id: id });
 };
 
+exports.retrieveAllUsers = function() {
+    return User.find();
+}
+
 exports.updateUserById = function(id, updateData) {
     return User.updateOne({ _id: id }, updateData);
 };
@@ -47,3 +55,11 @@ exports.updateUserById = function(id, updateData) {
 exports.createUser = function(userData) {
     return User.create(userData);
 };
+
+exports.deleteUser = function(id) {
+    return User.deleteOne({ _id: id });
+};
+
+exports.countUsers = function() {
+    return User.countDocuments();
+}

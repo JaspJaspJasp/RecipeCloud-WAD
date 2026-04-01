@@ -51,7 +51,7 @@
                 <% } else { %>
                     <div class="login-prompt">
                         <p>You must be logged in to post a new question or tip.</p>
-                        <a href="/login" class="btn-outline">Log In</a>
+                        <a href="/login" class="btn-solid">Log In</a>
                         <a href="/register" class="btn-solid">Sign Up</a>
                     </div>
                 <% } %>
@@ -74,10 +74,10 @@
                             
                             <div class="discussion-content"><%= post.content %></div>
                             
-                            <% if (locals.user && locals.user.display_name === post.username) { %>
+                            <% if (locals.user && (locals.user.display_name === post.username || locals.user.role === 'admin')) { %>
                                 <div class="discussion-actions">
                                     <a href="/forum/<%= post._id %>/edit" class="btn-outline btn-edit-post">Edit</a>
-                                    <form action="/forum/<%= post._id %>/delete" method="POST">
+                                    <form action="/forum/<%= post._id %>/delete" method="POST" style="display:inline;">
                                         <button type="submit" class="remove-btn btn-delete-post">Delete</button>
                                     </form>
                                 </div>
@@ -101,6 +101,16 @@
                                             <div class="reply-content-text">
                                                 <%= reply.content %>
                                             </div>
+                                            
+                                            <% if (locals.user && (locals.user.display_name === reply.username || locals.user.role === 'admin')) { %>
+                                                <div class="discussion-actions" style="margin-top: 10px; border-top: none; padding-top: 0;">
+                                                    <a href="/forum/<%= post._id %>/reply/<%= reply._id %>/edit" class="btn-outline btn-edit-post" style="padding: 2px 8px; font-size: 0.85rem;">Edit</a>
+                                                    <form action="/forum/<%= post._id %>/reply/<%= reply._id %>/delete" method="POST" style="display:inline;">
+                                                        <button type="submit" class="remove-btn btn-delete-post" style="padding: 2px 8px; font-size: 0.85rem;">Delete</button>
+                                                    </form>
+                                                </div>
+                                            <% } %>
+
                                         </div>
                                     <% }); %>
                                 <% } %>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Reply - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+    <div class="create-recipe-main">
+        <h2>Edit Your Reply</h2>
+
+        <% if (locals.errors && errors.length > 0) { %>
+            <div class="error-container">
+                <ul class="error-list">
+                    <% errors.forEach(function(error) { %>
+                        <li><%= error %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        <% } %>
+
+        <form action="/forum/<%= postId %>/reply/<%= reply._id %>/edit" method="POST" class="form-card">
+            <div class="input-group">
+                <label>Reply Content:</label>
+                <textarea name="reply_content" required class="tall-input" placeholder="Update your reply here..."><%= reply.content %></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn full-width-btn">Save Changes</button>
+            <a href="/forum" class="btn-outline full-width-btn" style="display: block; text-align: center; margin-top: 10px; text-decoration: none;">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>
