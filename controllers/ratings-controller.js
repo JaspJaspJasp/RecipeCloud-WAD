@@ -87,7 +87,6 @@ exports.readRatings = async (req, res) => {
 
         // Fetch all ratings for this recipe
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-        console.log(allRatings);
         // this is an array of all the rating objects that belong to that recipe
         //  we can use this to calculate the average and count and total score for that recipe, 
         // then we can pass those values to the frontend to render it
