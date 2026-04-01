@@ -611,16 +611,47 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .rating-badge {
-    background: #E0A840;
-    color: #0D1419;
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 1.2rem; 
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(13,20,25,0.1);
+    gap: 12px;
+    background-color: #E0A840;
+    color: #0D1419;
+    padding: 8px 8px 8px 18px; 
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.rating-average {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.rating-count-bold {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+/* Polished View All button */
+.rating-view-btn-centered {
+    background-color: #0D1419;
+    color: #F7F4E3;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-view-btn-centered:hover {
+    background-color: #253A4A;
+    transform: translateY(-1px);
 }
 
 .rating-form-wrapper {
