@@ -18,7 +18,7 @@ exports.saveRecipeToList = async (req, res) => {
     
     try {
 
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        let userShop = await ShopModel.findUserById(sessionUserId);
         
         if (!userShop) {
             
@@ -81,7 +81,7 @@ exports.showShopList = async (req, res) => {
     const sessionUserName = String(req.session.user.userName);
 
     try {
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        let userShop = await ShopModel.findUserById(sessionUserId);
 
         //one document per user setup
         // First time user visits — create an empty shop document for them
@@ -115,7 +115,7 @@ exports.removeRecipeFromList = async (req, res) => {
     const recipeId = String(req.body.recipeId ?? "").trim()
 
     try {
-        const userShop = await ShopModel.findUserById(req.session.user.id);
+        const userShop = await ShopModel.findUserById(sessionUserId);
 
         if (!userShop) {
             return res.redirect('/shopping-list');
@@ -153,7 +153,7 @@ exports.addPersonalItem = async (req, res) => {
 
     try {
     
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        let userShop = await ShopModel.findUserById(sessionUserId);
 
         if (!userShop) {
 
@@ -225,7 +225,7 @@ exports.clearShoppingList = async (req, res) => {
 
     try {
 
-        await ShopModel.deleteItemById(req.session.user.id);
+        await ShopModel.deleteItemById(sessionUserId);
         return res.redirect('/shopping-list');
 
     } catch (err) {
