@@ -48,7 +48,6 @@ exports.deleteRecipeFromList = function(userId, recipeId) {
         { $pull: { savedRecipes: { recipeId: recipeId } } }
     );
 };
-};
 
 exports.updateFavourite = function(userId, updateData) {
     return Favourite.updateOne({ userId: userId }, updateData);
