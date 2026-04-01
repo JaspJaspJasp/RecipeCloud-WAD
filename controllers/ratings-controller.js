@@ -71,6 +71,7 @@ exports.createRating = async (req, res) => {
 // READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
+    const sessionUserId = req.session.id
     try {
         const recipeId = String(req.params.id);
 
@@ -85,11 +86,7 @@ exports.readRatings = async (req, res) => {
 
         // Fetch all ratings for this recipe
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-        console.log(allRatings);
-        // this is an array of all the rating objects that belong to that recipe
-        //  we can use this to calculate the average and count and total score for that recipe, 
-        // then we can pass those values to the frontend to render it
-
+     
         // Calculate aggregates
         let totalScore = 0;
         for (let r of allRatings) {
@@ -109,6 +106,15 @@ exports.readRatings = async (req, res) => {
             }
         }
 
+        // Check if the recipe is already favourited
+        let isFavourited = false;
+        if (sessionUserId) {
+            const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
+            if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
+                isFavourited = true;
+            }
+        }
+
         // Render recipe view with rating data
         return res.render("recipe", {
             recipe: recipe,
@@ -120,7 +126,7 @@ exports.readRatings = async (req, res) => {
             allRatings: allRatings,
             comments: comments,
             status: status,
-            favStatus: favStatus,
+            favStatus: status,
             isFavourited: isFavourited 
         });
 
@@ -197,8 +203,7 @@ exports.deleteRating = async (req, res) => {
 // HELPER: Recalculate recipe rating aggregates
 async function recalculateRecipeRatings(recipeId) {
     try {
-        // we want all the rating that belong to that same recipe
-        // this will provide the entire document for that user + recipe pair
+        
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
         // console.log(allRatings);
 
