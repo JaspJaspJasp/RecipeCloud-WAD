@@ -1,86 +1,151 @@
+const mongoose = require('mongoose');
 const Favourite = require('../models/favourite-model');
 
+// This reaches into Mongoose's internal registry to find the model
+// Use whatever name you gave it in mongoose.model('THIS_NAME', ...)
+const Recipe = mongoose.model('Recipe');
+
 exports.createFavourite = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
+    if (!req.session.user) return res.redirect("/login");
 
     const userId = String(req.session.user._id || req.session.user.id);
-    const userName = req.session.user.userName || req.session.user.username; 
     const recipeId = String(req.body.recipeId);
-
-    console.log(`Attempting to save: User ${userId}, Recipe ${recipeId}`);
+    const userName = req.session.user.userName || req.session.user.username || "Guest User";
 
     try {
-        // checks if user has a favaourite document if not creates one
         const userFavourite = await Favourite.findFavouriteByUserId(userId);
-        // this will return a favourite document with all the attributes as described in the favourite model
+        
+        // 1. Check if the recipe is already there
+        if (userFavourite) {
+            const isAlreadySaved = userFavourite.savedRecipes.some(r => String(r.recipeId) === recipeId);
+            
+            if (isAlreadySaved) {
+                // Return the "Already Saved" message with the same aesthetic
+                return res.send(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head><link rel="stylesheet" href="/css/style.css"><title>Already Saved - RecipeCloud</title></head>
+                    <body>
+                        <div class="recipe-detail-main">
+                            <div class="recipe-container" style="text-align: center; padding: 50px;">
+                                <div class="content-wrapper">
+                                    <h1 class="recipe-detail-title" style="color: #ff9800;">ℹ️ Already Saved</h1>
+                                    <p class="recipe-created-by" style="font-size: 1.2rem; margin-bottom: 30px;">
+                                        This recipe is already in your saved collections.
+                                    </p>
+                                    <div style="display: flex; justify-content: center; gap: 20px;">
+                                        <a href="/recipe/${recipeId}" class="btn-solid">← Back to Recipe</a>
+                                        <a href="/favourites" class="btn-solid" style="background-color: #3e4984; border-color: #3e4984;">View My Collection →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+            }
+        }
+
+        // 2. If it's not a duplicate, proceed with adding it
         if (!userFavourite) {
             await Favourite.createFavourite({
-                userId: userId, 
-                userName: userName, 
-                savedRecipes: [{
-                    recipeId: recipeId,
-                    dateSaved: new Date()
-                }]
-            })
+                userId: userId,
+                userName: userName,
+                savedRecipes: [{ recipeId: recipeId, dateSaved: new Date() }]
+            });
         } else {
-            // is user already has a favourite document we want to add onto the savedRecipe array, 
-            // we will use the $push operator to add a new recipe to the savedRecipes array
             await Favourite.addRecipeToList(userId, recipeId);
         }
 
-        res.redirect('/favourites'); 
-    } catch (error) {
-        console.error("CREATE ERROR:", error);
-        res.render("error", {message: "Couldn't add to favourites."});
-    }
+        // 3. Success Message
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head><link rel="stylesheet" href="/css/style.css"><title>Success - RecipeCloud</title></head>
+            <body>
+                <div class="recipe-detail-main">
+                    <div class="recipe-container" style="text-align: center; padding: 50px;">
+                        <div class="content-wrapper">
+                            <h1 class="recipe-detail-title" style="color: #4CAF50;">✅ Added to Collection</h1>
+                            <p class="recipe-created-by" style="font-size: 1.2rem; margin-bottom: 30px;">
+                                This recipe has been saved to your personal favorites.
+                            </p>
+                            <div style="display: flex; justify-content: center; gap: 20px;">
+                                <a href="/recipe/${recipeId}" class="btn-solid">← Back to Recipe</a>
+                                <a href="/favourites" class="btn-solid" style="background-color: #3e4984; border-color: #3e4984;">View My Collection →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
 
+    } catch (error) {
+        console.error("DETAILED DATABASE ERROR:", error);
+        res.status(500).send("Error processing your request.");
+    }
 };
 
-// read operation to fetch single favourite document for logged in user 
+
 exports.readFavourite = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
+    if (!req.session.user) return res.redirect("/login");
 
     try {
-        const userId = String(req.session.user.id);
+        const userId = String(req.session.user._id || req.session.user.id);
+        console.log("--- DEBUG START ---");
+        
         const userFavourite = await Favourite.findFavouriteByUserId(userId);
         
         if (!userFavourite) {
-            return res.render('favourites', { favourite: null });
+            return res.render('favourites', { recipes: [] });
         }
 
-        res.render('favourites', {
-            favourite: userFavourite
-        });
+        const finalRecipes = [];
+
+        for (const item of userFavourite.savedRecipes) {
+            try {
+                // Now that we grabbed the model via mongoose.model(), 
+                // findById will definitely be a function.
+                const detail = await Recipe.findById(item.recipeId).lean();
+
+                if (detail) {
+                    console.log(`   -> SUCCESS: Found "${detail.recipe_name}"`);
+                    finalRecipes.push(detail);
+                } else {
+                    console.log(`   -> NOT FOUND: ID ${item.recipeId} exists in Favourites but not in Recipes.`);
+                }
+            } catch (err) {
+                console.log("   -> SEARCH ERROR:", err.message);
+            }
+        }
+
+        console.log("4. Sending to EJS:", finalRecipes.length);
+        res.render('favourites', { recipes: finalRecipes });
+
     } catch (error) {
-        console.error(error);
-        res.render("error", {message: "Couldn't fetch your favourite collection. Please try again."});
+        console.error("READ ERROR:", error);
+        res.render("error", { message: "Error loading collection." });
     }
 };
 
-
-// update operation to update the notes and tags for a favourite document
 exports.updateFavourite = async (req, res) => {
     if(!req.session.user) {
         return res.redirect("/login");
     }
     try {
-        const userId = String(req.session.user.id);
-        const { notes, tags, ingredients } = req.body;
+        const userId = String(req.session.user._id || req.session.user.id);
+        const { recipeId, notes } = req.body;
 
-        await Favourite.updateFavourite(userId, {
-            notes,
-            tags,
-            ingredients
-        });
+        await Favourite.updateOne(
+            { userId: userId, "savedRecipes.recipeId": recipeId },
+            { $set: { "savedRecipes.$.notes": notes } }
+        );
         
         res.redirect('/favourites');
     } catch (error) {
         console.error(error);
-        res.render("error", {message: "Couldn't update your favourite collection. Please try again."});
+        res.render("error", {message: "Couldn't update notes."});
     }
 };
 // deletes a favourite (D)

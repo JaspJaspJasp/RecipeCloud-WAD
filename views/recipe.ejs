@@ -77,7 +77,7 @@
         <div class="rating-form-wrapper" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
             <h3 class="section-heading" style="font-size: 1.1rem; margin-bottom: 10px;">💾 Save to My Collection</h3>
             <form action="/favourites/add" method="POST" class="rating-form" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                <input type="hidden" name="recipeId" value="<%= recipe._id %>">
+                <input type="hidden" name="recipeId" value="<%= String(recipe._id) %>">
                 <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
                 
                 <div style="width: 100%;">
@@ -91,7 +91,7 @@
                 </div>
                 
                 <button type="submit" class="btn-solid" style="background-color: #e91e63; border-color: #e91e63;">
-                    ❤️ Add to Favourites
+                    ❤️ Add to Saved Collections
                 </button>
             </form>
         </div>

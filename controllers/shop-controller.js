@@ -1,59 +1,60 @@
 const ShopModel = require("../models/shop-model");
 
 exports.saveRecipeToList = async (req, res) => {
-    const recipeId = req.body.recipeId;
-    const recipeName = req.body.recipeName;
-    const ingredients = req.body.ingredients;
-    const parsedIngredients = JSON.parse(ingredients);
-
+    // 1. Get IDs from session and body
+    const userId = String(req.session.user._id || req.session.user.id);
+    const { recipeId, recipeName, ingredients } = req.body;
+    
     try {
+        // 2. Prepare the data to be added
+        const parsedIngredients = JSON.parse(ingredients);
+        const newRecipeEntry = {
+            recipeId: String(recipeId),
+            recipeName: recipeName,
+            ingredients: parsedIngredients.map(ing => ({
+                name: ing.name,
+                amount: ing.amount,
+                isBought: false
+            }))
+        };
 
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        // 3. Find the user's existing list
+        let userShop = await ShopModel.findUserById(userId);
 
-        const additemObj = {
-            userid: req.session.user.id,
-            userName: req.session.user.userName,
-            personalitems: [],
-            recipes: [{
-                recipeId,
-                recipeName,
-                ingredients: parsedIngredients.map(ing => ({
-                    name: ing.name,
-                    amount: ing.amount,
-                    isBought: false
-                }))
-            }]
-        }
         if (!userShop) {
-
-            await ShopModel.addItem(additemObj);
-
+            // Case A: User has NO shopping list yet. Create it with this first recipe.
+            await ShopModel.addItem({
+                userid: userId,
+                userName: req.session.user.userName || req.session.user.username,
+                personalitems: [],
+                recipes: [newRecipeEntry] // Start the array with this recipe
+            });
         } else {
-            //WHY NOT .FIND() but .SOME() CUZ .some() → returns true or false only
-            const alreadySaved = userShop.recipes.some(r => r.recipeId === String(recipeId));
-            if (alreadySaved) {
+            // Case B: User ALREADY has a list. 
+            // Check if THIS specific recipe is already in their array.
+            const isAlreadyInList = userShop.recipes.some(r => String(r.recipeId) === String(recipeId));
+
+            if (isAlreadyInList) {
+                // If it's already there, just redirect to the list (prevents duplicates)
                 return res.redirect('/shopping-list');
             }
 
-            userShop.recipes.push({
-                recipeId,
-                recipeName,
-                ingredients: parsedIngredients.map(ing => ({
-                    name: ing.name,
-                    amount: ing.amount,
-                    isBought: false
-                }))
-            });
+            // IF NOT A DUPLICATE: Push the new recipe object into the existing array
+            userShop.recipes.push(newRecipeEntry);
+            
+            // Save the updated document back to MongoDB
             userShop.updatedAt = Date.now();
             await userShop.save();
         }
 
+        // 4. Redirect to the list to see the new addition
         res.redirect('/shopping-list');
+
     } catch (err) {
-        console.error(err);
-        res.render('error', { message: "Could not save recipe to shopping list." });
+        console.error("SHOP SAVE ERROR:", err);
+        res.render('error', { message: "Could not add recipe to shopping list." });
     }
-}
+};
 
 exports.showShopList = async (req, res) => {
     try {
