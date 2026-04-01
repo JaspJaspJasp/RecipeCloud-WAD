@@ -71,7 +71,8 @@ exports.createRating = async (req, res) => {
 // READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
-    const sessionUserId = req.session.id
+    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
+    const favStatus = (req.query.favStatus ?? "").trim();
     try {
         const recipeId = String(req.params.id);
 
@@ -86,7 +87,11 @@ exports.readRatings = async (req, res) => {
 
         // Fetch all ratings for this recipe
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-     
+        console.log(allRatings);
+        // this is an array of all the rating objects that belong to that recipe
+        //  we can use this to calculate the average and count and total score for that recipe, 
+        // then we can pass those values to the frontend to render it
+
         // Calculate aggregates
         let totalScore = 0;
         for (let r of allRatings) {
@@ -98,18 +103,14 @@ exports.readRatings = async (req, res) => {
 
         // Find user's rating if logged in
         let userRating = null;
+        let isFavourited = false;
         if (sessionUserId) {
             const userRatingDoc = await Rating.findUserRating(sessionUserId, recipeId);
             if (userRatingDoc) {
                 userRating = userRatingDoc.ratingValue;
                 // console.log(userRatingDoc)
             }
-        }
-
-        // Check if the recipe is already favourited
-        let isFavourited = false;
-        if (sessionUserId) {
-            const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
+            const userFavs = await FavouriteModel.findFavouriteByUserId(sessionUserId);
             if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
                 isFavourited = true;
             }
@@ -126,7 +127,7 @@ exports.readRatings = async (req, res) => {
             allRatings: allRatings,
             comments: comments,
             status: status,
-            favStatus: status,
+            favStatus: favStatus,
             isFavourited: isFavourited 
         });
 
