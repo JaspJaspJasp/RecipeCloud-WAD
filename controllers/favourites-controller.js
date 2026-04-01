@@ -53,7 +53,7 @@ exports.readFavourite = async (req, res) => {
 
         for (const item of userFavourite.savedRecipes) {
             try {
-                const detail = await Recipe.findById(item.recipeId).lean();
+                const detail = await Recipe.findRecipeById(item.recipeId).lean();
 
                 if (detail) {
                     finalRecipes.push(detail);
