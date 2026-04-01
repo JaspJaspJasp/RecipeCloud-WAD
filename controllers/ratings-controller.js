@@ -38,7 +38,6 @@ exports.createRating = async (req, res) => {
             };
             // UPDATE existing rating
             await Rating.updateRating(existingRating._id, updateData);
-       
 
         } else {
             // CREATE new rating
@@ -63,7 +62,6 @@ exports.createRating = async (req, res) => {
     }
 };
 
-// READ all ratings for a recipe
 // READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
