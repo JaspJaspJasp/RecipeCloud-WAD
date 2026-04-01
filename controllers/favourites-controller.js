@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Favourite = require('../models/favourite-model');
 
-// This reaches into Mongoose's internal registry to find the model
-// Use whatever name you gave it in mongoose.model('THIS_NAME', ...)
 const Recipe = mongoose.model('Recipe');
 
 exports.createFavourite = async (req, res) => {
@@ -20,7 +18,6 @@ exports.createFavourite = async (req, res) => {
             const isAlreadySaved = userFavourite.savedRecipes.some(r => String(r.recipeId) === recipeId);
             
             if (isAlreadySaved) {
-                // Return the "Already Saved" message with the same aesthetic
                 return res.send(`
                     <!DOCTYPE html>
                     <html>
@@ -105,8 +102,6 @@ exports.readFavourite = async (req, res) => {
 
         for (const item of userFavourite.savedRecipes) {
             try {
-                // Now that we grabbed the model via mongoose.model(), 
-                // findById will definitely be a function.
                 const detail = await Recipe.findById(item.recipeId).lean();
 
                 if (detail) {

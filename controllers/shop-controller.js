@@ -22,7 +22,6 @@ exports.saveRecipeToList = async (req, res) => {
         let userShop = await ShopModel.findUserById(userId);
 
         if (!userShop) {
-            // Case A: User has NO shopping list yet. Create it with this first recipe.
             await ShopModel.addItem({
                 userid: userId,
                 userName: req.session.user.userName || req.session.user.username,
@@ -30,19 +29,14 @@ exports.saveRecipeToList = async (req, res) => {
                 recipes: [newRecipeEntry] // Start the array with this recipe
             });
         } else {
-            // Case B: User ALREADY has a list. 
-            // Check if THIS specific recipe is already in their array.
             const isAlreadyInList = userShop.recipes.some(r => String(r.recipeId) === String(recipeId));
 
             if (isAlreadyInList) {
-                // If it's already there, just redirect to the list (prevents duplicates)
                 return res.redirect('/shopping-list');
             }
 
-            // IF NOT A DUPLICATE: Push the new recipe object into the existing array
             userShop.recipes.push(newRecipeEntry);
-            
-            // Save the updated document back to MongoDB
+
             userShop.updatedAt = Date.now();
             await userShop.save();
         }
@@ -64,8 +58,6 @@ exports.showShopList = async (req, res) => {
 
         let userShop = await ShopModel.findUserById(req.session.user.id);
 
-        //one document per user setup
-        // First time user visits — create an empty shop document for them
         if (!userShop) {
             userShop = await ShopModel.addItem({
                 userid: req.session.user.id,
