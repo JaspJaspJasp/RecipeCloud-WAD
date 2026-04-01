@@ -109,7 +109,7 @@ exports.readRatings = async (req, res) => {
                 userRating = userRatingDoc.ratingValue;
                 // console.log(userRatingDoc)
             }
-            const userFavs = await FavouriteModel.findFavouriteByUserId(sessionUserId);
+            const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
             if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
                 isFavourited = true;
             }
