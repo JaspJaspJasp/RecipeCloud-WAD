@@ -3,14 +3,15 @@ const CommentModel = require('../models/comment-model');
 
 //HomePage in index.ejs
 exports.HomePage = async (req, res) => {
+
+    const recipe_name = (req.query.q ?? "").trim();
+    const cuisine = (req.query.cuisine ?? "").trim();
+    const difficulty = (req.query.difficulty ?? "").trim();
+        
+    const rawTags = req.query.tags;
+    const tagsArray = rawTags ? (Array.isArray(rawTags) ? rawTags : String(rawTags).split(",")) : [];
+
     try {
-
-        const recipe_name = (req.query.q ?? "").trim();
-        const cuisine = (req.query.cuisine ?? "").trim();
-        const difficulty = (req.query.difficulty ?? "").trim();
-        const tags = (req.query.tags ?? "").trim(); 
-
-        console.log(tags);
 
         const query = recipe_name
             ? { recipe_name: { $regex: recipe_name, $options: 'i' } }
@@ -24,11 +25,7 @@ exports.HomePage = async (req, res) => {
             query.difficulty_level = difficulty;
         }
 
-        if (tags !== "") {
-            let tagArray = Array.isArray(tags) ? tags : tags.split(",");
-            console.log(tagArray);
-            query.tag = { $in: tagArray };
-        }
+        
 
         const recipes = await Recipe.searchRecipes(query);
 
