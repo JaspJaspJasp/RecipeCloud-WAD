@@ -20,7 +20,7 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
     DB=mongodb+srv://<'USERNAME'>:<'PASSWORD'>@<'CLUSTERADDRESS'>/<'DBNAME'>?retryWrites=true&w=majority
     SECRET = '<'ANYTHING YOU WANT'>'
 6. Run Server with nodemon server.js
-7. Access and type http://127.0.0.1/8000 in chrome browser
+7. Access and type http://127.0.0.1/8000 in a Chrome browser
 
 
        
@@ -34,7 +34,11 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 ---
 ### USERNAME DETAILS 
 - ADMIN : 
+    username: admin
+    password: password
 - USER : 
+    username: notadmin
+    password: password
 
 ## 🚀 Features
 

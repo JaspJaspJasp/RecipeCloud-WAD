@@ -60,9 +60,18 @@
                         
                         <div class="rating-group-top">
                             <div class="rating-badge">
-                                ⭐ <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
-                                <span style="font-size: 0.85rem; font-weight: normal; margin-left: 5px;">(<%= ratingCount || 0 %>)</span>
-                                <button type="button" onclick="openRatingsOverlay()" class="btn-solid" style="margin-left: 10px; padding: 5px 12px; font-size: 0.9rem;">View All</button>
+                                <span>⭐</span>
+                                <span class="rating-average">
+                                    <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
+                                </span>
+                                <span class="rating-count-bold">
+                                    (<%= ratingCount || 0 %>)
+                                </span>
+                                <button type="button" 
+                                        onclick="openRatingsOverlay()" 
+                                        class="rating-view-btn-centered">
+                                    View All
+                                </button>
                             </div>
 
                             <% if (user) { %>
