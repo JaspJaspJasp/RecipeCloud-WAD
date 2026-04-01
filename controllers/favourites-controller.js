@@ -3,14 +3,8 @@ const Favourite = require('../models/favourite-model');
 const Recipe = mongoose.model('Recipe');
 
 exports.createFavourite = async (req, res) => {
-<<<<<<< HEAD
-    if (!req.session.user) {
-        return res.redirect("/login");
-    }
-=======
     const sessionUserId = String(req.session.user.id);
     const sessionUserName = String(req.session.user.userName ?? "Guest User").trim();
->>>>>>> 62a6766c0af8a33df493f1dbe2b9f8f9decf0d87
 
     const recipeId = String(req.body.recipeId ?? "").trim();
 
