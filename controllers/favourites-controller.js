@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
 const Favourite = require('../models/favourite-model');
-const Recipe = mongoose.model('Recipe');
+const Recipe = require('../models/recipe-model');
 
 exports.createFavourite = async (req, res) => {
+    
     const sessionUserId = String(req.session.user.id);
     const sessionUserName = String(req.session.user.userName ?? "Guest User").trim();
 
