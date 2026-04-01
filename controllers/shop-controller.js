@@ -208,8 +208,7 @@ exports.removePersonalItem = async (req, res) => {
             personalitems: filteredItems,
             updatedAt: Date.now()
         };
-        //.save() is what actually sends those changes back to MongoDB
-        //without .save() changes are only saved in js memory
+        
         await ShopModel.editItemById(sessionUserId, updateData);
 
         return res.redirect('/shopping-list');
