@@ -11,17 +11,15 @@
         <div class="recipe-container">
             <div class="content-wrapper">
                 
-                <div class="header-wrapper">
-                    <h1 class="recipe-detail-title">Saved Collection</h1>
-                    <p class="recipe-created-by">Recipes you've bookmarked to cook later</p>
-                    <div class="recipe-divider"></div>
+                <div class="header-wrapper" style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px;">
+                    <h1 class="recipe-detail-title" style="margin: 0;">Saved Collection</h1>
+                    <p class="recipe-created-by" style="margin: 0;">Recipes you've bookmarked to cook later</p>
                 </div>
+                <div class="recipe-divider"></div>
 
                 <% if (!recipes || recipes.length === 0) { %>
                     <div class="comment-login-box">
                         <p class="no-comments-text">Your collection is empty.</p>
-                        <br>
-                        <a href="/" class="btn-solid">Explore Recipes</a>
                     </div>
                 <% } else { %>
                     <div class="grid-layout" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
@@ -36,7 +34,7 @@
                                 <div style="padding: 20px;">
                                     <h3 style="margin: 0 0 10px 0; font-size: 1.4rem;"><%= recipe.recipe_name %></h3>
                                     
-                                    <h4 class="section-heading" style="font-size: 0.9rem; margin-top: 15px;">Ingredients:</h4>
+                                    <h4 class="section-heading" style="font-size: 0.9rem; margin-top: 15px; border-bottom: 2px solid #E0A840; padding-bottom: 5px;">Ingredients:</h4>
                                     <ul style="padding-left: 20px; font-size: 0.85rem; color: #555; max-height: 100px; overflow-y: auto;">
                                         <% recipe.ingredients.forEach(ing => { %>
                                             <li><%= ing.name %> (<%= ing.amount %>)</li>
@@ -46,21 +44,23 @@
                                     <div class="recipe-divider" style="margin: 15px 0;"></div>
 
                                     <div style="display: flex; flex-direction: column; gap: 10px;">
-                                        <form action="/shopping-list/save-recipe" method="POST">
+                                        <form action="/shopping-list/save-recipe" method="POST" style="margin: 0;">
                                             <input type="hidden" name="recipeId" value="<%= recipe._id %>">
                                             <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
                                             <input type="hidden" name="ingredients" value='<%= JSON.stringify(recipe.ingredients) %>'>
                                             
-                                            <button type="submit" class="btn-solid">🛒 Add to Shopping List</button>
+                                            <button type="submit" class="btn-solid-shopping">🛒 Add to Shopping List</button>
                                         </form>
 
                                         <div style="display: flex; gap: 10px;">
-                                            <a href="/recipe/<%= recipe._id %>" class="btn-outline" style="flex: 1; text-align: center; text-decoration: none; padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 0.9rem;">
-                                                View Info
-                                            </a>
+                                            <div style="flex: 1;">
+                                                <a href="/recipe/<%= recipe._id %>" class="btn-fav-outline">
+                                                    View Info
+                                                </a>
+                                            </div>
                                             
-                                            <form action="/favourites/delete/<%= recipe._id %>" method="POST" style="flex: 1;">
-                                                <button type="submit" class="btn-comment-delete" style="width: 100%; padding: 8px;">
+                                            <form action="/favourites/delete/<%= recipe._id %>" method="POST" style="flex: 1; margin: 0;">
+                                                <button type="submit" class="btn-fav-delete">
                                                     Remove
                                                 </button>
                                             </form>

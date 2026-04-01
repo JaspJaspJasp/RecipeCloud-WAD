@@ -18,7 +18,7 @@ exports.saveRecipeToList = async (req, res) => {
     
     try {
 
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        let userShop = await ShopModel.findUserById(sessionUserId);
         
         if (!userShop) {
             
@@ -41,6 +41,7 @@ exports.saveRecipeToList = async (req, res) => {
 
         } else {
             //WHY NOT .FIND() but .SOME() CUZ .some() → returns true or false only
+            //checks if recipe is already saved
             const alreadySaved = userShop.recipes.some(r => r.recipeId === String(recipeId));
             if (alreadySaved) {
                 return res.redirect('/shopping-list');
@@ -80,7 +81,7 @@ exports.showShopList = async (req, res) => {
     const sessionUserName = String(req.session.user.userName);
 
     try {
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        let userShop = await ShopModel.findUserById(sessionUserId);
 
         //one document per user setup
         // First time user visits — create an empty shop document for them
@@ -114,7 +115,7 @@ exports.removeRecipeFromList = async (req, res) => {
     const recipeId = String(req.body.recipeId ?? "").trim()
 
     try {
-        const userShop = await ShopModel.findUserById(req.session.user.id);
+        const userShop = await ShopModel.findUserById(sessionUserId);
 
         if (!userShop) {
             return res.redirect('/shopping-list');
@@ -145,14 +146,14 @@ exports.addPersonalItem = async (req, res) => {
     
     const name = String(req.body.name ?? "").trim();
     const amount = String(req.body.amount ?? "").trim();
-
+    // if name is undefined or just ""
     if (!name) {
         return res.redirect('/shopping-list');
     }
 
     try {
     
-        let userShop = await ShopModel.findUserById(req.session.user.id);
+        let userShop = await ShopModel.findUserById(sessionUserId);
 
         if (!userShop) {
 
@@ -224,7 +225,7 @@ exports.clearShoppingList = async (req, res) => {
 
     try {
 
-        await ShopModel.deleteItemById(req.session.user.id);
+        await ShopModel.deleteItemById(sessionUserId);
         return res.redirect('/shopping-list');
 
     } catch (err) {
