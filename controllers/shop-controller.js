@@ -146,7 +146,7 @@ exports.addPersonalItem = async (req, res) => {
     
     const name = String(req.body.name ?? "").trim();
     const amount = String(req.body.amount ?? "").trim();
-
+    // if name is undefined or just ""
     if (!name) {
         return res.redirect('/shopping-list');
     }
