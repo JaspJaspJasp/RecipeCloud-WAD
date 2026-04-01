@@ -1,5 +1,6 @@
 const Recipe = require("../models/recipe-model"); 
 const CommentModel = require('../models/comment-model');
+const Rating = require('../models/ratings-model');
 
 //HomePage in index.ejs
 exports.HomePage = async (req, res) => {
@@ -30,19 +31,19 @@ exports.HomePage = async (req, res) => {
         const recipes = await Recipe.searchRecipes(query);
 
         return res.render('index', { 
-            recipes,
+            recipes: recipes,
             searchQuery: recipe_name,
-            cuisine,
-            difficulty,
-            tags,
-            tag: tags ? tags.split(",") : []
+            cuisine: cuisine,
+            difficulty: difficulty,
+            tags: rawTags ?? "",
+            tag: tagsArray
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in HomePage:", err);
         return res.render('error', { 
             message: "We couldn't load the recipes. Please refresh or try again later."
-        });
+        })
     }
 };
 
@@ -68,6 +69,9 @@ exports.getCreate = (req, res) => {
 //POST create route to database
 exports.postCreate = async (req, res) => {
    
+    const sessionUserId = String(req.session.user.id);
+    const sessionUserName = String(req.session.user.userName);
+    
     const recipe_name = (req.body.recipe_name ?? "").trim();
     const cuisine = (req.body.cuisine ?? "").trim();
     const serving = (req.body.serving ?? "").trim();
@@ -194,7 +198,6 @@ exports.recipeFindbyID = async (req, res) => {
     try {
         const recipe = await Recipe.findRecipeById(recipeId);
         const comments = await CommentModel.retrieveByRecipeId(recipeId);
-        const Rating = require('../models/ratings-model');
         
         if (!recipe) {
             return res.render('error', {
@@ -230,18 +233,26 @@ exports.recipeFindbyID = async (req, res) => {
 };
 
 exports.renderEditRecipeForm = async (req, res) => {
+
+    const sessionUserId = String(req.session.user.id);
+    const sessionUserRole = (req.session.user.role);
+    const recipeId = String(req.params.id);
+    
     try {
         const recipe = await Recipe.findRecipeById(req.params.id);
-        if (req.session.user._id !== recipe.userId && req.session.user.role !== "admin") {
-            return res.render('error', {
-                message: "No permissions to edit recipe."
-            });
-        }
+
         if (!recipe) {
             return res.render('error', {
                 message: "Recipe not found."
             });
         }
+
+        if (req.session.user._id !== recipe.userId && req.session.user.role !== "admin") {
+            return res.render('error', {
+                message: "No permissions to edit recipe."
+            });
+        }
+        
 
 
         let ingredient_amount = [];
@@ -273,12 +284,56 @@ exports.renderEditRecipeForm = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
-        return res.redirect(`/recipe/${req.params.id}`);
+        console.error("Error in renderEditRecipeForm:", err);
+        return res.render('error', { message: "Could not load edit form." });
     }
 };
 
 exports.updateRecipe = async (req, res) => {
+
+    const sessionUserId = String(req.session.user.id);
+    const sessionUserRole = req.session.user.role;
+    const recipeId = String(req.params.id);
+
+    let recipe_name = (req.body.recipe_name ?? "").trim();
+    let cuisine = (req.body.cuisine ?? "").trim();
+    let serving = (req.body.serving ?? "").trim();
+    let approx_cooking_time = (req.body.approx_cooking_time ?? "").trim();
+    let difficulty_level = (req.body.difficulty_level ?? "").trim();
+    let instructions = (req.body.instructions ?? "").trim();
+
+   let tag = req.body.tag || [];
+    if (!Array.isArray(tag)) tag = [tag];
+
+    let ingredient_amount = req.body.ingredient_amount || [];
+    if (!Array.isArray(ingredient_amount)) ingredient_amount = [ingredient_amount];
+    ingredient_amount = ingredient_amount.map(item => item.trim());
+    
+    let ingredient_name = req.body.ingredient_name || [];
+    if (!Array.isArray(ingredient_name)) ingredient_name = [ingredient_name];
+    ingredient_name = ingredient_name.map(item => item.trim());
+
+    let errors = [];
+
+    if (!recipe_name) errors.push("Recipe Name is required.");
+    if (!cuisine) errors.push("Cuisine type is required.");
+    if (!serving) errors.push("Serving size is required.");
+    if (!approx_cooking_time) errors.push("Cooking time is required.");
+    if (!difficulty_level) errors.push("Difficulty level is required.");
+    if (!instructions) errors.push("Instructions are required.");
+
+    let hasValidIngredient = false;
+
+    for (let i = 0; i < ingredient_name.length; i++) {
+        if (ingredient_name[i] !== "" && ingredient_amount[i] !== "") {
+            hasValidIngredient = true;
+            break;
+        }
+    }
+    if (!hasValidIngredient) {
+        errors.push("At least one ingredient with an amount is required.");
+    }
+
     try {
         const recipe = await Recipe.findRecipeById(req.params.id);
 
@@ -288,43 +343,8 @@ exports.updateRecipe = async (req, res) => {
             });
         }
 
-        let recipe_name = (req.body.recipe_name ?? "").trim();
-        let cuisine = (req.body.cuisine ?? "").trim();
-        let serving = (req.body.serving ?? "").trim();
-        let approx_cooking_time = (req.body.approx_cooking_time ?? "").trim();
-        let difficulty_level = (req.body.difficulty_level ?? "").trim();
-        let instructions = (req.body.instructions ?? "").trim();
-
-        let tag = req.body.tag || [];
-        if (!Array.isArray(tag)) tag = [tag];
-
-        let ingredient_amount = req.body.ingredient_amount || [];
-        if (!Array.isArray(ingredient_amount)) ingredient_amount = [ingredient_amount];
-        ingredient_amount = ingredient_amount.map(item => item.trim());
-
-        let ingredient_name = req.body.ingredient_name || [];
-        if (!Array.isArray(ingredient_name)) ingredient_name = [ingredient_name];
-        ingredient_name = ingredient_name.map(item => item.trim());
-
-        let errors = [];
-
-        if (!recipe_name) errors.push("Recipe Name is required.");
-        if (!cuisine) errors.push("Cuisine type is required.");
-        if (!serving) errors.push("Serving size is required.");
-        if (!approx_cooking_time) errors.push("Cooking time is required.");
-        if (!difficulty_level) errors.push("Difficulty level is required.");
-        if (!instructions) errors.push("Instructions are required.");
-
-        let hasValidIngredient = false;
-        for (let i = 0; i < ingredient_name.length; i++) {
-            if (ingredient_name[i] !== "" && ingredient_amount[i] !== "") {
-                hasValidIngredient = true;
-                break;
-            }
-        }
-
-        if (!hasValidIngredient) {
-            errors.push("At least one ingredient with an amount is required.");
+        if (sessionUserId !== String(recipe.userId) && sessionUserRole !== "admin") {
+            return res.render('error', { message: "You are not authorized to edit this recipe." });
         }
 
         if (errors.length > 0) {
@@ -357,7 +377,7 @@ exports.updateRecipe = async (req, res) => {
         const updateData = {
             recipe_name: recipe_name,
             cuisine: cuisine,
-            tag: tag,
+            tag: tagArray,
             serving: serving,
             approx_cooking_time: approx_cooking_time,
             difficulty_level: difficulty_level,
@@ -365,16 +385,22 @@ exports.updateRecipe = async (req, res) => {
             ingredients: formattedIngredients
         };
 
-        await Recipe.updateRecipe(req.params.id, updateData);
+        await Recipe.updateRecipe(recipeId, updateData);
 
         return res.redirect('/');
 
     } catch (err) {
-        console.error(err);
-        return res.redirect(`/recipe/${req.params.id}`);
+        console.error("Error in updateRecipe:", err);
+        return res.render('error', { message: "Could not update the recipe." });
     }
 };
+
 exports.renderDeleteRecipeForm = async (req, res) => {
+
+    const sessionUserId = String(req.session.user.id);
+    const sessionUserRole = req.session.user.role;
+    const recipeId = String(req.params.id);
+
     try {
         const recipe = await Recipe.findRecipeById(req.params.id);
 
@@ -383,18 +409,28 @@ exports.renderDeleteRecipeForm = async (req, res) => {
                 message: "Recipe not found."
             });
         }
+
+        if (sessionUserId !== String(recipe.userId) && sessionUserRole !== "admin") {
+            return res.render('error', { message: "No permissions to delete recipe." });
+        }
+
         return res.render('delete-recipe', {
             recipe: recipe,
             user: req.session.user
         });
 
     } catch (err) {
-        console.error(err);
-        return res.redirect(`/recipe/${req.params.id}`);
+        console.error("Error in renderDeleteRecipeForm:", err);
+        return res.render('error', { message: "Failed to load delete form." });
     }
 };
 
 exports.deleteRecipe = async (req, res) => {
+
+    const sessionUserId = String(req.session.user.id);
+    const sessionUserRole = req.session.user.role;
+    const recipeId = String(req.params.id);
+
     try {
         const recipe = await Recipe.findRecipeById(req.params.id);
 
@@ -403,14 +439,19 @@ exports.deleteRecipe = async (req, res) => {
                 message: "Recipe not found."
             });
         }
+        
+        if (sessionUserId !== String(recipe.userId) && sessionUserRole !== "admin") {
+            return res.render('error', { message: "You are not authorized to delete this recipe." });
+        }
+
         let success = await Recipe.deleteRecipe(req.params.id);
         console.log(success,'Recipe deletion SUCCESS');
 
         return res.redirect('/');
 
     } catch (err) {
-        console.error(err);
-        return res.redirect(`/recipe/${req.params.id}`);
+        console.error("Error in deleteRecipe:", err);
+        return res.render('error', { message: "Failed to delete recipe." });
     }
 };
 

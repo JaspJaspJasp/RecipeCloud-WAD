@@ -28,13 +28,6 @@ router.post('/recipe/:id/delete-rating', authentication.isLoggedIn, ratingsContr
 //posting the rating into database when in recipe (U)
 router.post('/recipe/:id/rate', authentication.isLoggedIn, ratingsController.createRating);
 
-
-
-
-
-
-
-
 //posting the comment into database when in recipe (C)
 router.post('/recipe/:id/comment', authentication.isLoggedIn, commentController.createComments);
 
