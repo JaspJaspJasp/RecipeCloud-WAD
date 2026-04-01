@@ -11,7 +11,7 @@ exports.saveRecipeToList = async (req, res) => {
 
     let parsedIngredients = [];
     try {
-        parsedIngredients = rawIngredients ? JSON.parse(rawIngredients) : [];
+        parsedIngredients = ingredients ? JSON.parse(ingredients) : [];
     } catch (e) {
         parsedIngredients = [];
     }
