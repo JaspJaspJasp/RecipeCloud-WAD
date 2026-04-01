@@ -3,16 +3,22 @@ const ForumModel = require("../models/forum-model");
 
 //Loading forum page
 exports.showForum = async (req, res) => {
+
+    const sessionUser = req.session ? req.session.user : null;
+
     try {
         const discussions = await ForumModel.findAllPosts();
+
         return res.render('forum', { 
             discussions: discussions,
-            user: req.session.user || null 
+            user: sessionUser 
         });
+
     } catch (err) {
-        console.error(err);
+
+        console.error("Error in showForum:", err);
         return res.render('error', { 
-            message: "We couldn't load the community forum. Please try again later."
+            message: "We couldn't load the community forum. Please try again later." 
         });
     }
 };
@@ -21,23 +27,30 @@ exports.showForum = async (req, res) => {
 //Posting a new forum
 exports.postForum = async (req, res) => {
 
-    if (!req.session.user) {
-        req.session.returnTo = "/forum"; 
-        return res.redirect("/login");
-    }
+    const username = req.session.user.display_name;
 
     const title = (req.body.title ?? "").trim();
     const tag = (req.body.tag ?? "").trim();
     const content = (req.body.content ?? "").trim();
 
-    const username = req.session.user.display_name; 
+     
     let errors = [];
 
     if (!title) {errors.push("Title is required.")};
     if (!tag) {errors.push("Category tag is required.")};
     if (!content) {errors.push("Details/Content are required.")};
 
-    if (errors.length === 0) {
+        
+    try {
+
+        if (errors.length > 0) {
+            const discussions = await ForumModel.findAllPosts();
+            return res.render("forum", { 
+                discussions: discussions,
+                user: req.session.user,
+                errors: errors 
+            });
+        }
 
         const postData = { 
             title,
@@ -46,36 +59,25 @@ exports.postForum = async (req, res) => {
             username 
         };
 
-        try {
             await ForumModel.createPost(postData);
             return res.redirect("/forum");
-        } catch (err) {
-            console.error(err);
-            errors.push("An error occurred while saving your post.");
-            return res.render('error', { message: errors })
-        }
-    }
 
-    //Will occur when error
-    try {
-        const discussions = await ForumModel.findAllPosts();
-        return res.render("forum", { 
-            discussions: discussions,
-            user: req.session.user,
-            errors: errors 
-        });
-    } catch (err) {
-        return res.render('error', { message: "An unexpected error occurred." });
+    } catch(err) {
+
+        console.error("Error in postForum:", err);
+        return res.render('error', { message: "An error occurred while saving your post." });
+    
     }
 };
 
 exports.getEditForum = async (req, res) => {
-    try {
-        if (!req.session.user) {
-            req.session.returnTo = `/forum/${req.params.id}/edit`;
-            return res.redirect("/login");
-        }
 
+    const sessionUserName = req.session.user.display_name;
+    const sessionUserRole = req.session.user.role;
+    
+    const postId = String(req.params.id);
+
+    try {
         const post = await ForumModel.findPostById(req.params.id);
 
         if (!post) {
@@ -93,22 +95,24 @@ exports.getEditForum = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in getEditForum:", err);
         return res.render('error', { message: "Something went wrong loading the edit page." });
     }
 };
 
 exports.updateForum = async (req, res) => {
-    try {
-        if (!req.session.user) {
-            req.session.returnTo = "/forum";
-            return res.redirect("/login");
-        }
 
-        const postId = req.params.id;
-        let title = (req.body.title ?? "").trim();
-        let tag = (req.body.tag ?? "").trim();
-        let content = (req.body.content ?? "").trim();
+    const sessionUserName = req.session.user.display_name;
+    const sessionUserRole = req.session.user.role;
+
+
+    const postId = String(req.params.id);
+    let title = (req.body.title ?? "").trim();
+    let tag = (req.body.tag ?? "").trim();
+    let content = (req.body.content ?? "").trim();
+
+    try {
+
 
         let errors = [];
         if (!title) errors.push("Title is required.");
@@ -121,44 +125,50 @@ exports.updateForum = async (req, res) => {
             return res.render('error', { message: "Post not found." });
         }
 
-        if (existingPost.username !== req.session.user.display_name) {
+        if (existingPost.username !== sessionUserName && sessionUserRole !== "admin") {
             return res.render('error', { message: "Unauthorized action." });
         }
 
-        if (errors.length === 0) {
-            const updatedData = { title, tag, content };
-            // Awaiting the update
-            await ForumModel.updatePostById(postId, updatedData);
-            return res.redirect("/forum");
+        if (errors.length > 0) {
+            return res.render('edit-forum', {
+                post: { _id: postId, title: title, tag: tag, content: content },
+                user: req.session.user,
+                errors: errors
+            });
         }
 
-        return res.render('edit-forum', {
-            post: { _id: postId, title, tag, content },
-            user: req.session.user,
-            errors: errors
-        });
+        const updatedData = { 
+            title: title, 
+            tag: tag, 
+            content: content 
+        };
+
+        await ForumModel.updatePostById(postId, updatedData);
+        
+        return res.redirect("/forum");
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in updateForum:", err);
         return res.render('error', { message: "Failed to update the post." });
     }
 };
 
 exports.deleteForum = async (req, res) => {
-    try {
-        if (!req.session.user) {
-            req.session.returnTo = "/forum";
-            return res.redirect("/login");
-        }
 
-        const postId = req.params.id;
+    const sessionUserName = req.session.user.display_name
+    const sessionUserRole = req.session.user.role;
+
+    const postId = String(req.params.id);
+
+    try {
+
         const post = await ForumModel.findPostById(postId);
 
         if (!post) {
             return res.render('error', { message: "Post not found." });
         }
 
-        if (post.username !== req.session.user.display_name) {
+        if (post.username !== sessionUserName && sessionUserRole !== "admin") {
             return res.render('error', { message: "You are not authorized to delete this post." });
         }
 
@@ -166,43 +176,59 @@ exports.deleteForum = async (req, res) => {
         return res.redirect("/forum");
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in deleteForum:", err);
         return res.render('error', { message: "Failed to delete the post." });
     }
 };
 
 exports.postReply = async (req, res) => {
-    if (!req.session.user) {
-        req.session.returnTo = "/forum";
-        return res.redirect("/login");
-    }
 
-    const postId = req.params.id;
+    const sessionUserName = req.session.user.display_name;
+
+    const postId = String(req.params.id);
     const content = (req.body.reply_content ?? "").trim();
 
-    if (content) {
-        try {
+    if (!content) {
+        return res.redirect("/forum");
+    }
 
-            const post = await ForumModel.findPostById(postId);
+    try {
+
+        const post = await ForumModel.findPostById(postId);
+        
+        if (!post) {
+            return res.redirect("/forum");
+        }
+
+        let updatedReplies = Array.isArray(post.replies) ? post.replies : [];
+
+        updatedReplies.push({
+            username: sessionUserName,
+            content: content
+        });
+
+        if (post) {
+            if (!Array.isArray(post.replies)) {
+                post.replies = [];
+            }
+            post.replies.push({
+                username: req.session.user.display_name,
+                content: content
+            });
+
+            const updateData = {
+            replies: updatedReplies
+        };
             
-            if (post) {
 
-                if (!Array.isArray(post.replies)) {
-                    post.replies = [];
-                }
+        await ForumModel.updatePostById(postId, updateData); 
 
-                post.replies.push({
-                    username: req.session.user.display_name,
-                    content: content
-                });
-                
-                await post.save(); 
+        return res.redirect("/forum");
+
             }
         } catch (err) {
-            console.error("Error saving reply:", err);
-        }
+            
+            console.error("Error in postReply:", err);
+        return res.render('error', { message: "Could not post your reply." });
     }
-    
-    return res.redirect("/forum");
 };
-
