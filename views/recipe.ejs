@@ -8,8 +8,7 @@
 
 <body>
     
-    
-        <div class="recipe-detail-main">
+    <div class="recipe-detail-main">
         <div class="recipe-container">
 
             <div class="image-wrapper">
@@ -20,7 +19,6 @@
                 <% } %>
             </div>
 
-        
             <div class="content-wrapper">
                 
                 <div class="header-wrapper">
@@ -42,81 +40,68 @@
                     <div class="rating-badge">
                         ⭐ <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
                         (<%= ratingCount || 0 %> ratings)
-
                     </div>
                     <br>
                 </div>
 
                 <% if (user) { %>
-                    <div class="rating-form-wrapper">
-                        <form action="/recipe/<%= recipe._id %>/rate" method="POST" class="rating-form">
-                            <label>
-                                <% if (userRating !== null) { %>
-                                    <strong>Your rating:</strong>
-                                <% } else { %>
-                                    <strong>Rate this recipe:</strong>
-                                <% } %>
-                            </label>
-                            <select name="rating" class="form-input rating-select">
-                                <option value="1" <%= userRating == 1 ? 'selected' : '' %>>1 ⭐</option>
-                                <option value="2" <%= userRating == 2 ? 'selected' : '' %>>2 ⭐</option>
-                                <option value="3" <%= userRating == 3 ? 'selected' : '' %>>3 ⭐</option>
-                                <option value="4" <%= userRating == 4 ? 'selected' : '' %>>4 ⭐</option>
-                                <option value="5" <%= userRating == 5 ? 'selected' : '' %>>5 ⭐</option>
-                            </select>
-                            <button type="submit" class="btn-solid rating-btn">
-                                <%= userRating ? "Update Rating" : "Submit Rating" %>
-                            </button>
-                        </form>
-                    </div>
-                <% } else { %>
-                    <p style="color: gray; margin: 8px 0;">Please login to rate this recipe</p>
-                <% } %>
-
-                <% if (user) { %>
-                    <div class="rating-form-wrapper" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
-                        <h3 class="section-heading" style="font-size: 1.1rem; margin-bottom: 10px;">💾 Save to My Collection</h3>
+                    <div class="user-actions-container">
                         
-                        <% if (favStatus === 'success') { %>
-                            <div class="comment-success" style="margin-bottom: 15px;">⭐ Successfully added to your collection!</div>
-                        <% } else if (favStatus === 'exists') { %>
-                            <div class="comment-error" style="margin-bottom: 15px;">ℹ️ This recipe is already in your collection.</div>
-                        <% } %>
-
-                        <% if (isFavourited) { %>
-                            
-                            <div style="background-color: #EFEBDD; border: 1px solid #CDC6B6; border-radius: 8px; padding: 15px; text-align: center;">
-                                <p style="margin: 0; color: #253A4A; font-weight: bold;">
-                                    ⭐ This recipe is in your <a href="/favourites" style="color: #E0A840;">Saved Collection</a>.
-                                </p>
-                            </div>
-
-                        <% } else { %>
-                            
-                            <form action="/favourites/add" method="POST" class="rating-form" style="flex-direction: column; align-items: flex-start; gap: 10px;">
-                                <input type="hidden" name="recipeId" value="<%= recipe._id %>">
-                                <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
-                                
-                                <div style="width: 100%;">
-                                    <label><strong>Tags:</strong> (e.g. Spicy, Dessert, Easy)</label>
-                                    <input type="text" name="tags" class="form-input" placeholder="Enter tags separated by commas" style="width: 100%; margin-top: 5px;">
-                                </div>
-
-                                <div style="width: 100%;">
-                                    <label><strong>Personal Notes:</strong></label>
-                                    <textarea name="notes" class="recipe-comment-textarea" placeholder="Why do you love this recipe?" style="min-height: 60px; margin-top: 5px;"></textarea>
-                                </div>
-                                
-                                <button type="submit" class="btn-solid" style="background-color: #e91e63; border-color: #e91e63; color: white;">
-                                    ❤️ Add to Favourites
+                        <div class="rating-form-wrapper">
+                            <form action="/recipe/<%= recipe._id %>/rate" method="POST" class="rating-form">
+                                <label>
+                                    <% if (userRating !== null) { %>
+                                        <strong>Your rating:</strong>
+                                    <% } else { %>
+                                        <strong>Rate this recipe:</strong>
+                                    <% } %>
+                                </label>
+                                <select name="rating" class="form-input rating-select">
+                                    <option value="1" <%= userRating == 1 ? 'selected' : '' %>>1 ⭐</option>
+                                    <option value="2" <%= userRating == 2 ? 'selected' : '' %>>2 ⭐</option>
+                                    <option value="3" <%= userRating == 3 ? 'selected' : '' %>>3 ⭐</option>
+                                    <option value="4" <%= userRating == 4 ? 'selected' : '' %>>4 ⭐</option>
+                                    <option value="5" <%= userRating == 5 ? 'selected' : '' %>>5 ⭐</option>
+                                </select>
+                                <button type="submit" class="btn-solid rating-btn">
+                                    <%= userRating ? "Update Rating" : "Submit Rating" %>
                                 </button>
                             </form>
+                        </div>
 
-                        <% } %>
+                        <div class="favourites-wrapper">
+                            
+                            <% if (typeof favStatus !== 'undefined') { %>
+                                <% if (favStatus === 'success') { %>
+                                    <div class="comment-success">⭐ Successfully added to your collection!</div>
+                                <% } else if (favStatus === 'exists') { %>
+                                    <div class="comment-error">ℹ️ This recipe is already in your collection.</div>
+                                <% } %>
+                            <% } %>
+
+                            <% if (typeof isFavourited !== 'undefined' && isFavourited) { %>
+                                <div class="favourite-saved-badge">
+                                    <p class="favourite-saved-text">
+                                        ⭐ This recipe is in your <a href="/favourites" class="favourite-saved-link">Saved Collection</a>.
+                                    </p>
+                                </div>
+                            <% } else { %>
+                                <form action="/favourites/add" method="POST" class="rating-form">
+                                    <input type="hidden" name="recipeId" value="<%= recipe._id %>">
+                                    <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
+                                    <button type="submit" class="btn-solid btn-favourite">
+                                        ❤️ Add to Favourites
+                                    </button>
+                                </form>
+                            <% } %>
+                        </div>
+
                     </div>
+                <% } else { %>
+                    <p class="login-prompt-text">Please log in to rate and save this recipe.</p>
                 <% } %>
 
-                <div class="meta-info">
+                <div class="meta-info" style="margin-top: 20px;">
                     <label><strong>🍽️ Cuisine:</strong> <%= recipe.cuisine %></label>
                     <label><strong>⏱️ Time:</strong> <%= recipe.approx_cooking_time %></label>
                     <label><strong>📊 Difficulty:</strong> <label class="capitalize-text"><%= recipe.difficulty_level %></label></label>
@@ -150,7 +135,6 @@
                                         <%= rating.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'long', year: 'numeric' }) %>
                                         <% if (rating.updatedAt && rating.updatedAt.getTime() !== rating.createdAt.getTime()) { %>
                                             <% if (rating.isEdited) { %>
-                                                <%= console.log(rating.updatedAt, rating.createdAt) %>
                                                 <span class="rating-edited-tag">(updated)</span>
                                             <% } %>
                                         <% } %>
@@ -267,7 +251,6 @@
             </div>
         </div>
     </div>
-    <!-- DELETE OVERLAY -->
     <div class="overlay-backdrop" id="deleteOverlay">
         <div class="overlay-box">
             <h3 class="overlay-title">Delete Comment</h3>
@@ -281,7 +264,6 @@
         </div>
     </div>
 
-    <!-- EDIT OVERLAY -->
     <div class="overlay-backdrop" id="editOverlay">
         <div class="overlay-box">
             <h3 class="overlay-title">Edit Comment</h3>

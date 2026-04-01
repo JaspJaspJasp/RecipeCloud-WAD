@@ -781,6 +781,72 @@ h1, h2, h3, h4, h5, h6, p {
     font-weight: bold;
 }
 
+
+/* =========================================
+   Recipe Detail User Actions (Rating & Favourites)
+   ========================================= */
+.user-actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.login-prompt-text {
+    color: #253A4A;
+    margin: 8px 0;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.favourites-wrapper {
+    margin-top: 15px; 
+    border-top: 1px dashed #CDC6B6; 
+    padding-top: 15px;
+}
+
+.favourites-heading {
+    font-size: 1.1rem; 
+    margin-bottom: 10px;
+    margin-top: 0;
+    color: #0D1419;
+    border-bottom: none; /* Overrides default section-heading bottom border */
+}
+
+.favourite-saved-badge {
+    background-color: #EFEBDD; 
+    border: 1px solid #CDC6B6; 
+    border-radius: 8px; 
+    padding: 15px; 
+    text-align: center;
+}
+
+.favourite-saved-text {
+    margin: 0; 
+    color: #253A4A; 
+    font-weight: bold;
+}
+
+.favourite-saved-link {
+    color: #E0A840;
+    text-decoration: underline;
+}
+
+.favourite-saved-link:hover {
+    color: #d19a35;
+}
+
+.btn-favourite {
+    background-color: #e65b89; 
+    border-color: #e91e63; 
+    color: white;
+}
+
+.btn-favourite:hover {
+    background-color: #c72264;
+    border-color: #c2185b;
+    color: white;
+}
+
 /* =========================================
    Dedicated Search Page Layout
    ========================================= */
