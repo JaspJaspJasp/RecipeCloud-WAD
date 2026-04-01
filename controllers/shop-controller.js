@@ -11,7 +11,7 @@ exports.saveRecipeToList = async (req, res) => {
 
     let parsedIngredients = [];
     try {
-        parsedIngredients = rawIngredients ? JSON.parse(rawIngredients) : [];
+        parsedIngredients = ingredients ? JSON.parse(ingredients) : [];
     } catch (e) {
         parsedIngredients = [];
     }
@@ -170,7 +170,7 @@ exports.addPersonalItem = async (req, res) => {
             userShop.personalitems.push({ name : name,  amount: amount || '' });
             
             const updateData = {
-                personalitems: updatedItems,
+                personalitems: userShop.personalitems,
                 updatedAt: Date.now()
             };
 
@@ -249,7 +249,11 @@ exports.toggleIngredient = async (req, res) => {
             return res.redirect('/shopping-list');
         }
         // find the right recipe
-        const recipe = userShop.recipes.find(r => r.recipeId === String(recipeId));
+        const recipeIndex = userShop.recipes.findIndex(r => r.recipeId === String(recipeId));
+        
+        if (recipeIndex < 0) {
+            return res.redirect('/shopping-list');
+        }
 
         // flip the isBought value
 

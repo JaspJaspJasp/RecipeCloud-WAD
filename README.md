@@ -76,12 +76,10 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 -
 -
 ### Shop system 
--
--
--
--
--
--
+- Only logged-in users can:
+  - Add and Remove Personal Items
+  - Add and Remove Recipes from Favorites
+  -
 ### Forum system 
 -
 -

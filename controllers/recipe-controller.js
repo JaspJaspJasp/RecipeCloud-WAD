@@ -304,19 +304,18 @@ exports.renderEditRecipeForm = async (req, res) => {
 };
 
 exports.updateRecipe = async (req, res) => {
-
     const sessionUserId = String(req.session.user.id);
     const sessionUserRole = req.session.user.role;
+
     const recipeId = String(req.params.id);
+    const recipe_name = (req.body.recipe_name ?? "").trim();
+    const cuisine = (req.body.cuisine ?? "").trim();
+    const serving = (req.body.serving ?? "").trim();
+    const approx_cooking_time = (req.body.approx_cooking_time ?? "").trim();
+    const difficulty_level = (req.body.difficulty_level ?? "").trim();
+    const instructions = (req.body.instructions ?? "").trim();
 
-    let recipe_name = (req.body.recipe_name ?? "").trim();
-    let cuisine = (req.body.cuisine ?? "").trim();
-    let serving = (req.body.serving ?? "").trim();
-    let approx_cooking_time = (req.body.approx_cooking_time ?? "").trim();
-    let difficulty_level = (req.body.difficulty_level ?? "").trim();
-    let instructions = (req.body.instructions ?? "").trim();
-
-   let tag = req.body.tag || [];
+    let tag = req.body.tag || [];
     if (!Array.isArray(tag)) tag = [tag];
 
     let ingredient_amount = req.body.ingredient_amount || [];
@@ -328,7 +327,6 @@ exports.updateRecipe = async (req, res) => {
     ingredient_name = ingredient_name.map(item => item.trim());
 
     let errors = [];
-
     if (!recipe_name) errors.push("Recipe Name is required.");
     if (!cuisine) errors.push("Cuisine type is required.");
     if (!serving) errors.push("Serving size is required.");
@@ -337,24 +335,19 @@ exports.updateRecipe = async (req, res) => {
     if (!instructions) errors.push("Instructions are required.");
 
     let hasValidIngredient = false;
-
     for (let i = 0; i < ingredient_name.length; i++) {
         if (ingredient_name[i] !== "" && ingredient_amount[i] !== "") {
             hasValidIngredient = true;
             break;
         }
     }
-    if (!hasValidIngredient) {
-        errors.push("At least one ingredient with an amount is required.");
-    }
+    if (!hasValidIngredient) errors.push("At least one ingredient with an amount is required.");
 
     try {
-        const recipe = await Recipe.findRecipeById(req.params.id);
+        const recipe = await Recipe.findRecipeById(recipeId);
 
         if (!recipe) {
-            return res.render('error', {
-                message: "Recipe not found."
-            });
+            return res.render('error', { message: "Recipe not found." });
         }
 
         if (sessionUserId !== String(recipe.userId) && sessionUserRole !== "admin") {
@@ -363,18 +356,9 @@ exports.updateRecipe = async (req, res) => {
 
         if (errors.length > 0) {
             return res.render('edit-recipe', {
-                recipe: recipe,
-                recipe_name,
-                cuisine,
-                tag,
-                serving,
-                approx_cooking_time,
-                difficulty_level,
-                instructions,
-                ingredient_amount,
-                ingredient_name,
-                errors,
-                user: req.session.user
+                recipe, recipe_name, cuisine, tag, serving, approx_cooking_time, 
+                difficulty_level, instructions, ingredient_amount, ingredient_name, 
+                errors, user: req.session.user
             });
         }
 
@@ -389,20 +373,18 @@ exports.updateRecipe = async (req, res) => {
         }
 
         const updateData = {
-            recipe_name: recipe_name,
-            cuisine: cuisine,
-            tag: tagArray,
-            serving: serving,
-            approx_cooking_time: approx_cooking_time,
-            difficulty_level: difficulty_level,
-            instructions: instructions,
+            recipe_name,
+            cuisine,
+            tag, 
+            serving,
+            approx_cooking_time,
+            difficulty_level,
+            instructions,
             ingredients: formattedIngredients
         };
 
         await Recipe.updateRecipe(recipeId, updateData);
-
-        return res.redirect('/');
-
+        return res.redirect(`/recipe/${recipeId}`);
     } catch (err) {
         console.error("Error in updateRecipe:", err);
         return res.render('error', { message: "Could not update the recipe." });
