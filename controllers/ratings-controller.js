@@ -82,7 +82,6 @@ exports.readRatings = async (req, res) => {
 
         // Fetch all ratings for this recipe
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-        console.log(allRatings);
 
         // Calculate aggregates
         let totalScore = 0;
@@ -214,7 +213,6 @@ async function recalculateRecipeRatings(recipeId) {
         }
 
         const count = allRatings.length;
-        console.log(count)
         const average = count === 0 ? 0 : totalScore / count;
 
         const recipeUpdateData = {

@@ -65,17 +65,18 @@ exports.renderEditForm = async (req, res) => {
 };
 
 exports.editComment = async (req, res) => {
-    if (!req.session.user) {
+    // Standardizing session and params as per your project rules
+    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
+    const recipeId = String(req.params.id);
+    const commentId = String(req.params.commentId);
+    const commentText = (req.body.comment ?? "").trim();
+
+    if (!sessionUserId) {
         return res.redirect('/login');
     }
 
-    const recipeId = String(req.params.id);
-    
     try {
-        const commentId = String(req.params.commentId);
-        const commentText = (req.body.comment ?? "").trim();
-
-            const updateData = {
+        const updateData = {
             $set: {
                 comment: commentText,
                 createdAt: new Date(), 
@@ -83,11 +84,11 @@ exports.editComment = async (req, res) => {
             }
         };
         
-        await Comment.editComment(commentId, comment);
+        await Comment.editComment(commentId, updateData);
         return res.redirect(`/recipe/${recipeId}`);
     } catch (err) {
-        console.error(err);
-        return res.redirect(`/recipe/${recipeId}`);
+        console.error("Error in Edit Comment: ", err);
+        return res.render('error', { message: "Failed to save comment changes." });
     }
 };
 
