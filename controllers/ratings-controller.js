@@ -63,7 +63,6 @@ exports.createRating = async (req, res) => {
 };
 
 // READ all ratings for a recipe
-// READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
     const favStatus = (req.query.favStatus ?? "").trim(); // <-- ADDED THIS
