@@ -82,7 +82,9 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 - Only logged-in users can:
   - Add and Remove Personal Items
   - Add and Remove Recipes from Favorites
-  -
+  - Tick checkboxes when ingredients are acquired
+- Each recipe includes
+  - Ingredients with checkboxes
 ### Forum system 
 -
 -
