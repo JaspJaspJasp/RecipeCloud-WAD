@@ -1,6 +1,7 @@
 const Rating = require("../models/ratings-model");
 const Recipe = require("../models/recipe-model");
-const CommentModel = require("../models/comment-model");
+const Comment = require("../models/comment-model");
+const Favourite = require("../models/favourite-model");
 
 // CREATE a new rating or UPDATE an existing one
 exports.createRating = async (req, res) => {
@@ -40,7 +41,6 @@ exports.createRating = async (req, res) => {
             };
             // UPDATE existing rating
             await Rating.updateRating(existingRating._id, updateData);
-       
 
         } else {
             // CREATE new rating
@@ -71,11 +71,8 @@ exports.createRating = async (req, res) => {
 // READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
-    const recipeId = String(req.params.id);
-
-    const sessionUserId = (req.session && req.session.user) ? String(req.session.user.id) : null;
-
     try {
+        const recipeId = String(req.params.id);
 
         // Check if recipe exists
         const recipe = await Recipe.findRecipeById(recipeId);
@@ -84,16 +81,16 @@ exports.readRatings = async (req, res) => {
         }
 
         // Fetch comments for this recipe
-        const comments = await CommentModel.retrieveByRecipeId(recipeId);
+        const comments = await Comment.retrieveByRecipeId(recipeId);
 
         // Fetch all ratings for this recipe
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
+        console.log(allRatings);
         // this is an array of all the rating objects that belong to that recipe
         //  we can use this to calculate the average and count and total score for that recipe, 
         // then we can pass those values to the frontend to render it
 
-        // Calculate aggregates,
-        // cant reuse the recalcualte fn cause that fn will update the recipe doc but does not return those values 
+        // Calculate aggregates
         let totalScore = 0;
         for (let r of allRatings) {
             totalScore += r.ratingValue;
@@ -103,12 +100,12 @@ exports.readRatings = async (req, res) => {
         const average = count === 0 ? 0 : totalScore / count;
 
         // Find user's rating if logged in
-        // this is so that we can render what the user originally rated the recipe
         let userRating = null;
         if (sessionUserId) {
             const userRatingDoc = await Rating.findUserRating(sessionUserId, recipeId);
             if (userRatingDoc) {
                 userRating = userRatingDoc.ratingValue;
+                // console.log(userRatingDoc)
             }
         }
 
@@ -122,7 +119,9 @@ exports.readRatings = async (req, res) => {
             totalRatingScore: totalScore,
             allRatings: allRatings,
             comments: comments,
-            status: status
+            status: status,
+            favStatus: favStatus,
+            isFavourited: isFavourited 
         });
 
     } catch (error) {
@@ -209,7 +208,6 @@ async function recalculateRecipeRatings(recipeId) {
         }
 
         const count = allRatings.length;
-        console.log(count)
         const average = count === 0 ? 0 : totalScore / count;
 
         const recipeUpdateData = {

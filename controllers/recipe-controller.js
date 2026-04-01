@@ -1,6 +1,7 @@
 const Recipe = require("../models/recipe-model"); 
-const CommentModel = require('../models/comment-model');
+const Comment = require('../models/comment-model');
 const Rating = require('../models/ratings-model');
+const Favourite = require('../models/favourite-model');
 
 //HomePage in index.ejs
 exports.HomePage = async (req, res) => {
@@ -193,11 +194,13 @@ exports.postCreate = async (req, res) => {
 //Rendering recipe image when clicked on
 exports.recipeFindbyID = async (req, res) => {
     const status = (req.query.status ?? "").trim();
+    const favStatus = (req.query.favStatus ?? "").trim();
     const recipeId = String(req.params.id); 
+    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
     
     try {
         const recipe = await Recipe.findRecipeById(recipeId);
-        const comments = await CommentModel.retrieveByRecipeId(recipeId);
+        const comments = await Comment.retrieveByRecipeId(recipeId);
         
         if (!recipe) {
             return res.render('error', {
@@ -212,6 +215,15 @@ exports.recipeFindbyID = async (req, res) => {
         const userRating = req.session.user ? await Rating.findUserRating(userId, recipeId) : null;
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
 
+        // --- NEW LOGIC: Check if the recipe is already favourited ---
+        let isFavourited = false;
+        if (sessionUserId) {
+            const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
+            if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
+                isFavourited = true;
+            }
+        }
+
         return res.render('recipe', { 
             recipe: recipe, 
             user: req.session.user, 
@@ -221,7 +233,9 @@ exports.recipeFindbyID = async (req, res) => {
             totalRatingScore: totalRatingScore,
             allRatings: allRatings,
             comments: comments,
-            status: status
+            status: status,
+            favStatus: favStatus,
+            isFavourited: isFavourited  
         });
 
     } catch (err) {
@@ -239,7 +253,7 @@ exports.renderEditRecipeForm = async (req, res) => {
     const recipeId = String(req.params.id);
     
     try {
-        const recipe = await Recipe.findRecipeById(req.params.id);
+        const recipe = await Recipe.findRecipeById(recipeId);
 
         if (!recipe) {
             return res.render('error', {
@@ -247,7 +261,7 @@ exports.renderEditRecipeForm = async (req, res) => {
             });
         }
 
-        if (req.session.user._id !== recipe.userId && req.session.user.role !== "admin") {
+        if (sessionUserId !== recipe.userId && sessionUserRole !== "admin") {
             return res.render('error', {
                 message: "No permissions to edit recipe."
             });
