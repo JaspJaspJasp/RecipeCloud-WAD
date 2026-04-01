@@ -16,102 +16,86 @@
                     <img src="<%= recipe.image %>" >
                 <% } else { %>
                     <img src="/img/default-recipe.png" >
-                <% } %>
+                <% } %> 
             </div>
 
             <div class="content-wrapper">
                 
-                <div class="header-wrapper">
-                    <div class="title-owner-wrapper">
-                        <div class="title-row">
-                            <h1 class="recipe-detail-title"><%= recipe.recipe_name %></h1>
+                <% if (typeof favStatus !== 'undefined') { %>
+                    <% if (favStatus === 'success') { %>
+                        <div class="comment-success action-alert" style="margin-bottom: 25px;">⭐ Successfully added to your collection!</div>
+                    <% } else if (favStatus === 'exists') { %>
+                        <div class="comment-error action-alert" style="margin-bottom: 25px;">ℹ️ This recipe is already in your collection.</div>
+                    <% } %>
+                <% } %>
 
-                            <% if (user && (String(user.id) === String(recipe.userId) || user.role === "admin")) { %>
-                                <div class="recipe-owner-actions">
-                                    <a href="/recipe/<%= recipe._id %>/update" class="btn-solid">Update</a>
-                                    <a href="/recipe/<%= recipe._id %>/delete" class="btn-solid">Delete</a>
-                                </div>
-                            <% } %>
-                        </div>
-
-                        <p class="recipe-created-by">Created by <%= recipe.username %></p>
-                    </div>
-
-                    <div class="rating-badge">
-                        ⭐ <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
-                        (<%= ratingCount || 0 %> ratings)
-                    </div>
-                    <br>
-                </div>
-
-                <% if (user) { %>
-                    <div class="user-actions-container">
+                <div class="recipe-header-modern">
+                    
+                    <div class="recipe-header-main">
+                        <h1 class="recipe-detail-title" style="margin: 0;"><%= recipe.recipe_name %></h1>
+                        <p class="recipe-created-by" style="margin: 0;">Created by <strong><%= recipe.username %></strong></p>
                         
-                        <div class="rating-form-wrapper">
-                            <form action="/recipe/<%= recipe._id %>/rate" method="POST" class="rating-form">
-                                <label>
-                                    <% if (userRating !== null) { %>
-                                        <strong>Your rating:</strong>
-                                    <% } else { %>
-                                        <strong>Rate this recipe:</strong>
-                                    <% } %>
-                                </label>
-                                <select name="rating" class="form-input rating-select">
-                                    <option value="1" <%= userRating == 1 ? 'selected' : '' %>>1 ⭐</option>
-                                    <option value="2" <%= userRating == 2 ? 'selected' : '' %>>2 ⭐</option>
-                                    <option value="3" <%= userRating == 3 ? 'selected' : '' %>>3 ⭐</option>
-                                    <option value="4" <%= userRating == 4 ? 'selected' : '' %>>4 ⭐</option>
-                                    <option value="5" <%= userRating == 5 ? 'selected' : '' %>>5 ⭐</option>
-                                </select>
-                                <button type="submit" class="btn-solid rating-btn">
-                                    <%= userRating ? "Update Rating" : "Submit Rating" %>
-                                </button>
-                            </form>
-                        </div>
-
-                        <div class="favourites-wrapper">
-                            
-                            <% if (typeof favStatus !== 'undefined') { %>
-                                <% if (favStatus === 'success') { %>
-                                    <div class="comment-success">⭐ Successfully added to your collection!</div>
-                                <% } else if (favStatus === 'exists') { %>
-                                    <div class="comment-error">ℹ️ This recipe is already in your collection.</div>
+                        <div class="header-actions-left">
+                            <% if (user) { %>
+                                <% if (typeof isFavourited !== 'undefined' && isFavourited) { %>
+                                    <div class="btn-saved-header">⭐ In <a href="/favourites">Saved</a></div>
+                                <% } else { %>
+                                    <form action="/favourites/add" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="recipeId" value="<%= recipe._id %>">
+                                        <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
+                                        <button type="submit" class="btn-favourite-header">❤️ Save Recipe</button>
+                                    </form>
                                 <% } %>
                             <% } %>
 
-                            <% if (typeof isFavourited !== 'undefined' && isFavourited) { %>
-                                <div class="favourite-saved-badge">
-                                    <p class="favourite-saved-text">
-                                        ⭐ This recipe is in your <a href="/favourites" class="favourite-saved-link">Saved Collection</a>.
-                                    </p>
-                                </div>
-                            <% } else { %>
-                                <form action="/favourites/add" method="POST" class="rating-form">
-                                    <input type="hidden" name="recipeId" value="<%= recipe._id %>">
-                                    <input type="hidden" name="recipeName" value="<%= recipe.recipe_name %>">
-                                    <button type="submit" class="btn-solid btn-favourite">
-                                        ❤️ Add to Favourites
-                                    </button>
+                            <div class="tags-container" style="margin: 0;">
+                                <% recipe.tag.forEach(function(t) { %>
+                                    <label class="tag-badge" style="margin: 0;"><%= t %></label>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-header-side">
+                        
+                        <div class="rating-group-top">
+                            <div class="rating-badge">
+                                ⭐ <%= (typeof ratingAverage === 'number' ? ratingAverage.toFixed(1) : 'New!') %> / 5
+                                <span style="font-size: 0.85rem; font-weight: normal; margin-left: 5px;">(<%= ratingCount || 0 %>)</span>
+                            </div>
+
+                            <% if (user) { %>
+                                <form action="/recipe/<%= recipe._id %>/rate" method="POST" class="rating-form-inline">
+                                    <select name="rating" class="rating-select-small">
+                                        <option value="1" <%= userRating == 1 ? 'selected' : '' %>>1 ⭐</option>
+                                        <option value="2" <%= userRating == 2 ? 'selected' : '' %>>2 ⭐</option>
+                                        <option value="3" <%= userRating == 3 ? 'selected' : '' %>>3 ⭐</option>
+                                        <option value="4" <%= userRating == 4 ? 'selected' : '' %>>4 ⭐</option>
+                                        <option value="5" <%= userRating == 5 ? 'selected' : '' %>>5 ⭐</option>
+                                    </select>
+                                    <button type="submit" class="btn-solid rating-btn-small"><%= userRating ? "Update" : "Rate" %></button>
                                 </form>
                             <% } %>
                         </div>
 
+                        <% if (user && (String(user.id) === String(recipe.userId) || user.role === "admin")) { %>
+                            <div class="recipe-owner-links" style="display: flex; gap: 10px; justify-content: flex-end; width: 100%;">
+                                <a href="/recipe/<%= recipe._id %>/update" class="btn-outline-small">✏️ Edit Recipe</a>
+                                <a href="/recipe/<%= recipe._id %>/delete" class="btn-outline-small text-danger">🗑️ Delete</a>
+                            </div>
+                        <% } %>
                     </div>
-                <% } else { %>
-                    <p class="login-prompt-text">Please log in to rate and save this recipe.</p>
-                <% } %>
-
-                <div class="meta-info" style="margin-top: 20px;">
-                    <label><strong>🍽️ Cuisine:</strong> <%= recipe.cuisine %></label>
-                    <label><strong>⏱️ Time:</strong> <%= recipe.approx_cooking_time %></label>
-                    <label><strong>📊 Difficulty:</strong> <label class="capitalize-text"><%= recipe.difficulty_level %></label></label>
-                    <label><strong>👥 Servings:</strong> <%= recipe.serving %></label> 
                 </div>
 
-                <div class="tags-container">
-                    <% recipe.tag.forEach(function(t) { %>
-                        <label class="tag-badge"><%= t %></label>
-                    <% }); %>
+                <% if (!user) { %>
+                    <p class="login-prompt-text" style="margin-bottom: 25px;">Please <a href="/login" style="color: #E0A840;">log in</a> to rate and save this recipe.</p>
+                <% } %>
+
+                <div class="recipe-quick-stats">
+                    <div class="stat-item"><strong>🍽️ Cuisine</strong><%= recipe.cuisine %></div>
+                    <div class="stat-item"><strong>⏱️ Time</strong><%= recipe.approx_cooking_time %></div>
+                    <div class="stat-item"><strong>📊 Difficulty</strong><span class="capitalize-text"><%= recipe.difficulty_level %></span></div>
+                    <div class="stat-item"><strong>👥 Servings</strong><%= recipe.serving %></div>
                 </div>
 
                 <div class="recipe-divider"></div>
