@@ -933,6 +933,57 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /* Favourites button styled as a highlighted "tag" */
+.btn-fav-outline {
+    background-color: transparent;
+    color: #0D1419;
+    border: 2px solid #0D1419;
+    padding: 0 10px;
+    height: 44px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.btn-fav-outline:hover {
+    background-color: #0D1419;
+    color: #F7F4E3;
+}
+
+.btn-fav-delete {
+    background-color: transparent;
+    color: #c62828;
+    border: 2px solid #c62828;
+    padding: 0 10px;
+    height: 44px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.btn-fav-delete:hover {
+    background-color: #c62828;
+    color: #F7F4E3;
+}
+
 .btn-favourite-header {
     background-color: #e91e63;
     color: #fff;
@@ -2038,13 +2089,66 @@ h1, h2, h3, h4, h5, h6, p {
     align-items: center;
 }
 
+
 .recipe-created-by {
     margin: 0;
     color: #253A4A;
-    font-size: 0.95rem;
+    font-size: 1rem; 
+    font-style: italic;
+    opacity: 0.9;
 }
+
+.btn-solid-shopping {
+    background-color: #E0A840; 
+    color: #0D1419; 
+    border: 2px solid #0D1419; 
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-shadow: 0 3px 6px rgba(13, 20, 25, 0.15);
+}
+
+.btn-solid-shopping:hover {
+    background-color: #0D1419; 
+    color: #E0A840; 
+    border-color: #E0A840;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(13, 20, 25, 0.25);
+}
+
+.btn-shop-remove {
+    background-color: #fdecea; 
+    color: #c62828; 
+    border: 1px solid #c62828;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn-shop-remove:hover {
+    background-color: #c62828;
+    color: #F7F4E3;
+}
+
 .center-page {
-    min-height: calc(100vh - 80px); /* adjust if navbar height different */
+    min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
     align-items: center;
