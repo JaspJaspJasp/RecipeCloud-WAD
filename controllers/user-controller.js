@@ -99,7 +99,7 @@ exports.editUserGet = async (req, res) => {
     const targetUserId = String(req.params.id);
     const sessionUserId = String(req.session.user.id);
 
-    if (sessionUserId !== targetUserId) {
+    if (sessionUserId !== targetUserId && req.session.user.role !== "admin") {
         return res.render('error', { message: "You are not authorised to view this profile." });
     }
 
@@ -136,7 +136,7 @@ exports.editUserPost = async (req, res) => {
     const gender = (req.body.gender ?? "").trim();
     const emailAddress = (req.body.emailAddress ?? "").trim();
 
-    if (sessionUserId !== targetUserId) {
+    if (sessionUserId !== targetUserId && req.session.user.role !== "admin") {
         return res.render('error', { message: "You are not authorised to edit this profile." });
     }
 
