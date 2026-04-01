@@ -38,8 +38,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(
   session({
     secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true
+    resave: false, // Prevents the session from being saved back to the session store if nothing has changed.
+    saveUninitialized: false // Prevents a new, empty session from being saved to the store.
   })
 );
 
