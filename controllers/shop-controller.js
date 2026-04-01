@@ -252,14 +252,23 @@ exports.toggleIngredient = async (req, res) => {
         const recipe = userShop.recipes.find(r => r.recipeId === String(recipeId));
 
         // flip the isBought value
-        recipe.ingredients[ingIndex].isBought = !recipe.ingredients[ingIndex].isBought;
 
-        userShop.updatedAt = Date.now();
-        await userShop.save();
+        let updatedRecipes = JSON.parse(JSON.stringify(userShop.recipes));
+        
+        updatedRecipes[recipeIndex].ingredients[ingIndex].isBought = !updatedRecipes[recipeIndex].ingredients[ingIndex].isBought;
+
+        const updateData = {
+            recipes: updatedRecipes,
+            updatedAt: Date.now()
+        };
+
+        await ShopModel.editItemById(sessionUserId, updateData);
 
         return res.redirect('/shopping-list');
+
     } catch (err) {
-        console.error(err);
+        console.error("Error in toggleIngredient:", err);
+        
         return res.render('error', { message: "Could not update ingredient." });
     }
-}
+};

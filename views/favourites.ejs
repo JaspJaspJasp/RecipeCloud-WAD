@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Recipe - RecipeCloud</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <%- include('navbar') %>
+</head>
+
+<body>
+
 <h1>My Saved Recipes</h1>
 
 <% if (!favourite || !favourite.savedRecipes || favourite.savedRecipes.length === 0) { %>
@@ -42,3 +52,9 @@
         </div>
     <% }); %>
 <% } %>
+
+
+</body>
+</html>
+
+
