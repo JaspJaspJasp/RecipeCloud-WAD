@@ -39,11 +39,10 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 ## 🚀 Features
 
 ### User management 
--
--
--
--
--
+- Admins are able to view all user's display name, username and email
+- Admins are able to edit the profile of all users
+- Admins are not able to change their own roles
+- Admins are able to edit all users roles
 
 ### 👤 Recipe/homepage Features
 - Browse all recipes
