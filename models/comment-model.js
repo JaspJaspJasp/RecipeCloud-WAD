@@ -41,6 +41,10 @@ exports.retrieveByRecipeId = function(recipeId) {
     return Comment.find({ recipeId: recipeId });
 };
 
+exports.retrieveByCommentId = function(id) {
+    return Comment.findOne({_id: id});
+}
+
 exports.editComment = function(id, updateData) {
     return Comment.updateOne({ _id: id }, updateData);
 };
