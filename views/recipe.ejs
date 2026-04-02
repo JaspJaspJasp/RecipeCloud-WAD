@@ -86,21 +86,6 @@
                         <!-- Ratings List -->
                         <div class="ratings-display" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; max-height: 300px; overflow-y: auto;">
                             <h4 style="margin-top: 0; margin-bottom: 15px; font-size: 14px; font-weight: bold;">All Ratings</h4>
-                        <% 
-                            let currentUserRatingsDoc = null;
-                            let currentRecipeRating = null;
-
-                            if (user) {
-                            currentUserRatingsDoc = allRatings.find(doc => String(doc.userId) === String(user.id));
-
-                            if (currentUserRatingsDoc) {
-                                currentRecipeRating = currentUserRatingsDoc.ratings.find(
-                                r => String(r.recipeId) === String(recipe._id)
-                                );
-                            }
-                            }
-                        %>
-
                         <% if (user && currentRecipeRating) { %>
                             <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e0e0e0;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
