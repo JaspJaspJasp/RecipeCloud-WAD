@@ -35,19 +35,30 @@ exports.createComments = async (req, res) => {
 };
 
 exports.renderEditForm = async (req, res) => {
-    const recipeId = req.params.recipeId;
-    const commentId = req.params.commentId;
+    // 1. Add .trim() to ensure no hidden spaces get caught in the URL
+    const recipeId = req.params.recipeId.trim();
+    const commentId = req.params.commentId.trim(); 
     const sessionUserId = String(req.session.user.id);
 
     try {
         const commentDoc = await Comment.retrieveByRecipeId(recipeId);
         if (!commentDoc) return res.render('error', { message: "Recipe comments not found." });
 
-        // Standard JS search
-        const specificComment = commentDoc.recipeComments.find(c => String(c._id) === String(commentId));
+        // 2. Use .toString() instead of String(), which is much safer for Mongoose ObjectIds
+        const specificComment = commentDoc.recipeComments.find(
+            c => c._id && c._id.toString() === commentId
+        );
         
-        if (!specificComment) return res.render('error', { message: "Comment not found." });
-        if (String(specificComment.userId) !== sessionUserId) return res.render('error', { message: "Unauthorized to edit this comment." });
+        // 3. THE DEBUG BLOCK: If it fails, this prints the exact reason to your terminal!
+        if (!specificComment) {
+            commentDoc.recipeComments.forEach(c => console.log(" -> ", c._id.toString()));
+
+            return res.render('error', { message: "Comment not found." });
+        }
+
+        if (String(specificComment.userId) !== sessionUserId) {
+             return res.render('error', { message: "Unauthorized to edit this comment." });
+        }
 
         return res.render('edit-comment', {
             recipeId: recipeId,
