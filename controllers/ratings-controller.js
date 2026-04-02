@@ -122,7 +122,6 @@ exports.readRatings = async (req, res) => {
         // Render recipe view with rating data
         return res.render("recipe", {
             recipe: recipe,
-            user: req.session.user,
             userRating: userRating,
             currentRecipeRating: currentRecipeRating,
             ratingAverage: average,

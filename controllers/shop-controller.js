@@ -23,8 +23,8 @@ exports.saveRecipeToList = async (req, res) => {
         if (!userShop) {
             
             const additemObj = {
-                userid: req.session.user.id,
-                userName: req.session.user.userName,
+                userid: String(req.session.user.id),
+                userName: String(req.session.user.userName),
                 personalitems: [],
                 recipes: [{
                     recipeId,
@@ -100,7 +100,6 @@ exports.showShopList = async (req, res) => {
 
         return res.render("shop", {
             userShop: userShop,
-            user: req.session.user
         });
 
     } catch (err) {

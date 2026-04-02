@@ -239,8 +239,7 @@ exports.recipeFindbyID = async (req, res) => {
         }
 
         return res.render('recipe', { 
-            recipe: recipe, 
-            user: req.session.user, 
+            recipe: recipe,  
             userRating: userRating,
             currentRecipeRating: currentRecipeRating,
             ratingAverage: ratingAverage,
@@ -308,7 +307,6 @@ exports.renderEditRecipeForm = async (req, res) => {
             ingredient_amount: ingredient_amount,
             ingredient_name: ingredient_name,
             errors: [],
-            user: req.session.user
         });
 
     } catch (err) {
@@ -372,7 +370,7 @@ exports.updateRecipe = async (req, res) => {
             return res.render('edit-recipe', {
                 recipe, recipe_name, cuisine, tag, serving, approx_cooking_time, 
                 difficulty_level, instructions, ingredient_amount, ingredient_name, 
-                errors, user: req.session.user
+                errors
             });
         }
 
@@ -426,7 +424,6 @@ exports.renderDeleteRecipeForm = async (req, res) => {
 
         return res.render('delete-recipe', {
             recipe: recipe,
-            user: req.session.user
         });
 
     } catch (err) {

@@ -4,10 +4,6 @@ const Recipe = require('../models/recipe-model');
 
 
 exports.createComments = async (req, res) => {
-    if (!req.session.user) {
-            return res.redirect('/login');
-        }
-
     const recipeId = String(req.params.id);
 
     try {
@@ -90,10 +86,6 @@ exports.editComment = async (req, res) => {
 };
 
 exports.deleteComment = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-
     const recipeId = String(req.params.id);
 
     try {
