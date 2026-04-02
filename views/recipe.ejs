@@ -67,11 +67,6 @@
                                 <span class="rating-count-bold">
                                     (<%= ratingCount || 0 %>)
                                 </span>
-                                <button type="button" 
-                                        onclick="openRatingsOverlay()" 
-                                        class="rating-view-btn-centered">
-                                    View All
-                                </button>
                             </div>
 
                             <% if (user) { %>
@@ -85,6 +80,35 @@
                                     </select>
                                     <button type="submit" class="btn-solid rating-btn-small"><%= userRating ? "Update" : "Rate" %></button>
                                 </form>
+                            <% } %>
+                        </div>
+
+                        <!-- Ratings List -->
+                        <div class="ratings-display" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+                            <h4 style="margin-top: 0; margin-bottom: 15px; font-size: 14px; font-weight: bold;">All Ratings</h4>
+                            <% if (allRatings.length === 0) { %>
+                                <p style="margin: 0; color: #999; font-size: 14px;">No ratings yet.</p>
+                            <% } else { %>
+                                <% allRatings.forEach(userRatingDoc => { %>
+                                    <% userRatingDoc.ratings.forEach(rating => { %>
+                                        <% if (String(rating.recipeId) === String(recipe._id)) { %>
+                                            <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e0e0e0;">
+                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                                    <span style="font-weight: bold; font-size: 14px;"><%= userRatingDoc.userName %></span>
+                                                    <span style="font-size: 14px;">
+                                                        <% for (let i = 0; i < rating.ratingValue; i++) { %>⭐<% } %> <%= rating.ratingValue %>/5
+                                                    </span>
+                                                </div>
+                                                <div style="font-size: 12px; color: #666;">
+                                                    <%= rating.dateSaved.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                                    <% if (rating.isEdited) { %>
+                                                        <span style="color: #999;">(updated)</span>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    <% }); %>
+                                <% }); %>
                             <% } %>
                         </div>
 
@@ -204,7 +228,7 @@
                                         </form>
                                     </div>
                                 <% } %>
-                                </div>
+                            </div>
                         <% }); %>
                     </div>
                 </div>
@@ -215,38 +239,9 @@
                 </div>
             </div>
         </div>
-    </div>    
-
-    <div class="overlay-backdrop" id="ratingsOverlay">
-        <div class="overlay-box" style="max-width: 600px; max-height: 70vh; overflow-y: auto;">
-            <h3 class="overlay-title">Recipe Ratings</h3>
-            <div id="ratingsOverlayContent">
-                <% if (allRatings.length === 0) { %>
-                    <p class="no-ratings-text">No ratings yet.</p>
-                <% } else { %>
-                    <div class="ratings-list">
-                        <% allRatings.forEach(userRatingDoc => { %>
-                            <% userRatingDoc.ratings.forEach(rating => { %>
-                                <% if (String(rating.recipeId) === String(recipe._id)) { %>
-                                    <div class="rating-item">
-                                        <div class="rating-item-header">
-                                            <div class="rating-item-user"><strong><%= userRatingDoc.userName %></strong></div>
-                                            <div class="rating-item-stars">
-                                                <% for (let i = 0; i < rating.ratingValue; i++) { %>⭐<% } %> <%= rating.ratingValue %>/5
-                                            </div>
-                                        </div>
-                                        <div class="rating-item-timestamp">
-                                            <%= rating.dateSaved.toLocaleDateString('en-UK', { day: 'numeric', month: 'long', year: 'numeric' }) %>
-                                            <% if (rating.isEdited) { %>
-                                                <span class="rating-edited-tag">(updated)</span>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                <% } %>
-                            <% }); %>
-                        <% }); %>
-                    </div>
-                <% } %>
+    </div>
+</body>
+</html>
             </div>
             <div class="overlay-actions">
                 <button type="button" class="btn-outline" onclick="closeRatingsOverlay()">Close</button>
