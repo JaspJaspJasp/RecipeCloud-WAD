@@ -57,8 +57,8 @@ exports.addItem = function(itemdata) {
     return Shop.create(itemdata);
 }
 
-exports.editItemById = function(userid, updatedList, options = {}) {
-    return Shop.updateOne({ userid: userid }, updatedList, options);
+exports.editItemById = function(userid, updatedList) {
+    return Shop.updateOne({ userid: userid }, updatedList);
 }
 
 exports.deleteItemById = function(userid) {
