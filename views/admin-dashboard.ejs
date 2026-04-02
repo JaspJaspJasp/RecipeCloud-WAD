@@ -46,14 +46,15 @@
                         <span class="activity-type">Forum Post</span>
                         <% if (latestForum) { %>
                             <strong>"<%= latestForum.title %>"</strong> posted by <strong>@<%= latestForum.username %></strong>
-                    </div>
-                    <div class="activity-meta">
-                        <%= latestForum.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
-                    </div>
                         <% } else { %>
                             <span class="empty-state">No forum posts created yet.</span>
-                    </div>
                         <% } %>
+                    </div>
+                    <% if (latestForum) { %>
+                        <div class="activity-meta">
+                            <%= latestForum.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
+                        </div>
+                    <% } %>
                 </div>
 
                 <div class="activity-item">
@@ -61,14 +62,15 @@
                         <span class="activity-type">Comment</span>
                         <% if (latestComment) { %>
                             <strong>@<%= latestComment.username %></strong> commented: "<%= latestComment.comment.length > 50 ? latestComment.comment.substring(0, 50) + '...' : latestComment.comment %>"
-                    </div>
-                    <div class="activity-meta">
-                        <%= latestComment.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
-                    </div>
                         <% } else { %>
                             <span class="empty-state">No comments posted yet.</span>
-                    </div>
                         <% } %>
+                    </div>
+                    <% if (latestComment) { %>
+                        <div class="activity-meta">
+                            <%= latestComment.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
+                        </div>
+                    <% } %>
                 </div>
 
                 <div class="activity-item">
@@ -76,14 +78,31 @@
                         <span class="activity-type">Rating</span>
                         <% if (latestRating) { %>
                             <strong>@<%= latestRating.username %></strong> left a <strong><%= latestRating.ratingValue %>/5 ⭐</strong> rating.
-                    </div>
-                    <div class="activity-meta">
-                        <%= latestRating.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
-                    </div>
                         <% } else { %>
                             <span class="empty-state">No ratings submitted yet.</span>
-                    </div>
                         <% } %>
+                    </div>
+                    <% if (latestRating) { %>
+                        <div class="activity-meta">
+                            <%= latestRating.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-content">
+                        <span class="activity-type">Recipe Saved</span>
+                        <% if (typeof latestFavourite !== 'undefined' && latestFavourite) { %>
+                            <strong>@<%= latestFavourite.username %></strong> added a recipe to their favourites.
+                        <% } else { %>
+                            <span class="empty-state">No recipes saved yet.</span>
+                        <% } %>
+                    </div>
+                    <% if (typeof latestFavourite !== 'undefined' && latestFavourite) { %>
+                        <div class="activity-meta">
+                            <%= latestFavourite.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %>
+                        </div>
+                    <% } %>
                 </div>
 
             </div>

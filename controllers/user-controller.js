@@ -132,7 +132,6 @@ exports.editUserPost = async (req, res) => {
     const sessionUserId = String(req.session.user.id);
     const sessionUserRole = String(req.session.user.role);
 
-    const userID = req.params.id;
     const display_name = (req.body.display_name ?? "").trim();
     const userName = (req.body.userName ?? "").trim();
     const gender = (req.body.gender ?? "").trim();
@@ -144,6 +143,16 @@ exports.editUserPost = async (req, res) => {
 
     let errors = [];
     let changes = [];
+
+    if (!display_name) {
+        errors.push({ msg: "Display Name is required." });
+    }
+    if (!userName) {
+        errors.push({ msg: "Username is required." });
+    }
+    if (!emailAddress) {
+        errors.push({ msg: "Email Address is required." });
+    }
 
     try {
     
@@ -166,7 +175,7 @@ exports.editUserPost = async (req, res) => {
 
         if (errors.length > 0) {
             return res.render("edit-user", {
-                errors, 
+                errors: errors, 
                 user: currentUser,
                 changes
             });

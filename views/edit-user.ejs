@@ -39,22 +39,22 @@
                 
                 <div class="form-group">
                     <label>Display Name</label>
-                    <input type="text" name="display_name" value="<%= user.display_name %>" required>
+                    <input type="text" name="display_name" value="<%= user.display_name %>">
                 </div>
 
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" name="userName" value="<%= user.userName %>" required>
+                    <input type="text" name="userName" value="<%= user.userName %>">
                 </div>
 
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" name="emailAddress" value="<%= user.emailAddress %>" required>
+                    <input type="email" name="emailAddress" value="<%= user.emailAddress %>">
                 </div>
 
                 <div class="form-group">
                     <label>Gender</label>
-                    <select name="gender" required>
+                    <select name="gender">
                         <option value="Male" <%= user.gender === "Male" ? "selected" : "" %>>Male</option>
                         <option value="Female" <%= user.gender === "Female" ? "selected" : "" %>>Female</option>
                         <option value="PNTS" <%= user.gender === "PNTS" ? "selected" : "" %>>Prefer not to say</option>

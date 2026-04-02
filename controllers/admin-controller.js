@@ -3,6 +3,9 @@ const RecipeModel = require("../models/recipe-model");
 const ForumModel = require("../models/forum-model");
 const CommentModel = require("../models/comment-model");
 const RatingModel = require("../models/ratings-model");
+const FavouritesModel = require("../models/favourite-model");
+
+
 
 
 exports.adminDashGet = async (req, res) => {
@@ -13,7 +16,11 @@ exports.adminDashGet = async (req, res) => {
         const latestForum = await ForumModel.findLatest();
         const latestComment = await CommentModel.findLatest();
         const latestRating = await RatingModel.findLatest();
-        return res.render("admin-dashboard", {totalUsers, totalRecipes, totalPosts, latestForum, latestComment, latestRating});
+        const latestFavourite = await FavouritesModel.findLatest();
+    
+    
+
+        return res.render("admin-dashboard", {totalUsers, totalRecipes, totalPosts, latestForum, latestComment, latestRating, latestFavourite});
     } catch (error) {
         console.error("Admin Dashboard Error: ", error);
         return res.render("error", { 
