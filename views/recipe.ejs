@@ -86,32 +86,24 @@
                         <!-- Ratings List -->
                         <div class="ratings-display" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; max-height: 300px; overflow-y: auto;">
                             <h4 style="margin-top: 0; margin-bottom: 15px; font-size: 14px; font-weight: bold;">All Ratings</h4>
-                            <% if (allRatings.length === 0) { %>
-                                <p style="margin: 0; color: #999; font-size: 14px;">No ratings yet.</p>
+                        <% if (user && currentRecipeRating) { %>
+                            <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e0e0e0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 14px;">
+                                    <% for (let i = 0; i < currentRecipeRating.ratingValue; i++) { %>⭐<% } %> <%= currentRecipeRating.ratingValue %>/5
+                                </span>
+                                </div>
+                                <div style="font-size: 12px; color: #666;">
+                                    Your rating on <%= currentRecipeRating.dateSaved.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                    <% if (currentRecipeRating.isEdited) { %>
+                                <span style="color: #999;">(updated)</span>
+                                <% } %>
                             <% } else { %>
-                                <% allRatings.forEach(userRatingDoc => { %>
-                                    <% userRatingDoc.ratings.forEach(rating => { %>
-                                        <% if (String(rating.recipeId) === String(recipe._id)) { %>
-                                            <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e0e0e0;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                                    <span style="font-weight: bold; font-size: 14px;"><%= userRatingDoc.userName %></span>
-                                                    <span style="font-size: 14px;">
-                                                        <% for (let i = 0; i < rating.ratingValue; i++) { %>⭐<% } %> <%= rating.ratingValue %>/5
-                                                    </span>
-                                                </div>
-                                                <div style="font-size: 12px; color: #666;">
-                                                    <%= rating.dateSaved.toLocaleDateString('en-UK', { day: 'numeric', month: 'short', year: 'numeric' }) %>
-                                                    <% if (rating.isEdited) { %>
-                                                        <span style="color: #999;">(updated)</span>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        <% } %>
-                                    <% }); %>
-                                <% }); %>
+                                <p style="margin: 0; color: #999; font-size: 14px;">No ratings yet.</p>
                             <% } %>
-                        </div>
 
+
+                        
                         <% if (user && (String(user.id) === String(recipe.userId) || user.role === "admin")) { %>
                             <div class="recipe-owner-links" style="display: flex; gap: 10px; justify-content: flex-end; width: 100%;">
                                 <a href="/recipe/<%= recipe._id %>/update" class="btn-outline-small">✏️ Edit Recipe</a>

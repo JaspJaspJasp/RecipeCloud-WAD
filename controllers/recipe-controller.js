@@ -216,7 +216,18 @@ exports.recipeFindbyID = async (req, res) => {
         const totalRatingScore = recipe.totalRatingScore || 0;
         const userId = req.session.user ? String(req.session.user.id) : null;
         const userRating = req.session.user ? await Rating.findUserRating(userId, recipeId) : null;
-        const allRatings = await Rating.retrieveByRecipeId(recipeId);
+        
+        // Process current user's recipe rating
+        let currentRecipeRating = null;
+        if (userId) {
+            const allRatings = await Rating.retrieveByRecipeId(recipeId);
+            const currentUserRatingsDoc = allRatings.find(doc => String(doc.userId) === String(userId));
+            if (currentUserRatingsDoc) {
+                currentRecipeRating = currentUserRatingsDoc.ratings.find(
+                    r => String(r.recipeId) === String(recipeId)
+                );
+            }
+        }
 
         // --- NEW LOGIC: Check if the recipe is already favourited ---
         let isFavourited = false;
@@ -231,10 +242,10 @@ exports.recipeFindbyID = async (req, res) => {
             recipe: recipe, 
             user: req.session.user, 
             userRating: userRating,
+            currentRecipeRating: currentRecipeRating,
             ratingAverage: ratingAverage,
             ratingCount: ratingCount,
             totalRatingScore: totalRatingScore,
-            allRatings: allRatings,
             comments: comments,
             status: status,
             favStatus: favStatus,
