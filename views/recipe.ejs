@@ -194,14 +194,14 @@
                                 <div class="recipe-comment-body"><%= c.comment %></div>
                                 <% if (user && user.id.toString() === c.userId.toString()) { %>
                                     <div class="recipe-comment-actions">
-                                        <button class="btn-comment-edit"
-                                                onclick="openEditOverlay('<%= c._id %>', '<%= recipe._id %>', `<%= c.comment %>`)">
+                                        <a href="/recipe/<%= recipe._id %>/comment/<%= c._id %>/edit" class="btn-comment-edit" style="text-decoration: none; display: inline-block; text-align: center;">
                                             Edit
-                                        </button>
-                                        <button class="btn-comment-delete"
-                                                onclick="openDeleteOverlay('<%= c._id %>', '<%= recipe._id %>')">
-                                            Delete
-                                        </button>
+                                        </a>
+                                        <form action="/recipe/<%= recipe._id %>/comment/<%= c._id %>/delete" method="POST" style="display: inline; margin: 0;">
+                                            <button type="submit" class="btn-comment-delete">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 <% } %>
                                 </div>
@@ -215,35 +215,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="overlay-backdrop" id="deleteOverlay">
-        <div class="overlay-box">
-            <h3 class="overlay-title">Delete Comment</h3>
-            <p class="overlay-body-text">Are you sure you want to delete this comment? This cannot be undone.</p>
-            <div class="overlay-actions">
-                <button type="button" class="btn-outline" onclick="closeDeleteOverlay()">Cancel</button>
-                <form id="deleteCommentForm" method="POST">
-                    <button type="submit" class="btn-solid">Confirm Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="overlay-backdrop" id="editOverlay">
-        <div class="overlay-box">
-            <h3 class="overlay-title">Edit Comment</h3>
-            <form id="editCommentForm" method="POST">
-                <div class="input-group">
-                    <label>Comment:</label>
-                    <textarea id="editCommentTextarea" name="comment" class="recipe-comment-textarea"></textarea>
-                </div>
-                <div class="overlay-actions">
-                    <button type="button" class="btn-outline" onclick="closeEditOverlay()">Cancel</button>
-                    <button type="submit" class="btn-solid">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    </div>    
 
     <div class="overlay-backdrop" id="ratingsOverlay">
         <div class="overlay-box" style="max-width: 600px; max-height: 70vh; overflow-y: auto;">
@@ -281,43 +253,6 @@
     </div>
 
     <script>
-        // DELETE
-        function openDeleteOverlay(commentId, recipeId) {
-            document.getElementById('deleteCommentForm').action = `/recipe/${recipeId}/comment/${commentId}/delete`;
-            document.getElementById('deleteOverlay').classList.add('overlay-visible');
-        }
-
-        function closeDeleteOverlay() {
-            document.getElementById('deleteOverlay').classList.remove('overlay-visible');
-        }
-
-        // EDIT
-        function openEditOverlay(commentId, recipeId, currentComment) {
-            document.getElementById('editCommentForm').action = `/recipe/${recipeId}/comment/${commentId}/edit`;
-            document.getElementById('editCommentTextarea').value = currentComment;
-            document.getElementById('editOverlay').classList.add('overlay-visible');
-        }
-
-        function closeEditOverlay() {
-            document.getElementById('editOverlay').classList.remove('overlay-visible');
-        }
-
-        // Close on backdrop click — wrapped in null checks
-        const deleteOverlay = document.getElementById('deleteOverlay');
-        const editOverlay = document.getElementById('editOverlay');
-
-        if (deleteOverlay) {
-            deleteOverlay.addEventListener('click', function(e) {
-                if (e.target === this) closeDeleteOverlay();
-            });
-        }
-
-        if (editOverlay) {
-            editOverlay.addEventListener('click', function(e) {
-                if (e.target === this) closeEditOverlay();
-            });
-        }
-
         // RATINGS
         function openRatingsOverlay() {
             document.getElementById('ratingsOverlay').classList.add('overlay-visible');

@@ -47,7 +47,6 @@ exports.postForum = async (req, res) => {
             const discussions = await ForumModel.findAllPosts();
             return res.render("forum", { 
                 discussions: discussions,
-                user: req.session.user,
                 errors: errors 
             });
         }
@@ -88,7 +87,6 @@ exports.getEditForum = async (req, res) => {
         if (post.username === sessionUserName || sessionUserRole === "admin") {
         return res.render('edit-forum', { 
             post: post, 
-            user: req.session.user,
             errors: [] 
             
         }); 
@@ -136,7 +134,6 @@ exports.updateForum = async (req, res) => {
         if (errors.length > 0) {
             return res.render('edit-forum', {
                 post: { _id: postId, title: title, tag: tag, content: content },
-                user: req.session.user,
                 errors: errors
             });
         }
@@ -257,7 +254,6 @@ exports.getEditReply = async (req, res) => {
         return res.render('edit-reply', { 
             postId: postId,
             reply: targetReply,
-            user: req.session.user,
             errors: []
         });
 
