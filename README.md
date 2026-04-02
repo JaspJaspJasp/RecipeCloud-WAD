@@ -70,14 +70,11 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
   - Difficulty level
   - Image
   - Username who created the recipe
-  
 
 ### ⭐ Rating System 
+- Logged-in users can see their previous rating to the recipe
+- Rating records number of ratings and average ratings of recipes
 
-- 
--
--
--
 ### Shop system 
 - Only logged-in users can:
   - Add and Remove Personal Items
