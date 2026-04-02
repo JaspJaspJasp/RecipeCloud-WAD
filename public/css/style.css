@@ -453,6 +453,9 @@ h1, h2, h3, h4, h5, h6, p {
     flex-direction: column;
     align-items: center;
     gap: 15px;
+    width: 100%;           /* <-- Add this to make it stretch */
+    max-width: 1000px;     /* <-- Add this to match your filter-wrapper */
+    margin: 0 auto;        /* <-- Add this to keep the form centered on the page */
 }
 
 .search-input-large {
@@ -2656,7 +2659,7 @@ h1, h2, h3, h4, h5, h6, p {
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             padding-bottom: 15px;
             border-bottom: 1px solid #d1cfc4; /* Subtle divider */
 }
