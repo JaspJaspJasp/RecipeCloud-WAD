@@ -68,7 +68,7 @@ exports.createRating = async (req, res) => {
 // READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
-    const userId = String(req.session.user) 
+    const userId = req.session.user ? String(req.session.user.id) : null;
     const favStatus = (req.query.favStatus ?? "").trim();
     try {
         const recipeId = String(req.params.id);
@@ -101,6 +101,7 @@ exports.readRatings = async (req, res) => {
 
         // Find user's rating if logged in
         let userRating = null;
+        let currentRecipeRating = null;
         let isFavourited = false;
         if (userId) {
             const userRatingDoc = await Rating.findUserRating(userId, recipeId);
@@ -109,6 +110,7 @@ exports.readRatings = async (req, res) => {
                 const specificRating = userRatingDoc.ratings.find(r => String(r.recipeId) === recipeId);
                 if (specificRating) {
                     userRating = specificRating.ratingValue;
+                    currentRecipeRating = specificRating;
                 }
             }
             const userFavs = await Favourite.findFavouriteByUserId(userId);
@@ -122,10 +124,10 @@ exports.readRatings = async (req, res) => {
             recipe: recipe,
             user: req.session.user,
             userRating: userRating,
+            currentRecipeRating: currentRecipeRating,
             ratingAverage: average,
             ratingCount: count,
             totalRatingScore: totalScore,
-            allRatings: allRatings,
             comments: comments,
             status: status,
             favStatus: favStatus,
