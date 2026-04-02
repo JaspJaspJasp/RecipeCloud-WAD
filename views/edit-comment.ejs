@@ -9,13 +9,13 @@
     <div class="recipe-detail-main" style="max-width: 600px; margin: 40px auto; padding: 20px;">
         <h3 class="section-heading">Edit Comment</h3>
         
-        <form action="/recipe/<%= recipe._id %>/comment/<%= comment._id %>/edit" method="POST">
+            <form action="/recipe/<%= recipeId %>/comment/<%= comment._id %>/edit" method="POST">            
             <div class="input-group">
                 <textarea name="comment" class="recipe-comment-textarea" rows="5" required><%= comment.comment %></textarea>
             </div>
             
             <div class="overlay-actions" style="margin-top: 15px;">
-                <a href="/recipe/<%= recipe._id %>" class="btn-outline" style="text-decoration: none; display: inline-block; text-align: center;">Cancel</a>
+                <a href="/recipe/<%= recipeId %>" class="btn-outline" style="text-decoration: none; display: inline-block; text-align: center;">Cancel</a>
                 <button type="submit" class="btn-solid">Save Changes</button>
             </div>
         </form>

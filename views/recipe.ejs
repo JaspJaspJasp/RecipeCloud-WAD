@@ -193,13 +193,13 @@
                     </div>
 
                     <div class="comment-list-card">
-                        <h3 class="section-heading">All Comments (<%= comments.length %>)</h3>
+                        <h3 class="section-heading">All Comments (<%= totalCommentCount %>)</h3>
 
-                        <% if (comments.length === 0) { %>
+                        <% if (totalCommentCount === 0) { %>
                             <p class="no-comments-text">No comments yet.</p>
                         <% } %>
 
-                        <% comments.forEach(c=> { %>
+                        <% comments.forEach(c => { %>
                             <div class="recipe-comment-item">
                                 <div class="recipe-comment-header">
                                     <div class="recipe-comment-username"><%= c.username %></div>
@@ -211,6 +211,7 @@
                                     </div>
                                 </div>
                                 <div class="recipe-comment-body"><%= c.comment %></div>
+                                
                                 <% if (user && user.id.toString() === c.userId.toString()) { %>
                                     <div class="recipe-comment-actions">
                                         <a href="/recipe/<%= recipe._id %>/comment/<%= c._id %>/edit" class="btn-comment-edit" style="text-decoration: none; display: inline-block; text-align: center;">
@@ -226,7 +227,6 @@
                             </div>
                         <% }); %>
                     </div>
-                </div>
                 <div class="back-link-container">
                     <a href="/" class="back-link">
                         &larr; Back to Recipes

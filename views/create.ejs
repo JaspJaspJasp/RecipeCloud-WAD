@@ -108,7 +108,7 @@
             <div class="input-group">
                 <label>Recipe Image:</label>
                 <input type="file" name="recipe_image" accept="image/png, image/jpeg, image/jpg" class="form-input file-input-bg">
-                <input type="hidden" name="recipe_image_base64" value="<%= locals.recipe_image_base64 || '' %>">
+                <input type="hidden" name="recipe_image_base64" value="<%= recipe_image_base64 || '' %>">
             </div>
 
             <button type="submit" class="submit-btn full-width-btn">Save Recipe</button>

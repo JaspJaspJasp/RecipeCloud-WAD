@@ -72,19 +72,19 @@ exports.readRatings = async (req, res) => {
     const favStatus = (req.query.favStatus ?? "").trim();
     try {
         const recipeId = String(req.params.id);
-
-        // Check if recipe exists
+        
         const recipe = await Recipe.findRecipeById(recipeId);
         if (!recipe) {
             return res.render("error", { message: "Recipe not found" });
         }
 
-        // Fetch comments for this recipe
-        const comments = await Comment.retrieveByRecipeId(recipeId);
+        const commentDoc = await Comment.retrieveByRecipeId(recipeId);
 
-        // Fetch all ratings for this recipe
+        const commentsList = commentDoc ? commentDoc.recipeComments : [];
+
+        const totalCommentCount = commentsList.length;
+
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-        console.log("All ratings for this recipe:", allRatings);
     
         // Calculate aggregates
         let totalScore = 0;
@@ -99,14 +99,12 @@ exports.readRatings = async (req, res) => {
 
         const average = count === 0 ? 0 : totalScore / count;
 
-        // Find user's rating if logged in
         let userRating = null;
         let currentRecipeRating = null;
         let isFavourited = false;
         if (userId) {
             const userRatingDoc = await Rating.findUserRating(userId, recipeId);
             if (userRatingDoc) {
-                // Extract the specific rating for this recipe from the ratings array
                 const specificRating = userRatingDoc.ratings.find(r => String(r.recipeId) === recipeId);
                 if (specificRating) {
                     userRating = specificRating.ratingValue;
@@ -116,10 +114,9 @@ exports.readRatings = async (req, res) => {
             const userFavs = await Favourite.findFavouriteByUserId(userId);
             if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
                 isFavourited = true;
-            
             }
         }
-        // Render recipe view with rating data
+        
         return res.render("recipe", {
             recipe: recipe,
             userRating: userRating,
@@ -127,7 +124,8 @@ exports.readRatings = async (req, res) => {
             ratingAverage: average,
             ratingCount: count,
             totalRatingScore: totalScore,
-            comments: comments,
+            comments: commentsList, 
+            totalCommentCount: totalCommentCount,
             status: status,
             favStatus: favStatus,
             isFavourited: isFavourited 
