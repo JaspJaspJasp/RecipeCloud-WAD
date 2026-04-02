@@ -2642,7 +2642,7 @@ h1, h2, h3, h4, h5, h6, p {
 
         /* Clean, airy, horizontal filter layout */
 .filter-wrapper {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 15px auto;
             display: flex;
             flex-direction: column;
