@@ -64,9 +64,6 @@ exports.editComment = async (req, res) => {
     const commentId = String(req.params.commentId);
     const commentText = (req.body.comment ?? "").trim();
 
-    if (!sessionUserId) {
-        return res.redirect('/login');
-    }
 
     try {
         const updateData = {
