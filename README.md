@@ -107,9 +107,8 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
  
 - All Admins can remove and edit discussions on forums
 - All Admins can remove and edit recipes on Home page
-  
     
-- Only recipe owners can:
+- Recipe owners can only:
   - Edit/Delete their recipes
 
 ---
