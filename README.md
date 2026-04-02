@@ -70,14 +70,11 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
   - Difficulty level
   - Image
   - Username who created the recipe
-  
 
 ### ⭐ Rating System 
+- Logged-in users can see their previous rating to the recipe
+- Rating records number of ratings and average ratings of recipes
 
-- 
--
--
--
 ### Shop system 
 - Only logged-in users can:
   - Add and Remove Personal Items
@@ -85,18 +82,15 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
   - Tick checkboxes when ingredients are bought
 - Each recipe includes
   - Ingredients with checkboxes
+  - 
 ### Forum system 
--
--
--
--
--
-### Comments system 
--
--
--
--
+- Displays all Discussions  
+- Allows everyone to view the discussions
 
+### Comments system 
+- Each Recipe has a comment section
+- Displays all comments
+- Allows everyone to view the comments
 
 ### 
 ### 🔐 Authentication & Authorization
@@ -104,13 +98,17 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 - Session-based authentication
 - Only logged-in users can:
   - Create recipes
-  - Comment on recipes 
-  -
-  -
-  -
-  -
+  - Comment on recipes
+  - Edit on their own comments 
+  - Rate recipes
+  - Have access to favourites
+  - Have access to shopping list
+  - Create or reply to a discussion on forums
+ 
+- All Admins can remove and edit discussions on forums
+- All Admins can remove and edit recipes on Home page
     
-- Only recipe owners can:
+- Recipe owners can only:
   - Edit/Delete their recipes
 
 ---

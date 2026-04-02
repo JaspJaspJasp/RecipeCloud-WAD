@@ -43,14 +43,11 @@ exports.createComments = async (req, res) => {
 };
 
 exports.renderEditForm = async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
     try {
         const commentId = String(req.params.commentId);
         const recipeId = String(req.params.recipeId);
-        const comment = await Comment.findOne({_id: commentId});
-        const recipe = await Recipe.findOne({_id: recipeId});
+        const comment = await Comment.retrieveByCommentId(commentId);
+        const recipe = await Recipe.findRecipeById(recipeId);
 
         if (!comment || !recipe ) {
             return res.redirect(`/recipe/${recipeId}`);
@@ -66,7 +63,7 @@ exports.renderEditForm = async (req, res) => {
 
 exports.editComment = async (req, res) => {
     // Standardizing session and params as per your project rules
-    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
+    const sessionUserId = String(req.session.user.id);
     const recipeId = String(req.params.id);
     const commentId = String(req.params.commentId);
     const commentText = (req.body.comment ?? "").trim();

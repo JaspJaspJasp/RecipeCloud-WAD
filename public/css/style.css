@@ -453,6 +453,9 @@ h1, h2, h3, h4, h5, h6, p {
     flex-direction: column;
     align-items: center;
     gap: 15px;
+    width: 100%;           /* <-- Add this to make it stretch */
+    max-width: 1000px;     /* <-- Add this to match your filter-wrapper */
+    margin: 0 auto;        /* <-- Add this to keep the form centered on the page */
 }
 
 .search-input-large {
@@ -2638,3 +2641,80 @@ h1, h2, h3, h4, h5, h6, p {
     height: 34px; /* Fixed height to match dropdown */
     box-sizing: border-box;
 }
+
+
+        /* Clean, airy, horizontal filter layout */
+.filter-wrapper {
+            max-width: 1400px;
+            margin: 15px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 10px;
+}
+
+        /* Tags neatly aligned in a row */
+.tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d1cfc4; /* Subtle divider */
+}
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 600; /* Thicker font for visibility */
+            color: #222; /* Dark, high-contrast text */
+}
+
+        /* Dropdowns centered on the bottom row */
+.dropdown-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Centers the dropdowns */
+            align-items: center;
+            gap: 30px;
+}
+
+.filter-label {
+            font-weight: 700;
+            color: #222;
+            margin-right: 8px;
+            font-size: 1.05rem;
+}
+        
+        /* Styled Dropdowns */
+.filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #ffffff; /* Clean white background */
+            color: #333;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            min-width: 180px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Slight pop off the page */
+            transition: border-color 0.2s ease;
+}
+
+.filter-select:hover {
+            border-color: #999;
+}
+
+        /* Center the Clear All button */
+.filter-actions {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 5px;
+}
+    

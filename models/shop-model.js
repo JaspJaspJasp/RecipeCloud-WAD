@@ -42,10 +42,6 @@ const shopSchema = new mongoose.Schema({
 
 const Shop = mongoose.model("Shop", shopSchema, "shopping-list")
 
-
-// no changes needed here actually — findUserById already returns a Mongoose document
-// Shop.findOne() returns a full Mongoose document that supports .save()
-
 exports.retrieveAllitems = function() {
     return Shop.find()
 } 
@@ -57,8 +53,8 @@ exports.addItem = function(itemdata) {
     return Shop.create(itemdata);
 }
 
-exports.editItemById = function(userid, updatedList, options = {}) {
-    return Shop.updateOne({ userid: userid }, updatedList, options);
+exports.editItemById = function(userid, updatedList) {
+    return Shop.updateOne({ userid: userid }, updatedList);
 }
 
 exports.deleteItemById = function(userid) {
