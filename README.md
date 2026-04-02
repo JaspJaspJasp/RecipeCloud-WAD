@@ -82,18 +82,15 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
   - Tick checkboxes when ingredients are bought
 - Each recipe includes
   - Ingredients with checkboxes
+  - 
 ### Forum system 
 - Displays all Discussions  
 - Allows everyone to view the discussions
-- 
--
--
-### Comments system 
--
--
--
--
 
+### Comments system 
+- Each Recipe has a comment section
+- Displays all comments
+- Allows everyone to view the comments
 
 ### 
 ### 🔐 Authentication & Authorization
@@ -101,11 +98,15 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 - Session-based authentication
 - Only logged-in users can:
   - Create recipes
-  - Comment on recipes 
-  -
-  -
-  -
-  -
+  - Comment on recipes
+  - Edit on their own comments 
+  - Rate recipes
+  - save recipes to favourites
+  - save recipes to shopping list
+  - Reply to discussions in forums
+ 
+- All Admins can remove and edit discussions on forums
+  
     
 - Only recipe owners can:
   - Edit/Delete their recipes
