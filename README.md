@@ -101,9 +101,9 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
   - Comment on recipes
   - Edit on their own comments 
   - Rate recipes
-  - save recipes to favourites
-  - save recipes to shopping list
-  - Reply to discussions in forums
+  - Have access to favourites
+  - Have access to shopping list
+  - Create or reply to a discussion on forums
  
 - All Admins can remove and edit discussions on forums
 - All Admins can remove and edit recipes on Home page
