@@ -253,23 +253,25 @@
                     <p class="no-ratings-text">No ratings yet.</p>
                 <% } else { %>
                     <div class="ratings-list">
-                        <% allRatings.forEach(rating => { %>
-                            <div class="rating-item">
-                                <div class="rating-item-header">
-                                    <div class="rating-item-user"><strong><%= rating.username %></strong></div>
-                                    <div class="rating-item-stars">
-                                        <% for (let i = 0; i < rating.ratingValue; i++) { %>⭐<% } %> <%= rating.ratingValue %>/5
+                        <% allRatings.forEach(userRatingDoc => { %>
+                            <% userRatingDoc.ratings.forEach(rating => { %>
+                                <% if (String(rating.recipeId) === String(recipe._id)) { %>
+                                    <div class="rating-item">
+                                        <div class="rating-item-header">
+                                            <div class="rating-item-user"><strong><%= userRatingDoc.userName %></strong></div>
+                                            <div class="rating-item-stars">
+                                                <% for (let i = 0; i < rating.ratingValue; i++) { %>⭐<% } %> <%= rating.ratingValue %>/5
+                                            </div>
+                                        </div>
+                                        <div class="rating-item-timestamp">
+                                            <%= rating.dateSaved.toLocaleDateString('en-UK', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+                                            <% if (rating.isEdited) { %>
+                                                <span class="rating-edited-tag">(updated)</span>
+                                            <% } %>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="rating-item-timestamp">
-                                    <%= rating.createdAt.toLocaleDateString('en-UK', { day: 'numeric', month: 'long', year: 'numeric' }) %>
-                                    <% if (rating.updatedAt && rating.updatedAt.getTime() !== rating.createdAt.getTime()) { %>
-                                        <% if (rating.isEdited) { %>
-                                            <span class="rating-edited-tag">(updated)</span>
-                                        <% } %>
-                                    <% } %>
-                                </div>
-                            </div>
+                                <% } %>
+                            <% }); %>
                         <% }); %>
                     </div>
                 <% } %>

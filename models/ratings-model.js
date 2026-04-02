@@ -3,79 +3,87 @@ const mongoose = require('mongoose');
 const ratingsSchema = new mongoose.Schema({
     userId: {
         type: String,
-        required: true 
-    },
-
-    recipeId: {
-        type: String, 
-        required: true
-    },
-
-    username: {
-        type: String, 
-        required: true
-    },
-
-    ratingValue: {
-        type: Number,
         required: true,
-        min: 1,
-        max: 5
+        unique: true 
     },
+     userName: {
+            type: String, 
+            required: true
+        },
 
-    createdAt: { 
-        type: Date, 
-        default: Date.now
-    },
+    ratings: [{
+        recipeId: {
+            type: String, 
+            required: true
+        },
 
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }, 
+        ratingValue: {
+            type: Number, 
+            required: true, 
+            min: 1,
+            max: 5
+        },
 
-    isEdited: {
-        type: Boolean,
-        default: false
-    }
+        isEdited: {
+            type: Boolean,
+            default: false
+        },
+
+        dateSaved: {
+            type: Date, 
+            default: Date.now
+        },
+    }], 
 });
 
 const Ratings = mongoose.model('Ratings', ratingsSchema, 'ratings');
-
-// Retrieve all ratings for a recipe
-exports.retrieveByRecipeId = function(recipeId) {
-    return Ratings.find({ recipeId: recipeId });
-};
-
-// Find a user's rating for a specific recipe (returns ONE document, not array)
-// findOne will give the first matching document return type is just one document { userId: "...", recipeId: "...", rating: 5}
-// find() will give an array [{ userId: "...", recipeId: "...", rating: 5}]
-exports.findUserRating = function(userId, recipeId) {
-    return Ratings.findOne({ 
-        userId: userId, 
-        recipeId: recipeId 
-    });
-};
 
 // Create a new rating
 exports.createRating = function(ratingData) {
     return Ratings.create(ratingData);
 };
 
-// Update an existing rating
-exports.updateRating = function(ratingId, updateData) {
-    return Ratings.updateOne({ _id: ratingId }, updateData);
+// Retrieve all ratings for a recipe
+exports.retrieveByRecipeId = function(recipeId) {
+    return Ratings.find({ "ratings.recipeId": recipeId });
+};
+
+
+
+// Find a specific rating for a user and recipe
+exports.findUserRating = function(userId, recipeId) {
+    return Ratings.findOne({ 
+        userId: userId, 
+        "ratings.recipeId": recipeId 
+    });
+};
+
+// Find a user's entire ratings document (all ratings for that user)
+exports.findUserRatingsDoc = function(userId) {
+    return Ratings.findOne({ userId: userId });
+};
+
+// Add a new rating to a user's existing ratings array
+exports.addRatingToUser = function(userId, recipeId, ratingValue) {
+    return Ratings.updateOne(
+        { userId: userId },
+        { $push: { ratings: { recipeId: recipeId, ratingValue: ratingValue, isEdited: false, dateSaved: new Date() } } }
+    );
+};
+
+// update a rating in the list of ratings for a user
+exports.updateRatingList = function(userId, recipeId, ratingValue) {
+    return Ratings.updateOne(
+        { userId: userId, "ratings.recipeId": recipeId },
+        { $set: { "ratings.$.ratingValue": ratingValue, "ratings.$.isEdited": true, "ratings.$.dateSaved": new Date() } }
+    );
 };
 
 // Delete a rating
-exports.deleteRating = function(ratingId) {
-    return Ratings.deleteOne({ _id: ratingId });
+exports.deleteRatingFromList = function (userId, recipeId){
+    return Ratings.updateOne(
+        { userId: userId, "ratings.recipeId": recipeId },
+        { $pull: { ratings: { recipeId: recipeId }}}
+    )
 };
 
-// Get all ratings (for admin, optional)
-exports.retrieveAll = function() {
-    return Ratings.find();
-};
-
-exports.findLatest = function() {
-    return Ratings.findOne().sort({ createdAt: -1 });
-}

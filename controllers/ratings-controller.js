@@ -3,19 +3,18 @@ const Recipe = require("../models/recipe-model");
 const Comment = require("../models/comment-model");
 const Favourite = require("../models/favourite-model");
 
+
 // CREATE a new rating or UPDATE an existing one
 exports.createRating = async (req, res) => {
 
-    const sessionUserId = String(req.session.user.id);
-    const sessionUserName = req.session.user.userName;
-
-    const recipeId = String(req.params.id);
     const userId = String(req.session.user.id);
+    const userName = req.session.user.userName;
+    const recipeId = String(req.params.id);
     const ratingValue = Number(req.body.rating);
 
 
     try {
-        // Validate rating value
+        // Validate rating value-
         if (!ratingValue || ratingValue < 1 || ratingValue > 5) {
             return res.render("error", { message: "Rating must be between 1 and 5" });
         }
@@ -27,31 +26,30 @@ exports.createRating = async (req, res) => {
             return res.render("error", { message: "Recipe not found" });
         }
 
-        // Check if user already rated this recipe
-        // created new fn to find user's rating 
-        const existingRating = await Rating.findUserRating(userId, recipeId);
+        // Check if user already has a ratings document
+        const userRatingsDoc = await Rating.findUserRatingsDoc(userId);
 
-        if (existingRating) {
-
-            const updateData = {
-                ratingValue : ratingValue,
-                updatedAt: new Date(),
-                isEdited: true
-            };
-            // UPDATE existing rating
-            await Rating.updateRating(existingRating._id, updateData);
-
+        if (userRatingsDoc) {
+            // User already has ratings document, check if they rated this specific recipe
+            const existingRecipeRating = userRatingsDoc.ratings.find(r => String(r.recipeId) === recipeId);
+            
+            if (existingRecipeRating) {
+                // UPDATE existing rating for this recipe
+                await Rating.updateRatingList(userId, recipeId, ratingValue);
+            } else {
+                // ADD new recipe rating to their existing ratings array
+                await Rating.addRatingToUser(userId, recipeId, ratingValue);
+            }
         } else {
-            // CREATE new rating
-            // create using the function that was declared 
-
+            // CREATE new rating document for this user
             const newRatingData = {
-                userId: sessionUserId,
-                recipeId: recipeId,
-                username: sessionUserName,
-                ratingValue: ratingValue
+                userId: userId,
+                userName: userName,
+                ratings: [{
+                    recipeId: recipeId,
+                    ratingValue: ratingValue,
+                    isEdited: false }]
             };
-
             await Rating.createRating(newRatingData);
         }
 
@@ -70,7 +68,7 @@ exports.createRating = async (req, res) => {
 // READ all ratings for a recipe
 exports.readRatings = async (req, res) => {
     const status = (req.query.status ?? "").trim();
-    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
+    const userId = String(req.session.user) 
     const favStatus = (req.query.favStatus ?? "").trim();
     try {
         const recipeId = String(req.params.id);
@@ -86,39 +84,42 @@ exports.readRatings = async (req, res) => {
 
         // Fetch all ratings for this recipe
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-        // this is an array of all the rating objects that belong to that recipe
-        //  we can use this to calculate the average and count and total score for that recipe, 
-        // then we can pass those values to the frontend to render it
-
+    
         // Calculate aggregates
         let totalScore = 0;
-        for (let r of allRatings) {
-            totalScore += r.ratingValue;
+        let count = 0;
+        for (let userRatingDoc of allRatings) {
+            const specificRating = userRatingDoc.ratings.find(r => String(r.recipeId) === recipeId);
+            if (specificRating) {
+                totalScore += specificRating.ratingValue;
+                count++;
+            }
         }
 
-        const count = allRatings.length;
         const average = count === 0 ? 0 : totalScore / count;
 
         // Find user's rating if logged in
         let userRating = null;
         let isFavourited = false;
-        if (sessionUserId) {
-            const userRatingDoc = await Rating.findUserRating(sessionUserId, recipeId);
+        if (userId) {
+            const userRatingDoc = await Rating.findUserRating(userId, recipeId);
             if (userRatingDoc) {
-                userRating = userRatingDoc.ratingValue;
+                // Extract the specific rating for this recipe from the ratings array
+                const specificRating = userRatingDoc.ratings.find(r => String(r.recipeId) === recipeId);
+                if (specificRating) {
+                    userRating = specificRating.ratingValue;
+                }
             }
-            const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
+            const userFavs = await Favourite.findFavouriteByUserId(userId);
             if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
                 isFavourited = true;
             
             }
-        
         }
-
         // Render recipe view with rating data
         return res.render("recipe", {
             recipe: recipe,
-            user: req.session ? req.session.user : null,
+            user: req.session.user,
             userRating: userRating,
             ratingAverage: average,
             ratingCount: count,
@@ -136,10 +137,10 @@ exports.readRatings = async (req, res) => {
     }
 };
 
-// UPDATE a rating (explicit endpoint, optional)
+// UPDATE a rating 
 exports.updateRating = async (req, res) => {
 
-    const sessionUserId = String(req.session.user.id);
+    const userId = String(req.session.user.id);
     const recipeId = String(req.params.id);
     const ratingValue = Number(req.body.rating);
 
@@ -148,19 +149,13 @@ exports.updateRating = async (req, res) => {
             return res.render("error", { message: "Rating must be between 1 and 5" });
         }
 
-        const userRating = await Rating.findUserRating(sessionUserId, recipeId);
+        const userRating = await Rating.findUserRating(userId, recipeId);
 
         if (!userRating) {
             return res.render("error", { message: "Rating not found" });
         }
 
-        const updateData = {
-            ratingValue: ratingValue,
-            updatedAt: new Date(),
-            isEdited: true
-        };
-
-        await Rating.updateRating(userRating._id, updateData);
+        await Rating.updateRatingList(userId, recipeId, ratingValue);
         await recalculateRecipeRatings(recipeId);
 
         return res.redirect(`/recipe/${recipeId}`);
@@ -205,14 +200,20 @@ async function recalculateRecipeRatings(recipeId) {
     try {
         
         const allRatings = await Rating.retrieveByRecipeId(recipeId);
-        // console.log(allRatings);
+        // now allRatings is an array of all rating object for that recipe 
+
 
         let totalScore = 0;
-        for (let r of allRatings) {
-            totalScore += r.ratingValue;
+        let count = 0;
+
+        for (let userRatingDoc of allRatings) {
+           const specificRating = userRatingDoc.ratings.find(r => String(r.recipeId) === recipeId);
+           if (specificRating) {
+               totalScore += specificRating.ratingValue;
+               count++;
+           }
         }
 
-        const count = allRatings.length;
         const average = count === 0 ? 0 : totalScore / count;
 
         const recipeUpdateData = {
