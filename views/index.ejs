@@ -17,7 +17,7 @@
             <form action="/" method="GET" class="search-form" id="mainSearchForm">
                 
                 <div style="display: flex; gap: 10px; width: 100%; max-width: 800px; margin: 0 auto;">
-                    <input type="text" name="q" placeholder="Search by name..." value="<%= locals.searchQuery || '' %>" class="search-input-large" style="flex-grow: 1;" >
+                    <input type="text" name="q" placeholder="Search by name..." value="<%= searchQuery || '' %>" class="search-input-large" style="flex-grow: 1;" >
                     <button type="submit" class="search-btn-large">Search</button>
                 </div>
 

@@ -13,7 +13,7 @@
             <p class="home-subtitle">Ask questions, share tips, and talk about food.</p>
         </div>
 
-        <% if (locals.errors && errors.length > 0) { %>
+        <% if (errors && errors.length > 0) { %>
             <div class="error-container">
                 <ul class="error-list">
                     <% errors.forEach(function(error) { %>
@@ -28,7 +28,7 @@
             <div class="post-box">
                 <h2 class="post-box-title">Start a Discussion</h2>
                 
-                <% if (locals.user) { %>
+                <% if (user) { %>
                     <form action="/forum/create" method="POST">
                         <label class="forum-label">Title</label>
                         <input type="text" name="title" class="forum-input" placeholder="What's your question?">
@@ -74,7 +74,7 @@
                             
                             <div class="discussion-content"><%= post.content %></div>
                             
-                            <% if (locals.user && (locals.user.display_name === post.username || locals.user.role === 'admin')) { %>
+                            <% if (user && (user.display_name === post.username || user.role === 'admin')) { %>
                                 <div class="discussion-actions">
                                     <a href="/forum/<%= post._id %>/edit" class="btn-outline btn-edit-post">Edit</a>
                                     <form action="/forum/<%= post._id %>/delete" method="POST" style="display:inline;">
@@ -102,7 +102,7 @@
                                                 <%= reply.content %>
                                             </div>
                                             
-                                            <% if (locals.user && (locals.user.display_name === reply.username || locals.user.role === 'admin')) { %>
+                                            <% if (user && (user.display_name === reply.username || user.role === 'admin')) { %>
                                                 <div class="discussion-actions" style="margin-top: 10px; border-top: none; padding-top: 0;">
                                                     <a href="/forum/<%= post._id %>/reply/<%= reply._id %>/edit" class="btn-outline btn-edit-post" style="padding: 2px 8px; font-size: 0.85rem;">Edit</a>
                                                     <form action="/forum/<%= post._id %>/reply/<%= reply._id %>/delete" method="POST" style="display:inline;">
@@ -115,7 +115,7 @@
                                     <% }); %>
                                 <% } %>
 
-                                <% if (locals.user) { %>
+                                <% if (user) { %>
                                     <form action="/forum/<%= post._id %>/reply" method="POST" class="reply-form">
                                         <input type="text" name="reply_content" placeholder="Write a reply..." class="forum-input reply-input">
                                         <button type="submit" class="btn-solid btn-submit-reply">Reply</button>

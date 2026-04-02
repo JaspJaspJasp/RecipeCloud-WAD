@@ -32,7 +32,7 @@ router.post('/recipe/:id/comment', authentication.isLoggedIn, commentController.
 //allowing user to render their edit comment page (R)
 router.get('/recipe/:recipeId/comment/:commentId/edit', authentication.isLoggedIn, commentController.renderEditForm);
 //posting the edit comment into the datebase (U)
-router.post('/recipe/:id/comment/:commentId/edit', authentication.isLoggedIn, commentController.editComment);
+router.post('/recipe/:recipeId/comment/:commentId/edit', authentication.isLoggedIn, commentController.editComment);
 
 //posting the deleted comment into the database (D)
 router.post('/recipe/:id/comment/:commentId/delete', authentication.isLoggedIn, commentController.deleteComment);

@@ -11,7 +11,8 @@ exports.showForum = async (req, res) => {
 
         return res.render('forum', { 
             discussions: discussions,
-            user: sessionUser 
+            user: sessionUser,
+            errors: []
         });
 
     } catch (err) {

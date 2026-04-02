@@ -200,10 +200,17 @@ exports.recipeFindbyID = async (req, res) => {
     const favStatus = (req.query.favStatus ?? "").trim();
     const recipeId = String(req.params.id); 
     const sessionUserId = req.session.user ? String(req.session.user.id) : null;
-    
     try {
         const recipe = await Recipe.findRecipeById(recipeId);
-        const comments = await Comment.retrieveByRecipeId(recipeId);
+
+        let comments = await Comment.retrieveByRecipeId(recipeId);
+        if (!comments) comments = []; // Fallback to empty array if null
+        let totalCommentCount = 0;
+        comments.forEach(userRecord => {
+            if (userRecord.recipeComments && userRecord.recipeComments.length > 0) {
+                totalCommentCount += userRecord.recipeComments.length;
+            }
+        });
         
         if (!recipe) {
             return res.render('error', {
@@ -229,7 +236,6 @@ exports.recipeFindbyID = async (req, res) => {
             }
         }
 
-        // --- NEW LOGIC: Check if the recipe is already favourited ---
         let isFavourited = false;
         if (sessionUserId) {
             const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
@@ -246,6 +252,7 @@ exports.recipeFindbyID = async (req, res) => {
             ratingCount: ratingCount,
             totalRatingScore: totalRatingScore,
             comments: comments,
+            totalCommentCount: totalCommentCount,
             status: status,
             favStatus: favStatus,
             isFavourited: isFavourited  
