@@ -83,9 +83,9 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 - Each recipe includes
   - Ingredients with checkboxes
 ### Forum system 
--
--
--
+- Displays all Discussions  
+- Allows everyone to view the discussions
+- 
 -
 -
 ### Comments system 
