@@ -31,10 +31,10 @@
                 <% if (locals.user) { %>
                     <form action="/forum/create" method="POST">
                         <label class="forum-label">Title</label>
-                        <input type="text" name="title" required class="forum-input" placeholder="What's your question?">
+                        <input type="text" name="title" class="forum-input" placeholder="What's your question?">
                         
                         <label class="forum-label">Category</label>
-                        <select name="tag" required class="forum-input">
+                        <select name="tag" class="forum-input">
                             <option value="" disabled selected>Select a topic...</option>
                             <option value="Baking">Baking</option>
                             <option value="Equipment">Equipment</option>
@@ -44,7 +44,7 @@
                         </select>
                         
                         <label class="forum-label">Details</label>
-                        <textarea name="content" required class="forum-textarea" placeholder="Explain your question or tip here..."></textarea>
+                        <textarea name="content" class="forum-textarea" placeholder="Explain your question or tip here..."></textarea>
                         
                         <button type="submit" class="btn-solid full-width-btn">Post Discussion</button>
                     </form>
@@ -117,7 +117,7 @@
 
                                 <% if (locals.user) { %>
                                     <form action="/forum/<%= post._id %>/reply" method="POST" class="reply-form">
-                                        <input type="text" name="reply_content" required placeholder="Write a reply..." class="forum-input reply-input">
+                                        <input type="text" name="reply_content" placeholder="Write a reply..." class="forum-input reply-input">
                                         <button type="submit" class="btn-solid btn-submit-reply">Reply</button>
                                     </form>
                                 <% } else { %>

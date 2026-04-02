@@ -37,12 +37,12 @@
         <form action="/create" method="POST" novalidate class="form-card">
             <div class="input-group">
                 <label>Recipe Name:</label>
-                <input type="text" name="recipe_name" required value="<%= recipe_name %>" class="form-input" placeholder="Enter the recipe name!">
+                <input type="text" name="recipe_name" value="<%= recipe_name %>" class="form-input" placeholder="Enter the recipe name!">
             </div>
 
             <div class="input-group">
                 <label>Cuisine:</label>
-                <select name="cuisine" required class="form-input">
+                <select name="cuisine" class="form-input">
                     <option value="" disabled <%= cuisine === '' ? 'selected' : '' %>>Select the cuisine type!</option>
                     <option value="Italian" <%= cuisine === 'Italian' ? 'selected' : '' %>>Italian</option>
                     <option value="French" <%= cuisine === 'French' ? 'selected' : '' %>>French</option>
@@ -66,17 +66,17 @@
 
             <div class="input-group">
                 <label>Serving Size:</label>
-                <input type="number" name="serving" required value="<%= serving %>" class="form-input" placeholder="e.g. 2">
+                <input type="number" name="serving" value="<%= serving %>" class="form-input" placeholder="e.g. 2">
             </div>
 
             <div class="input-group">
                 <label>Cooking Time (e.g., 45 mins):</label>
-                <input type="text" name="approx_cooking_time" required value="<%= approx_cooking_time %>" class="form-input" placeholder="How long will it take?">
+                <input type="text" name="approx_cooking_time" value="<%= approx_cooking_time %>" class="form-input" placeholder="How long will it take?">
             </div>
 
             <div class="input-group">
                 <label>Difficulty:</label>
-                <select name="difficulty_level" required class="form-input">
+                <select name="difficulty_level" class="form-input">
                     <option value="" disabled <%= difficulty_level === '' ? 'selected' : '' %>>What is the difficulty?</option>
                     <option value="beginner" <%= difficulty_level === 'beginner' ? 'selected' : '' %>>Beginner</option>
                     <option value="intermediate" <%= difficulty_level === 'intermediate' ? 'selected' : '' %>>Intermediate</option>
@@ -86,7 +86,7 @@
 
             <div class="input-group">
                 <label>Instructions / Steps:</label>
-                <textarea name="instructions" required class="tall-input" placeholder="Step 1: Preheat the oven..."><%= instructions %></textarea>
+                <textarea name="instructions" class="tall-input" placeholder="Step 1: Preheat the oven..."><%= instructions %></textarea>
             </div>
 
             <div class="input-group">
@@ -94,8 +94,8 @@
                 <div class="ingredients-container">
                     <% for(let i=0; i < ingredient_name.length; i++) { %>
                         <div class="ingredient-row">
-                            <input type="text" name="ingredient_amount" value="<%= ingredient_amount[i] %>" placeholder="Amount (e.g. 2 cups)" required class="ing-amount">
-                            <input type="text" name="ingredient_name" value="<%= ingredient_name[i] %>" placeholder="Ingredient (e.g. Flour)" required class="<%= i === 0 ? 'ing-name-full' : 'ing-name-partial' %>">
+                            <input type="text" name="ingredient_amount" value="<%= ingredient_amount[i] %>" placeholder="Amount (e.g. 2 cups)" class="ing-amount">
+                            <input type="text" name="ingredient_name" value="<%= ingredient_name[i] %>" placeholder="Ingredient (e.g. Flour)" class="<%= i === 0 ? 'ing-name-full' : 'ing-name-partial' %>">
                             <% if (i > 0) { %>
                                 <button type="button" class="remove-btn">X</button>
                             <% } %>
@@ -143,8 +143,8 @@
             const row = document.createElement('div'); 
             row.className = 'ingredient-row';
             row.innerHTML = `
-                <input type="text" name="ingredient_amount" placeholder="Amount" required class="ing-amount">
-                <input type="text" name="ingredient_name" placeholder="Ingredient" required class="ing-name-partial">
+                <input type="text" name="ingredient_amount" placeholder="Amount" class="ing-amount">
+                <input type="text" name="ingredient_name" placeholder="Ingredient" class="ing-name-partial">
                 <button type="button" class="remove-btn">X</button>
             `;
             container.appendChild(row);

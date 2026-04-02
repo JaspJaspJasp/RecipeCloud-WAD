@@ -87,3 +87,21 @@ exports.deleteRatingFromList = function (userId, recipeId){
     )
 };
 
+// Find latest update
+exports.findLatest = async function() {
+    const result = await Ratings.aggregate([
+        { $unwind: "$ratings" }, 
+        { $sort: { "ratings.dateSaved": -1 } }, 
+        { $limit: 1 } 
+    ]);
+
+    if (result.length > 0) {
+        const latest = result[0];
+        return {
+            username: latest.userName,                  
+            ratingValue: latest.ratings.ratingValue,   
+            createdAt: latest.ratings.dateSaved         
+        };
+    }
+    return null; 
+};

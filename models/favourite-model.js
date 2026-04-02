@@ -22,7 +22,7 @@ const favouriteSchema = new mongoose.Schema({
     }]
 });
 
-const Favourite = mongoose.model('Favourite', favouriteSchema);
+const Favourite = mongoose.model('Favourite', favouriteSchema, 'favourites');
 
 exports.createFavourite = function(favData) {
     return Favourite.create(favData);
@@ -48,4 +48,23 @@ exports.deleteRecipeFromList = function(userId, recipeId) {
 
 exports.updateFavourite = function(userId, updateData) {
     return Favourite.updateOne({ userId: userId }, updateData);
+};
+
+exports.findLatest = async function() {
+    const result = await Favourite.aggregate([
+        { $unwind: "$savedRecipes" }, 
+        { $sort: { "savedRecipes.dateSaved": -1 } }, 
+        { $limit: 1 } 
+    ]);
+
+    if (result.length > 0) {
+        const latest = result[0];
+        
+        return {
+            username: latest.userName, 
+            createdAt: latest.savedRecipes.dateSaved 
+        };
+    }
+    
+    return null;
 };
