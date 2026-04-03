@@ -107,7 +107,7 @@ exports.postCreate = async (req, res) => {
     if (!approx_cooking_time) errors.push("Cooking time is required.");
     if (!difficulty_level) errors.push("Difficulty level is required.");
     if (!instructions) errors.push("Instructions are required.");
-    if (recipe_image_base64.length > 4000000) errors.push("The image you selected is too large. Please keep images under 4MB.");
+    if (recipe_image_base64.length > 4893355) errors.push("The image you selected is too large. Please keep images under 4MB.");
 
     let hasValidIngredient = false;
     for (let i = 0; i < ingredient_name.length; i++) {
