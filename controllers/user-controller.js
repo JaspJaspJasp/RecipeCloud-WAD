@@ -106,14 +106,14 @@ exports.editUserGet = async (req, res) => {
 
     try {
 
-        const user = await UserModel.findUserById(req.params.id);
+        const userFound = await UserModel.findUserById(req.params.id);
         
-        if (!user) {
+        if (!userFound) {
             return res.render('error', { message: "We couldn't find this user profile." });
         }
 
         return res.render('edit-user', {
-            user, 
+            userFound, 
             errors: [],
             changes: []
         });
@@ -207,7 +207,7 @@ exports.editUserPost = async (req, res) => {
         
         const updatedUser = await UserModel.findUserById(targetUserId);
         res.render("edit-user", { 
-            user: updatedUser, 
+            userFound: updatedUser, 
             errors, 
             changes
         });
