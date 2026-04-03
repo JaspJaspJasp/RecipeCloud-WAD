@@ -193,78 +193,7 @@ exports.postCreate = async (req, res) => {
         }
     } 
 
-    
-//Rendering recipe image when clicked on
-exports.recipeFindbyID = async (req, res) => {
-    const status = (req.query.status ?? "").trim();
-    const favStatus = (req.query.favStatus ?? "").trim();
-    const recipeId = String(req.params.id); 
-    const sessionUserId = req.session.user ? String(req.session.user.id) : null;
-    try {
-        const recipe = await Recipe.findRecipeById(recipeId);
 
-        let comments = await Comment.retrieveByRecipeId(recipeId);
-        if (!comments) comments = []; // Fallback to empty array if null
-        let totalCommentCount = 0;
-        comments.forEach(userRecord => {
-            if (userRecord.recipeComments && userRecord.recipeComments.length > 0) {
-                totalCommentCount += userRecord.recipeComments.length;
-            }
-        });
-        
-        if (!recipe) {
-            return res.render('error', {
-                message: "This recipe does not exist or has been removed."
-            });
-        }
-
-        const ratingAverage = recipe.ratingAverage || 0;
-        const ratingCount = recipe.ratingCount || 0;
-        const totalRatingScore = recipe.totalRatingScore || 0;
-        const userId = req.session.user ? String(req.session.user.id) : null;
-        const userRating = req.session.user ? await Rating.findUserRating(userId, recipeId) : null;
-        
-        // Process current user's recipe rating
-        let currentRecipeRating = null;
-        if (userId) {
-            const allRatings = await Rating.retrieveByRecipeId(recipeId);
-            const currentUserRatingsDoc = allRatings.find(doc => String(doc.userId) === String(userId));
-            if (currentUserRatingsDoc) {
-                currentRecipeRating = currentUserRatingsDoc.ratings.find(
-                    r => String(r.recipeId) === String(recipeId)
-                );
-            }
-        }
-
-        let isFavourited = false;
-        if (sessionUserId) {
-            const userFavs = await Favourite.findFavouriteByUserId(sessionUserId);
-            if (userFavs && userFavs.savedRecipes.some(r => String(r.recipeId) === recipeId)) {
-                isFavourited = true;
-            }
-        }
-
-        return res.render('recipe', { 
-            recipe: recipe,  
-            userRating: userRating,
-            currentRecipeRating: currentRecipeRating,
-            ratingAverage: ratingAverage,
-            ratingCount: ratingCount,
-            totalRatingScore: totalRatingScore,
-            comments: comments,
-            totalCommentCount: totalCommentCount,
-            status: status,
-            favStatus: favStatus,
-            isFavourited: isFavourited  
-        });
-
-    } catch (err) {
-        console.error("Error finding recipe: ", err);
-        return res.render('error', {
-            message: "Something went wrong. We can't find the recipe, or the recipe was deleted!"
-        });
-    }
-};
 
 exports.renderEditRecipeForm = async (req, res) => {
 
