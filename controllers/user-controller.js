@@ -198,13 +198,14 @@ exports.editUserPost = async (req, res) => {
         
         await UserModel.updateUserById(targetUserId, updateData);
     
-        req.session.user.display_name = display_name;
-        req.session.user.userName = userName; 
-        req.session.user.gender = gender; 
-        req.session.user.emailAddress = emailAddress;
+        if (sessionUserId === targetUserId) {
+            req.session.user.display_name = display_name;
+            req.session.user.userName = userName; 
+            req.session.user.gender = gender; 
+            req.session.user.emailAddress = emailAddress;
+        }
         
         const updatedUser = await UserModel.findUserById(targetUserId);
-
         res.render("edit-user", { 
             user: updatedUser, 
             errors, 
