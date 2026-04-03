@@ -14,17 +14,11 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 3. Open the terminal in the project root folder.
 4. Install all required dependencies:
         - npm i
-5. Create a config.env file in the root folder if it is not already included.
-    change the required environment variables inside config.env marked with <>:
-    *PASTE THIS INSIDE YOUR CONFIG.ENV* 
-    DB=mongodb+srv://<'USERNAME'>:<'PASSWORD'>@<'CLUSTERADDRESS'>/<'DBNAME'>?retryWrites=true&w=majority
-    SECRET = '<'ANYTHING YOU WANT'>'
-6. Run Server with nodemon server.js
-7. Access and type http://127.0.0.1/8000 in a Chrome browser
+5. Run Server with nodemon server.js
+6. Access and type http://127.0.0.1/8000 in a Chrome browser
 
 
        
-
 ## 📌 AI Usage Declaration
 
 
