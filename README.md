@@ -92,6 +92,10 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 - Displays all comments
 - Allows everyone to view the comments
 
+### Admin DashBoard 
+- Admins can see total Users, Recipes, and Forum post
+- Admins can see latest website interactions
+
 ### 
 ### 🔐 Authentication & Authorization
 - User registration and login
