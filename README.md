@@ -1,10 +1,11 @@
 # RECIPE CLOUD
 WAD1 Digital Recipe Box Repository
 
-
 Recipe Cloud is a full-stack web application that allows users to create, manage, and explore recipes. The system enables users to add their own recipes, view others’ recipes, and leave reviews.
 
 This project is built using Node.js, Express.js, MongoDB, and EJS, following the MVC architecture, as part of IS113 – Web Application Development I.
+
+Developers of this project (Team 3): Wen Le, Jasper, Regen, Marvel, Giselle
 
 ---
 ### How to set up the application
@@ -24,6 +25,7 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 
 - ✅ All **CSS styling** in this project was generated using AI tools.
 - ✅ Some **client-side scripts (JavaScript below EJS templates)** were generated using AI.
+- ✅ Research on **starter code** was generated using AI tools. 
 
 ---
 ### USERNAME DETAILS 
@@ -69,28 +71,27 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 - Logged-in users can see their previous rating to the recipe
 - Rating records number of ratings and average ratings of recipes
 
-### Shop system 
+### 🛒 Shopping List System
 - Only logged-in users can:
   - Add and Remove Personal Items
   - Add and Remove Recipes from Favorites
   - Tick checkboxes when ingredients are bought
 - Each recipe includes
   - Ingredients with checkboxes
-  - 
-### Forum system 
-- Displays all Discussions  
+
+### 🗫 Forum System 
+- Displays all discussions  
 - Allows everyone to view the discussions
 
-### Comments system 
+### 💬 Comments System 
 - Each Recipe has a comment section
 - Displays all comments
 - Allows everyone to view the comments
 
-### Admin DashBoard 
-- Admins can see total Users, Recipes, and Forum post
+### 💼 Admin Dashboard 
+- Admins can see total Users, Recipes, and Forum posts
 - Admins can see latest website interactions
 
-### 
 ### 🔐 Authentication & Authorization
 - User registration and login
 - Session-based authentication
@@ -114,7 +115,7 @@ This project is built using Node.js, Express.js, MongoDB, and EJS, following the
 ## 🛠️ Tech Stack
 
 - **Backend**: Node.js, Express.js (MVC Architecture)
-- **Database**: MongoDB (Mongoose ODM)
+- **Database**: MongoDB
 - **Frontend**: EJS Templates
 - **Environment**: Node.js 
 
