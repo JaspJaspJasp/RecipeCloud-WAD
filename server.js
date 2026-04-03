@@ -28,7 +28,7 @@ async function connectDB() {
 };
 
 //Post, Public routing, EJS initialisation
-app.use(express.urlencoded({ limit: '4mb' ,extended: true }));
+app.use(express.urlencoded({ limit: '1gb' , extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 
@@ -57,7 +57,7 @@ const shoplist = require("./routes/shop");
 const forum = require("./routes/forum");
 const favouriteRoutes = require('./routes/favourites');
 const admin = require('./routes/admin');
-const errorHandler = require('./middleware/max-size');
+
 
 //Routings
 app.use("/", recipes); 
@@ -69,9 +69,6 @@ app.use("/", favouriteRoutes);
 app.use("/", admin);
 
 
-
-//Error handler for >4MB
-app.use(errorHandler.globalErrorHandler);
 
 function startServer() {
   app.listen(port, hostname, () => {
