@@ -176,7 +176,7 @@ exports.editUserPost = async (req, res) => {
         if (errors.length > 0) {
             return res.render("edit-user", {
                 errors: errors, 
-                user: currentUser,
+                userFound: currentUser,
                 changes
             });
         }
