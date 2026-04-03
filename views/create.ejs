@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Add Recipe - RecipeCloud</title>
     <link rel="stylesheet" href="/css/style.css">
@@ -20,141 +21,167 @@
                 </div>
             </div>
         </div>
-    <% }else {%>
-    <div class="create-recipe-main">
-        <h2>Add a New Recipe</h2>
+        <% }else {%>
+            <div class="create-recipe-main">
+                <h2>Add a New Recipe</h2>
 
-        <% if (errors && errors.length > 0) { %>
-            <div class="error-container">
-                <ul class="error-list">
-                    <% errors.forEach(error => { %>
-                        <li><%- error %></li>
-                    <% }) %>
-                </ul>
-            </div>
-        <% } %>
-
-        <form action="/create" method="POST" novalidate class="form-card">
-            <div class="input-group">
-                <label>Recipe Name:</label>
-                <input type="text" name="recipe_name" value="<%= recipe_name %>" class="form-input" placeholder="Enter the recipe name!">
-            </div>
-
-            <div class="input-group">
-                <label>Cuisine:</label>
-                <select name="cuisine" class="form-input">
-                    <option value="" disabled <%= cuisine === '' ? 'selected' : '' %>>Select the cuisine type!</option>
-                    <option value="Italian" <%= cuisine === 'Italian' ? 'selected' : '' %>>Italian</option>
-                    <option value="French" <%= cuisine === 'French' ? 'selected' : '' %>>French</option>
-                    <option value="Chinese" <%= cuisine === 'Chinese' ? 'selected' : '' %>>Chinese</option>
-                    <option value="Japanese" <%= cuisine === 'Japanese' ? 'selected' : '' %>>Japanese</option>
-                    <option value="Korean" <%= cuisine === 'Korean' ? 'selected' : '' %>>Korean</option>
-                    <option value="Western" <%= cuisine === 'Western' ? 'selected' : '' %>>Western</option>
-                    <option value="Asian" <%= cuisine === 'Asian' ? 'selected' : '' %>>Asian</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Tags (Select all that apply):</label><br>
-                <input type="checkbox" name="tag" value="vegetarian" <%= tag.includes('vegetarian') ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Vegetarian</div><br>
-                <input type="checkbox" name="tag" value="vegan" <%= tag.includes('vegan') ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Vegan</div><br>
-                <input type="checkbox" name="tag" value="gluten free" <%= tag.includes('gluten free') ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Gluten Free</div><br>
-                <input type="checkbox" name="tag" value="appetizer" <%= tag.includes('appetizer') ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Appetizer</div><br>
-                <input type="checkbox" name="tag" value="main" <%= tag.includes('main') ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Main</div><br>
-                <input type="checkbox" name="tag" value="dessert" <%= tag.includes('dessert') ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Dessert</div>
-            </div>
-
-            <div class="input-group">
-                <label>Serving Size:</label>
-                <input type="number" name="serving" value="<%= serving %>" class="form-input" placeholder="e.g. 2">
-            </div>
-
-            <div class="input-group">
-                <label>Cooking Time (e.g., 45 mins):</label>
-                <input type="text" name="approx_cooking_time" value="<%= approx_cooking_time %>" class="form-input" placeholder="How long will it take?">
-            </div>
-
-            <div class="input-group">
-                <label>Difficulty:</label>
-                <select name="difficulty_level" class="form-input">
-                    <option value="" disabled <%= difficulty_level === '' ? 'selected' : '' %>>What is the difficulty?</option>
-                    <option value="beginner" <%= difficulty_level === 'beginner' ? 'selected' : '' %>>Beginner</option>
-                    <option value="intermediate" <%= difficulty_level === 'intermediate' ? 'selected' : '' %>>Intermediate</option>
-                    <option value="advanced" <%= difficulty_level === 'advanced' ? 'selected' : '' %>>Advanced</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Instructions / Steps:</label>
-                <textarea name="instructions" class="tall-input" placeholder="Step 1: Preheat the oven..."><%= instructions %></textarea>
-            </div>
-
-            <div class="input-group">
-                <label>Ingredients:</label>
-                <div class="ingredients-container">
-                    <% for(let i=0; i < ingredient_name.length; i++) { %>
-                        <div class="ingredient-row">
-                            <input type="text" name="ingredient_amount" value="<%= ingredient_amount[i] %>" placeholder="Amount (e.g. 2 cups)" class="ing-amount">
-                            <input type="text" name="ingredient_name" value="<%= ingredient_name[i] %>" placeholder="Ingredient (e.g. Flour)" class="<%= i === 0 ? 'ing-name-full' : 'ing-name-partial' %>">
-                            <% if (i > 0) { %>
-                                <button type="button" class="remove-btn">X</button>
-                            <% } %>
-                        </div>
+                <% if (errors && errors.length> 0) { %>
+                    <div class="error-container">
+                        <ul class="error-list">
+                            <% errors.forEach(error=> { %>
+                                <li><%- error %></li>
+                                <% }) %>
+                        </ul>
+                    </div>
                     <% } %>
-                </div>
-                <button type="button" class="add-btn">+ Add Another Ingredient</button>
+
+                        <form action="/create" method="POST" novalidate class="form-card">
+                            <div class="input-group">
+                                <label>Recipe Name:</label>
+                                <input type="text" name="recipe_name" value="<%= recipe_name %>" class="form-input"
+                                    placeholder="Enter the recipe name!">
+                            </div>
+
+                            <div class="input-group">
+                                <label>Cuisine:</label>
+                                <select name="cuisine" class="form-input">
+                                    <option value="" disabled <%=cuisine==='' ? 'selected' : '' %>>Select the cuisine
+                                        type!</option>
+                                    <option value="Italian" <%=cuisine==='Italian' ? 'selected' : '' %>>Italian</option>
+                                    <option value="French" <%=cuisine==='French' ? 'selected' : '' %>>French</option>
+                                    <option value="Chinese" <%=cuisine==='Chinese' ? 'selected' : '' %>>Chinese</option>
+                                    <option value="Japanese" <%=cuisine==='Japanese' ? 'selected' : '' %>>Japanese
+                                    </option>
+                                    <option value="Korean" <%=cuisine==='Korean' ? 'selected' : '' %>>Korean</option>
+                                    <option value="Western" <%=cuisine==='Western' ? 'selected' : '' %>>Western</option>
+                                    <option value="Asian" <%=cuisine==='Asian' ? 'selected' : '' %>>Asian</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Tags (Select all that apply):</label><br>
+                                <input type="checkbox" name="tag" value="vegetarian" <%=tag.includes('vegetarian')
+                                    ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Vegetarian
+                                </div><br>
+                                <input type="checkbox" name="tag" value="vegan" <%=tag.includes('vegan') ? 'checked'
+                                    : '' %>> <div class="checkbox-label" style="display: inline;">Vegan</div><br>
+                                <input type="checkbox" name="tag" value="gluten free" <%=tag.includes('gluten free')
+                                    ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Gluten
+                                    Free</div><br>
+                                <input type="checkbox" name="tag" value="appetizer" <%=tag.includes('appetizer')
+                                    ? 'checked' : '' %>> <div class="checkbox-label" style="display: inline;">Appetizer
+                                </div><br>
+                                <input type="checkbox" name="tag" value="main" <%=tag.includes('main') ? 'checked' : ''
+                                    %>> <div class="checkbox-label" style="display: inline;">Main</div><br>
+                                <input type="checkbox" name="tag" value="dessert" <%=tag.includes('dessert') ? 'checked'
+                                    : '' %>> <div class="checkbox-label" style="display: inline;">Dessert</div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Serving Size:</label>
+                                <input type="number" name="serving" value="<%= serving %>" class="form-input"
+                                    placeholder="e.g. 2">
+                            </div>
+
+                            <div class="input-group">
+                                <label>Cooking Time (e.g., 45 mins):</label>
+                                <input type="text" name="approx_cooking_time" value="<%= approx_cooking_time %>"
+                                    class="form-input" placeholder="How long will it take?">
+                            </div>
+
+                            <div class="input-group">
+                                <label>Difficulty:</label>
+                                <select name="difficulty_level" class="form-input">
+                                    <option value="" disabled <%=difficulty_level==='' ? 'selected' : '' %>>What is the
+                                        difficulty?</option>
+                                    <option value="beginner" <%=difficulty_level==='beginner' ? 'selected' : '' %>
+                                        >Beginner</option>
+                                    <option value="intermediate" <%=difficulty_level==='intermediate' ? 'selected' : ''
+                                        %>>Intermediate</option>
+                                    <option value="advanced" <%=difficulty_level==='advanced' ? 'selected' : '' %>
+                                        >Advanced</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Instructions / Steps:</label>
+                                <textarea name="instructions" class="tall-input"
+                                    placeholder="Step 1: Preheat the oven..."><%= instructions %></textarea>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Ingredients:</label>
+                                <div class="ingredients-container">
+                                    <% for(let i=0; i < ingredient_name.length; i++) { %>
+                                        <div class="ingredient-row">
+                                            <input type="text" name="ingredient_amount"
+                                                value="<%= ingredient_amount[i] %>" placeholder="Amount (e.g. 2 cups)"
+                                                class="ing-amount">
+                                            <input type="text" name="ingredient_name" value="<%= ingredient_name[i] %>"
+                                                placeholder="Ingredient (e.g. Flour)"
+                                                class="<%= i === 0 ? 'ing-name-full' : 'ing-name-partial' %>">
+                                            <% if (i> 0) { %>
+                                                <button type="button" class="remove-btn">X</button>
+                                                <% } %>
+                                        </div>
+                                        <% } %>
+                                </div>
+                                <button type="button" class="add-btn">+ Add Another Ingredient</button>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Recipe Image: (Max size: 3.5MB) </label>
+                                <input type="file" name="recipe_image" accept="image/png, image/jpeg, image/jpg"
+                                    class="form-input file-input-bg">
+                                <input type="hidden" name="recipe_image_base64"
+                                    value="<%= recipe_image_base64 || '' %>">
+                            </div>
+
+                            <button type="submit" class="submit-btn full-width-btn">Save Recipe</button>
+                        </form>
             </div>
+            <% } %>
 
-            <div class="input-group">
-                <label>Recipe Image:</label>
-                <input type="file" name="recipe_image" accept="image/png, image/jpeg, image/jpg" class="form-input file-input-bg">
-                <input type="hidden" name="recipe_image_base64" value="<%= recipe_image_base64 || '' %>">
-            </div>
+                <script>
+                    const addBtn = document.querySelector('.add-btn');
+                    const container = document.querySelector('.ingredients-container');
+                    const fileInput = document.querySelector('input[name="recipe_image"]');
+                    const hiddenBase64Input = document.querySelector('input[name="recipe_image_base64"]');
 
-            <button type="submit" class="submit-btn full-width-btn">Save Recipe</button>
-        </form>
-    </div>
-    <% } %>
+                    addBtn.addEventListener('click', addIngredientRow);
+                    container.addEventListener('click', removeIngredientRow);
 
-    <script>
-        const addBtn = document.querySelector('.add-btn'); 
-        const container = document.querySelector('.ingredients-container'); 
-        const fileInput = document.querySelector('input[name="recipe_image"]'); 
-        const hiddenBase64Input = document.querySelector('input[name="recipe_image_base64"]'); 
+                    fileInput.addEventListener('change', function (event) {
+                        const file = event.target.files[0];
 
-        addBtn.addEventListener('click', addIngredientRow); 
-        container.addEventListener('click', removeIngredientRow); 
-        
-        fileInput.addEventListener('change', function (event) { 
-            const file = event.target.files[0]; 
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                hiddenBase64Input.value = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            hiddenBase64Input.value = "";
+                        }
+                    });
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    hiddenBase64Input.value = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                hiddenBase64Input.value = "";
-            }
-        });
-
-        function addIngredientRow() {
-            const row = document.createElement('div'); 
-            row.className = 'ingredient-row';
-            row.innerHTML = `
+                    function addIngredientRow() {
+                        const row = document.createElement('div');
+                        row.className = 'ingredient-row';
+                        row.innerHTML = `
                 <input type="text" name="ingredient_amount" placeholder="Amount" class="ing-amount">
                 <input type="text" name="ingredient_name" placeholder="Ingredient" class="ing-name-partial">
                 <button type="button" class="remove-btn">X</button>
             `;
-            container.appendChild(row);
-        }
+                        container.appendChild(row);
+                    }
 
-        function removeIngredientRow(e) {
-            if (e.target && e.target.tagName === 'BUTTON' && e.target.textContent === 'X') {
-                e.target.parentElement.remove();
-            }
-        }
-    </script>
+                    function removeIngredientRow(e) {
+                        if (e.target && e.target.tagName === 'BUTTON' && e.target.textContent === 'X') {
+                            e.target.parentElement.remove();
+                        }
+                    }
+                </script>
 </body>
+
 </html>
