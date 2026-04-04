@@ -40,7 +40,7 @@ exports.saveRecipeToList = async (req, res) => {
         await ShopModel.addItem(additemObj);
 
         } else {
-            //WHY NOT .FIND() but .SOME() CUZ .some() → returns true or false only
+            // .SOME() CUZ .some() → returns true or false only
             //checks if recipe is already saved
             const alreadySaved = userShop.recipes.some(r => r.recipeId === String(recipeId));
             if (alreadySaved) {
