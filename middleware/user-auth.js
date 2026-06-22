@@ -1,5 +1,4 @@
 exports.isLoggedIn = (req, res, next) => {
-
     if (!req.session.user) {
         console.log("User not logged in, redirecting to /login");
         return res.render('login', {
@@ -16,8 +15,10 @@ exports.isAdmin = (req, res, next) => {
         return res.redirect('/login');
     }
     if (req.session.user.role !== "admin") {
-        console.log("Not an admin user, redirecting to /profile");
-        return res.redirect('/profile');
+        console.log("Not an admin user, forbidden error rendered");
+        return res.render("error",
+            {message: "You do not have access to this resource.", statusCode: 403}
+        );
     }
     next();
 }

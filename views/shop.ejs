@@ -92,7 +92,7 @@
         <% if (savedRecipes.length === 0) { %>
             <div class="shop-empty-recipes">
                 No recipes saved yet — go to your
-                <a href="/saved-collections" class="shop-link">Saved Collections</a>
+                <a href="/favourites" class="shop-link">Saved Collections</a>
                 and click <strong>"+ Add to Shopping List"</strong>!
             </div>
         <% } else { %>
@@ -109,8 +109,8 @@
                             <!-- Remove recipe button -->
                             <form action="/shopping-list/remove-recipe" method="POST" class="shop-remove-recipe-form">
                                 <input type="hidden" name="recipeId" value="<%= savedRecipe.recipeId %>">
-                                <button type="submit" class="btn-outline btn-delete-post shop-remove-recipe-btn">
-                                    Remove Recipe
+                                <button type="submit" class="btn-shop-remove">
+                                    🗑️ Remove Recipe
                                 </button>
                             </form>
 

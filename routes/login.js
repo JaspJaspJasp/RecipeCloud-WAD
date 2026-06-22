@@ -7,9 +7,9 @@ const authentication = require('../middleware/user-auth');
 //Show user login page
 router.get("/login", userController.showLogin);
 //Log user in via checking database
-router.post("/login",userController.checkLogin);
+router.post("/login", userController.checkLogin);
 //Logout user
-router.get("/logout", userController.logout);
+router.get("/logout", authentication.isLoggedIn, userController.logout);
     
 module.exports = router;
 

@@ -28,8 +28,9 @@ async function connectDB() {
 };
 
 //Post, Public routing, EJS initialisation
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '1gb' , extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -38,8 +39,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(
   session({
     secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true
+    resave: false, // Prevents the session from being saved back to the session store if nothing has changed.
+    saveUninitialized: false // Prevents a new, empty session from being saved to the store.
   })
 );
 
@@ -48,7 +49,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 //Routes
 const recipes = require('./routes/recipes'); 
 const register = require('./routes/register');
@@ -56,6 +56,8 @@ const login = require('./routes/login');
 const shoplist = require("./routes/shop");
 const forum = require("./routes/forum");
 const favouriteRoutes = require('./routes/favourites');
+const admin = require('./routes/admin');
+
 
 //Routings
 app.use("/", recipes); 
@@ -63,9 +65,8 @@ app.use("/", register);
 app.use("/", login); 
 app.use("/", shoplist);
 app.use("/", forum);
-app.use('/', favouriteRoutes);
-
-
+app.use("/", favouriteRoutes);
+app.use("/", admin);
 
 
 

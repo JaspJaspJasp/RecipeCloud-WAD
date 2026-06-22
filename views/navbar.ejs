@@ -5,13 +5,16 @@
         <a href="/forum">Community</a>
         <a href="/create">Add Recipe</a>
         <% if (user && user.display_name) { %>
+            <% if (user.role === "admin") { %>
+                <a href="/admin/dashboard">Admin Dashboard</a>
+            <% } %>
             <div class="user-dropdown">
                 <button class="profile-btn">
                     <%= user.display_name %> <div class="arrow" style="display: inline-block;">▼</div>
                 </button>
                 <div class="dropdown-content">
                     <a href="/display-user/<%= user.id %>">My Profile</a>
-                    <a href="/saved-collections">Saved Collections</a>
+                    <a href="/favourites">Saved Collections</a>
                     <a href="/shopping-list">Shopping List</a>
                     <div class="dropdown-divider"></div>
                     <a href="/logout">Logout</a>
